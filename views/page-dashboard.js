@@ -1,7 +1,7 @@
 define(function(require){
   var
     Page      = require('./page')
-  , template  = require('hbt!./../templates/login-page')
+  , template  = require('hbt!./../templates/page-dashboard')
   ;
 
   return Page.extend({
@@ -9,7 +9,6 @@ define(function(require){
 
   , initialize: function(){
       this.template = template;
-      console.log("login page initialized");
     }
   });
 });

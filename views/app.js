@@ -9,7 +9,8 @@ define(function(require){
     }
 
   , Pages = {
-      login: require('./login')
+      login:      require('./page-login')
+    , dashboard:  require('./page-dashboard')
     }
   ;
   return Backbone.View.extend({
