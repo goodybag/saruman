@@ -5,7 +5,7 @@ define(function(require){
   ;
 
   return Page.extend({
-    className: 'page page-login'
+    className: 'page page-dashboard'
 
   , initialize: function(){
       this.template = template;

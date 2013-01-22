@@ -8,9 +8,15 @@
     <a class="brand" href="#">Saurumon 1.0</a>
     <div class="nav-collapse collapse">
       <ul class="nav">
-        <li class="">
-          <a href="#">Home</a>
-        </li>
+        {{#if loggedIn}}
+          <li class="">
+            <a href="#/businesses">Businesses</a>
+          </li>
+          <li class="">
+            <a href="#/products">Items</a>
+          </li>
+        {{else}}
+        {{/if}}
       </ul>
     </div>
   </div>

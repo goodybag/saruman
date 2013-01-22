@@ -17,13 +17,13 @@ define(function(require){
       this.current = null;
     }
 
-  , changePage: function(page){
+  , changePage: function(page, options){
       if (this.current === page) return this;
 
       if (!this.Pages[page]) return this;
-      
+
       if (!this.pages[page]){
-        this.pages[page] = new this.Pages[page]();
+        this.pages[page] = new this.Pages[page](options);
         this.pages[page].hide();
 
         // Set initial display to none so we can switch them out

@@ -1,0 +1,13 @@
+<ul>
+  <li{{#if cantGoBack}} class="disabled"{{/if}}>
+    <a href="{{previous}}" class="previous icon-double-angle-left"></a>
+  </li>
+  {{#each pages}}
+    <li{{#if this.active}} class="active"{{/if}}>
+      <a href="{{this.index}}">{{this.index}}</a>
+    </li>
+  {{/each}}
+  <li{{#if cantGoForward}} class="disabled"{{/if}}>
+    <a href="{{next}}"class="next icon-double-angle-right"></a>
+  </li>
+</ul>

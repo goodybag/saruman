@@ -9,8 +9,9 @@ define(function(require){
     }
 
   , Pages = {
-      login:      require('./page-login')
-    , dashboard:  require('./page-dashboard')
+      login:            require('./page-login')
+    , dashboard:        require('./page-dashboard')
+    , businesses:       require('./page-businesses')
     }
   ;
   return Backbone.View.extend({
@@ -35,8 +36,8 @@ define(function(require){
       return this;
     }
 
-  , changePage: function(pageName){
-      this.children.pages.changePage(pageName);
+  , changePage: function(page, options){
+      this.children.pages.changePage(page, options);
       return this;
     }
   });
