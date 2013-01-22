@@ -1,5 +1,5 @@
 define(function(require){
   return {
-    apiUrl: 'http://localhost:8081/'
+    apiUrl: 'http://localhost:3000/'
   };
 });

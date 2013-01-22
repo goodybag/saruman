@@ -7,6 +7,7 @@ define(function(require){
   , user      = require('models/user')
   , AppView   = require('views/app')
   , AppRouter = require('lib/router')
+  , api       = require('lib/api')
 
   , app = {
       init: function(){
@@ -18,9 +19,9 @@ define(function(require){
           pubsub.subscribe('change-page', function(action, page){
             user.isLoggedIn(function(error, loggedIn){
               if (error) return console.log(error);
-console.log("change-page event %s", page);
+
               if (!loggedIn) return app.changePage("login");
-              
+
               if (page === "login") page = "home";
               app.changePage(page);
             });
