@@ -17,3 +17,38 @@ body {
   color: #444;
   text-decoration: none;
 }
+
+.page-business-details-locations > .header {
+  margin-bottom: 32px;
+}
+
+.page-business-details-locations > .header > .btn-toolbar {
+  float: right;
+  margin-top: -42px;
+}
+
+.location > .header > .btn-toolbar {
+  float: right;
+  margin-top: -46px;
+}
+
+.hours-list dd,
+.hours-list dt {
+  display: inline-block;
+}
+
+.hours-list dt {
+  width: 30px;
+}
+
+.location-edit .hour-actions-heading {
+  margin-left: -44px;
+}
+
+.location-edit .hour-action {
+  text-align: center;
+}
+
+.location-edit #location-state-input {
+  margin-top: 5px;
+}

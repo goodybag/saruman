@@ -37,7 +37,7 @@ define(function(require){
       });
 
       pubsub.subscribe(channels.businesses.pagination, function(channel, page){
-        this_.paginator.setPage(page);
+        this_.paginator.setPage(page - 1);
       });
 
       // We want to know when the page changes so we can update the url
@@ -74,6 +74,12 @@ define(function(require){
 
       this.$el.find('#businesses-list').html(fragment.innerHTML);
 
+      if (this.paginator.maxPages <= 1) return this;
+      this.children.paginatorTop.render()
+      this.children.paginatorBottom.render()
+      this.$el.find('#business-paginator-top').append(this.children.paginatorTop.$el);
+      this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
+
       return this;
     }
 
@@ -82,6 +88,7 @@ define(function(require){
 
       // Insert paginators
       console.log(this.paginator);
+
       if (this.paginator.maxPages <= 1) return this;
       this.children.paginatorTop.render()
       this.children.paginatorBottom.render()

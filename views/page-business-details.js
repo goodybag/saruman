@@ -17,8 +17,8 @@ define(function(require){
 
   , Pages = {
       main:             require('./page-business-details-main')
-    , locations:        require('./dummy')
-    // , locations:        require('./page-business-details-location')
+    , locations:        require('./page-business-details-locations')
+    , location:         require('./page-business-details-location-edit')
     }
   ;
 
@@ -30,7 +30,7 @@ define(function(require){
         id: options.id
       };
 
-      this.currentPage = 'main';
+      this.currentPage = options.page || 'main';
 
       this.children = {
         nav:    new Views.Nav({ business: this.business })
@@ -49,18 +49,19 @@ define(function(require){
       });
 
       // Listen for page changes
-      pubsub.subscribe(channels.business.changePage.base, function(channel){
+      pubsub.subscribe(channels.business.changePage.base, function(channel, data){
         var page = channel.substring(channel.lastIndexOf('.') + 1);
-        
+
         if (this.currentPage !== page){
-          this_.changePage(page, { business: this_.business });
-          this.currentPage = page;
+          data = data || {};
+          data.business = this_.business;
+          this_.changePage(page, data);
         }
       });
 
-      this.changePage(this.currentPage, { business: this_.business });
+      this.changePage(this.currentPage, { business: this.business, page: 0 });
 
-      this.fetchBusiness();
+      pubsub.publish(channels.app.changePage.business, this.business);
 
       return this;
     }
@@ -90,17 +91,17 @@ define(function(require){
       // Highlight menu
       this.children.nav.$el.find('.' + this.currentPage).addClass('active');
 
-      // Hack :( - can't get backbone to delegate events
-      if (this.currentPage === "main"){
-        var main = this.children.pages.pages.main;
-        main.$el.find('form').submit(main.onSubmit.bind(main));
-      }
+      // Delegate events to current Page
+      this.children.pages.pages[this.children.pages.current].delegateEvents();
 
       return this;
     }
 
   , changePage: function(page, options){
       this.children.pages.changePage(page, options);
+      this.currentPage = page;
+      // Highlight menu
+      this.children.nav.$el.find('.' + this.currentPage).addClass('active');
       return this;
     }
   });

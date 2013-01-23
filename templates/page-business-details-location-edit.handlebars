@@ -1,0 +1,233 @@
+<div class="errors">
+
+</div>
+<form id="location-details-form" class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="location-name-input">Location Name</label>
+    <div class="controls">
+      <input class="span4" type="text" id="location-name-input" value="{{name}}" placeholder="Enter the location name">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="location-street1-input">Address</label>
+    <div class="controls controls-row">
+      <input class="span2" type="text" id="location-street1-input" value="{{street1}}" placeholder="Street 1">
+      <input class="span2" type="text" id="location-street2-input" value="{{street2}}" placeholder="Street 2">
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls controls-row">
+      <input class="span2" type="text" id="location-city-input" value="{{city}}" placeholder="City">
+      <select class="span1" id="location-state-input" name="state" size="1">
+        <option value="AK">AK</option>
+        <option value="AL">AL</option>
+        <option value="AR">AR</option>
+        <option value="AZ">AZ</option>
+        <option value="CA">CA</option>
+        <option value="CO">CO</option>
+        <option value="CT">CT</option>
+        <option value="DC">DC</option>
+        <option value="DE">DE</option>
+        <option value="FL">FL</option>
+        <option value="GA">GA</option>
+        <option value="HI">HI</option>
+        <option value="IA">IA</option>
+        <option value="ID">ID</option>
+        <option value="IL">IL</option>
+        <option value="IN">IN</option>
+        <option value="KS">KS</option>
+        <option value="KY">KY</option>
+        <option value="LA">LA</option>
+        <option value="MA">MA</option>
+        <option value="MD">MD</option>
+        <option value="ME">ME</option>
+        <option value="MI">MI</option>
+        <option value="MN">MN</option>
+        <option value="MO">MO</option>
+        <option value="MS">MS</option>
+        <option value="MT">MT</option>
+        <option value="NC">NC</option>
+        <option value="ND">ND</option>
+        <option value="NE">NE</option>
+        <option value="NH">NH</option>
+        <option value="NJ">NJ</option>
+        <option value="NM">NM</option>
+        <option value="NV">NV</option>
+        <option value="NY">NY</option>
+        <option value="OH">OH</option>
+        <option value="OK">OK</option>
+        <option value="OR">OR</option>
+        <option value="PA">PA</option>
+        <option value="RI">RI</option>
+        <option value="SC">SC</option>
+        <option value="SD">SD</option>
+        <option value="TN">TN</option>
+        <option value="TX">TX</option>
+        <option value="UT">UT</option>
+        <option value="VA">VA</option>
+        <option value="VT">VT</option>
+        <option value="WA">WA</option>
+        <option value="WI">WI</option>
+        <option value="WV">WV</option>
+        <option value="WY">WY</option>
+      </select>
+      <input type="text" id="location-zip-input" value="{{zip}}" class="span1" placeholder="zip">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="location-lat-input">Latitude &amp; Longitude</label>
+    <div class="controls controls-row">
+      <input class="span2" type="text" id="location-lat-input" value="{{lat}}" placeholder="Latitude">
+      <input class="span2" type="text" id="location-lon-input" value="{{lon}}" placeholder="Longitude">
+    </div>
+  </div>
+  <legend>Hours of Operation</legend>
+  <div class="row hour-actions-heading">
+    <div class="span1 offset2">
+      <h5>Opening</h5>
+    </div>
+    <div class="span1">
+      <h5>Closing</h5>
+    </div>
+    <div class="span1 offset1">
+      <h5>Closed</h5>
+    </div>
+    <div class="span1">
+      <h5>24-Hour</h5>
+    </div>
+    <div class="span1">
+      <h5>Unknown</h5>
+    </div>
+  </div>
+  <div class="control-group" data-day="monday">
+    <!-- Monday -->
+    <label class="control-label" for="location-start-monday-input">Monday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-monday-input" value="{{startMonday}}">
+      <input class="span1" type="time" id="location-end-monday-input" value="{{endMonday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-monday-closed-input" class="closed" name="location-monday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-monday-all-day-input" class="all-day" name="location-monday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-monday-unknown-input" class="unknown" name="location-monday-action">
+      </div>
+    </div>
+  </div>
+  <div class="control-group" data-day="tuesday">
+    <!-- Tuesday -->
+    <label class="control-label" for="location-start-tuesday-input">Tuesday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-tuesday-input" value="{{startTuesday}}">
+      <input class="span1" type="time" id="location-end-tuesday-input" value="{{endTuesday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-tuesday-closed-input" class="closed" name="location-tuesday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-tuesday-all-day-input" class="all-day" name="location-tuesday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-tuesday-unknown-input" class="unknown" name="location-tuesday-action">
+      </div>
+    </div>
+  </div>
+  <div class="control-group" data-day="wednesday">
+    <!-- Wednesday -->
+    <label class="control-label" for="location-start-wednesday-input">Wednesday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-wednesday-input" value="{{startWednesday}}">
+      <input class="span1" type="time" id="location-end-wednesday-input" value="{{endWednesday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-wednesday-closed-input" class="closed" name="location-wednesday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-wednesday-all-day-input" class="all-day" name="location-wednesday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-wednesday-unknown-input" class="unknown" name="location-wednesday-action">
+      </div>
+    </div>
+  </div>
+  <div class="control-group" data-day="thursday">
+    <!-- Thursday -->
+    <label class="control-label" for="location-start-thursday-input">Thursday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-thursday-input" value="{{startThursday}}">
+      <input class="span1" type="time" id="location-end-thursday-input" value="{{endThursday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-thursday-closed-input" class="closed" name="location-thursday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-thursday-all-day-input" class="all-day" name="location-thursday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-thursday-unknown-input" class="unknown" name="location-thursday-action">
+      </div>
+    </div>
+  </div>
+  <div class="control-group" data-day="friday">
+    <!-- Friday -->
+    <label class="control-label" for="location-start-friday-input">Friday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-friday-input" value="{{startFriday}}">
+      <input class="span1" type="time" id="location-end-friday-input" value="{{endFriday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-friday-closed-input" class="closed" name="location-friday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-friday-all-day-input" class="all-day" name="location-friday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-friday-unknown-input" class="unknown" name="location-friday-action">
+      </div>
+    </div>
+  </div>
+  <div class="control-group" data-day="saturday">
+    <!-- Saturday -->
+    <label class="control-label" for="location-start-saturday-input">Saturday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-saturday-input" value="{{startSaturday}}">
+      <input class="span1" type="time" id="location-end-saturday-input" value="{{endSaturday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-saturday-closed-input" class="closed" name="location-saturday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-saturday-all-day-input" class="all-day" name="location-saturday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-saturday-unknown-input" class="unknown" name="location-saturday-action">
+      </div>
+    </div>
+  </div>
+  <div class="control-group" data-day="sunday">
+    <!-- Sunday -->
+    <label class="control-label" for="location-start-sunday-input">Sunday</label>
+    <div class="controls controls-row">
+      <input class="span1" type="time" id="location-start-sunday-input" value="{{startSunday}}">
+      <input class="span1" type="time" id="location-end-sunday-input" value="{{endSunday}}">
+      <div class="span1"></div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-sunday-closed-input" class="closed" name="location-sunday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-sunday-all-day-input" class="all-day" name="location-sunday-action">
+      </div>
+      <div class="span1 hour-action">
+        <input type="radio" id="location-sunday-unknown-input" class="unknown" name="location-sunday-action">
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary save">Save changes</button>
+    <button type="submit" class="btn cancel">Cancel</button>
+  </div>
+</form>

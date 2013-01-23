@@ -4,7 +4,6 @@ define(function(require){
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
   , channels          = require('../lib/channels')
-  , Paginator         = require('../lib/paginator')
 
   , template          = require('hbt!./../templates/page-business-details-main')
   ;
@@ -14,10 +13,7 @@ define(function(require){
 
   , events: {
       'submit #business-details-form': 'onSubmit'
-    , 'click input': 'test'
     }
-
-  , test: function(){ alert('yay'); }
 
   , initialize: function(options){
       var this_ = this;
