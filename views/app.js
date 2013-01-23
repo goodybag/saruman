@@ -9,11 +9,13 @@ define(function(require){
     }
 
   , Pages = {
-      login:            require('./page-login')
-    , dashboard:        require('./page-dashboard')
-    , businesses:       require('./page-businesses')
+      login:                require('./page-login')
+    , dashboard:            require('./page-dashboard')
+    , businesses:           require('./page-businesses')
+    , business:             require('./page-business-details')
     }
   ;
+
   return Backbone.View.extend({
     className: 'app-view'
 

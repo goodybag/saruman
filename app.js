@@ -20,9 +20,9 @@ define(function(require){
           $(document.body).append(app.appView.$el);
 
           // Handle change page requests
-          pubsub.subscribe(channels.changePage.base, function(channel, data){
+          pubsub.subscribe(channels.app.changePage.base, function(channel, data){
             // Parse out the page from the sub-channel
-            var page = channel.substring(channel.indexOf('.') + 1);
+            var page = channel.substring(channel.lastIndexOf('.') + 1);
 
             user.isLoggedIn(function(error, loggedIn){
               if (error) return console.log(error);
@@ -50,7 +50,7 @@ define(function(require){
           page += "/page/" + options.page;
 
         // In most cases the page name corresponds to the route
-        Backbone.history.navigate(page);
+        // Backbone.history.navigate(page);
       }
 
     , router: new AppRouter()

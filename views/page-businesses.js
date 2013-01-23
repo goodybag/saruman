@@ -32,7 +32,7 @@ define(function(require){
       var this_ = this;
 
       // Whenever we change to businesses, fetch a new list
-      pubsub.subscribe(channels.changePage.businesses, function(){
+      pubsub.subscribe(channels.app.changePage.businesses, function(){
         this_.fetchBusinesses();
       });
 

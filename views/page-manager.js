@@ -13,8 +13,15 @@ define(function(require){
       // Instantiated views
       this.pages = {};
 
+      this.parentView = options.parentView;
+
       // Current page
       this.current = null;
+    }
+
+  , renderCurrent: function(){
+      if (this.current) this.pages[this.current].render();
+      return this;
     }
 
   , changePage: function(page, options){
