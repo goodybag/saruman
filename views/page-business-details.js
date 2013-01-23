@@ -17,6 +17,7 @@ define(function(require){
 
   , Pages = {
       main:             require('./page-business-details-main')
+    , locations:        require('./dummy')
     // , locations:        require('./page-business-details-location')
     }
   ;
@@ -50,7 +51,7 @@ define(function(require){
       // Listen for page changes
       pubsub.subscribe(channels.business.changePage.base, function(channel){
         var page = channel.substring(channel.lastIndexOf('.') + 1);
-
+        
         if (this.currentPage !== page){
           this_.changePage(page, { business: this_.business });
           this.currentPage = page;
@@ -86,7 +87,14 @@ define(function(require){
       this.$el.find('#business-details-nav').append(this.children.nav.$el);
       this.$el.find('#business-details-pages').append(this.children.pages.$el);
 
+      // Highlight menu
       this.children.nav.$el.find('.' + this.currentPage).addClass('active');
+
+      // Hack :( - can't get backbone to delegate events
+      if (this.currentPage === "main"){
+        var main = this.children.pages.pages.main;
+        main.$el.find('form').submit(main.onSubmit.bind(main));
+      }
 
       return this;
     }

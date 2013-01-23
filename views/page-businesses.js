@@ -78,11 +78,13 @@ define(function(require){
     }
 
   , render: function(){
-      this.children.paginatorTop.render()
-      this.children.paginatorBottom.render()
-
       this.$el.html(template());
 
+      // Insert paginators
+      console.log(this.paginator);
+      if (this.paginator.maxPages <= 1) return this;
+      this.children.paginatorTop.render()
+      this.children.paginatorBottom.render()
       this.$el.find('#business-paginator-top').append(this.children.paginatorTop.$el);
       this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
 

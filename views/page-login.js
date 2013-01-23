@@ -5,6 +5,7 @@ define(function(require){
   , template  = require('hbt!./../templates/page-login')
   , user      = require('../models/user')
   , pubsub    = require('../lib/pubsub')
+  , channels  = require('../lib/channels')
   ;
 
   return Page.extend({
@@ -31,8 +32,8 @@ define(function(require){
         if (error)
           return this_.$el.find('.errors').html('<p class="text-error">Invalid Email/Password</p>');
 
-        Backbone.history.navigate('dashboard');
-        pubsub.publish('change-page', 'dashboard');
+        Backbone.history.navigate('businesses');
+        pubsub.publish(channels.app.changePage.businesses, { page: 1 });
       });
     }
   });

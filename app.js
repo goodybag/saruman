@@ -46,8 +46,8 @@ define(function(require){
 
         // The history setting is very hacky :/
 
-        if (page === "businesses" && typeof options.page !== "undefined")
-          page += "/page/" + options.page;
+        // if (page === "businesses" && typeof options.page !== "undefined")
+        //   page += "/page/" + options.page;
 
         // In most cases the page name corresponds to the route
         // Backbone.history.navigate(page);

@@ -7,6 +7,10 @@ define(function(require){
   return Page.extend({
     className: 'page page-dashboard'
 
+  , events: { 'click h1': 'test'}
+
+  , test: function(){ alert('aldksfj')}
+
   , initialize: function(){
       this.template = template;
     }

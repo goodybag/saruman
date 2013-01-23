@@ -30,6 +30,10 @@ define(function(require){
       if (!this.Pages[page]) return this;
 
       if (!this.pages[page]){
+        // Attach parent view to Page
+        if (this.parentView)
+          this.Pages[page].prototype.parentView = this.parentView;
+
         this.pages[page] = new this.Pages[page](options);
         this.pages[page].hide();
 

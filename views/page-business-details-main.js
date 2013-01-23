@@ -23,24 +23,6 @@ define(function(require){
       var this_ = this;
 
       this.business = options.business;
-
-      // Listen for when they request to come to this page
-      pubsub.subscribe(channels.business.changePage.main, function(channel){
-        // this_.fetchBusiness();
-      });
-
-      this.business = options.business;
-    }
-
-  , fetchBusiness: function(){
-      // var this_ = this;
-      // api.businesses.get(this.business.id, function(error, business){
-      //   if (error) return console.error(error);
-
-      //   this_.business = business;
-
-      //   this.
-      // });
     }
 
   , render: function(){
@@ -49,7 +31,6 @@ define(function(require){
     }
 
   , onSubmit: function(e){
-    alert('test');
       e.preventDefault();
 
       var data = {
@@ -57,6 +38,8 @@ define(function(require){
       , businessCategory:   this.$el.find('#business-category').val()
       , url:                this.$el.find('#business-url').val()
       };
+
+      var this_ = this;
 
       api.businesses.update(this.business.id, data, function(error){
         if (error) return console.error(error);
