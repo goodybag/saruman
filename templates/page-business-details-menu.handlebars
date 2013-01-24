@@ -1,0 +1,38 @@
+<div class="errors">
+
+</div>
+<form id="menu-details-form" class="form">
+  <legend>Menu Description</legend>
+
+  <div class="control-group">
+    <div class="controls">
+      <label>(optional) Only if there is some important or specific information about this menu</label>
+      <textarea class="span6" name="menu-description" id="menu-details-description" rows="5">{{menudescription}}</textarea>
+    </div>
+  </div>
+
+  <legend>Cuisine Types</legend>
+  <div class="control-group">
+    <div class="controls">
+
+      {{#listCuisines tags}}
+        <div class="span2">
+          <label class="checkbox">
+            <input value="{{name}}" type="checkbox"{{#if checked}} checked{{/if}}> {{name}}
+          </label>
+        </div>
+      {{/listCuisines}}
+
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary save">Save changes</button>
+    <button type="submit" class="btn cancel">Cancel</button>
+  </div>
+</form>
+
+<form class="add-tag pull-right" id="add-new-tag">
+  <input type="text" id="new-tag-name" placeholder="New Tag" class="span2" style="margin-bottom: 0">
+  <button type="submit" class="btn add-tag">Add Tag</button>
+</form>

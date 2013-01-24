@@ -145,12 +145,14 @@ define(function(require){
         }
 
         if (action === "unknown"){
-          data['start' + Day] = "";
-          data['end' + Day] = "";
+          data['start' + Day] = null;
+          data['end' + Day] = null;
         }
       });
 
       for (var key in data){
+        // hack to avoid deleting hours
+        // if (key.indexOf('start') > -1 || key.indexOf('end') > -1) continue;
         if (data[key] === null) delete data[key];
       }
 
