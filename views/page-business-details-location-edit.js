@@ -38,13 +38,12 @@ define(function(require){
       }
 
       pubsub.subscribe(channels.business.changePage.location, function(channel, data){
-        console.log(data);
-        this_.business = data.business;
-        this_.location = data.location;
-        this_.create   = data.create;
+        if (data.business) this_.business = data.business;
+        if (data.location) this_.location = data.location;
+        if (data.create)   this_.create   = data.create;
 
         if (data.locationId){
-          this_.location = { id: data.locationId }
+          this_.location = { id: data.locationId };
           this_.fetchLocation();
         }
 
@@ -55,8 +54,6 @@ define(function(require){
 
         this_.render();
       });
-
-      pubsub.publish(channels.business.changePage.location, options);
 
       return this;
     }
@@ -154,18 +151,6 @@ define(function(require){
   , onRadioSelect: function(e){
       // Clear days time
       $(e.target).parent().parent().find('input[type="time"]').val("");
-
-      // Set the inputs to 12:00 AM - 12:00
-      // var
-      //   $group  = $(e.target).parent().parent().parent()
-      // , day     = $group.data('day')
-      // , Day     = day[0].toUpperCase() + day.substring(1)
-      // ;
-
-      // this.location['start' + Day] = "00:00";
-      // this.location['end' + Day]   = "24:00";
-
-      // $group.find('input[type="time"]').val("");
     }
   });
 });

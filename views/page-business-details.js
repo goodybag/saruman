@@ -92,6 +92,7 @@ define(function(require){
       this.children.nav.$el.find('.' + this.currentPage).addClass('active');
 
       // Delegate events to current Page
+      console.log("rendered", this.children.pages.current);
       this.children.pages.pages[this.children.pages.current].delegateEvents();
 
       return this;

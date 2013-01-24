@@ -35,6 +35,10 @@ define(function(require){
         this.children[key].render();
         this.$el.append(this.children[key].$el);
       }
+
+      if (this.children.pages.current)
+        this.children.pages.pages[this.children.pages.current].delegateEvents();
+
       return this;
     }
 
