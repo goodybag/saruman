@@ -53,7 +53,7 @@ define(function(require){
 
       this.$el.html(template({
         tags: this.tags
-      , menudescription: this.business.menudescription
+      , menuDescription: this.business.menuDescription
       }));
 
       return this;
@@ -73,7 +73,7 @@ define(function(require){
     }
 
   , onDescriptionKeyup: function(e){
-      this.business.menudescription = e.target.innerHTML;
+      this.business.menuDescription = e.target;
     }
 
   , onFormSubmit: function(e){
@@ -81,7 +81,7 @@ define(function(require){
 
       var this_ = this;
 
-      this.business.menuDescription = this.$el.find('#menu-details-description').html();
+      this.business.menuDescription = this.$el.find('#menu-details-description').val();
       this.business.tags = [];
 
       this.$el.find('input[type="checkbox"]').each(function(i, el){

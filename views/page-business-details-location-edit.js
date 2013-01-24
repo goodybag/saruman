@@ -172,8 +172,8 @@ define(function(require){
 
         // this is wrong, but it doesn't seem like we're supporting the dates we had discussed
         if (action === "all-day"){
-          data['start' + Day] = "12:00 am";
-          data['end' + Day] = "12:00 am";
+          data['start' + Day] = "00:00";
+          data['end' + Day] = "24:00";
         }
 
         if (action === "unknown"){

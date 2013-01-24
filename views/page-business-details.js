@@ -76,6 +76,10 @@ define(function(require){
           this_.business[key] = business[key];
         }
 
+        // Delete isGb and isVerified to fix some patching bugs
+        delete this_.business.isGB;
+        delete this_.business.isVerified;
+
         // Re-render the current page view with new business
         this_.render();
         this_.delegateEvents();
