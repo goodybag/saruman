@@ -9,6 +9,7 @@ define(function(require){
   , AppView   = require('views/app')
   , AppRouter = require('lib/router')
   , api       = require('lib/api')
+  , helpers   = require('lib/hbt-helpers')
 
 
     // Limited interface to application to work with through repl

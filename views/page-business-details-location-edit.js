@@ -145,10 +145,14 @@ define(function(require){
         }
 
         if (action === "unknown"){
-          data['start' + Day] = null;
-          data['end' + Day] = null;
+          data['start' + Day] = "";
+          data['end' + Day] = "";
         }
       });
+
+      for (var key in data){
+        if (data[key] === null) delete data[key];
+      }
 
       if (this.create){
         return api.locations.create(data, function(error){
