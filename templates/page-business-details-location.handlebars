@@ -31,59 +31,31 @@
           <dl class="hours-list">
             <div class="day monday">
               <dt>M:</dt>
-              <dd>
-                {{#if startMonday}}{{startMonday}}{{else}}??{{/if}}
-                -
-                {{#if endMonday}}{{endMonday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startMonday endMonday}}</dd>
             </div>
             <div class="day tuesday">
               <dt>Tu:</dt>
-              <dd>
-                {{#if startTuesday}}{{startTuesday}}{{else}}??{{/if}}
-                -
-                {{#if endTuesday}}{{endTuesday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startTuesday endTuesday}}</dd>
             </div>
             <div class="day wednesday">
               <dt>W:</dt>
-              <dd>
-                {{#if startWednesday}}{{startWednesday}}{{else}}??{{/if}}
-                -
-                {{#if endWednesday}}{{endWednesday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startWednesday endWednesday}}</dd>
             </div>
             <div class="day thursday">
               <dt>Th:</dt>
-              <dd>
-                {{#if startThursday}}{{startThursday}}{{else}}??{{/if}}
-                -
-                {{#if endThursday}}{{endThursday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startThursday endThursday}}</dd>
             </div>
             <div class="day friday">
               <dt>F:</dt>
-              <dd>
-                {{#if startFriday}}{{startFriday}}{{else}}??{{/if}}
-                -
-                {{#if endFriday}}{{endFriday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startFriday endFriday}}</dd>
             </div>
             <div class="day saturday">
               <dt>Sa:</dt>
-              <dd>
-                {{#if startSaturday}}{{startSaturday}}{{else}}??{{/if}}
-                -
-                {{#if endSaturday}}{{endSaturday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startSaturday endSaturday}}</dd>
             </div>
             <div class="day sunday">
               <dt>Su:</dt>
-              <dd>
-                {{#if startSunday}}{{startSunday}}{{else}}??{{/if}}
-                -
-                {{#if endSunday}}{{endSunday}}{{else}}??{{/if}}
-              </dd>
+              <dd>{{showHours startSunday endSunday}}</dd>
             </div>
           </dl>
         </div>

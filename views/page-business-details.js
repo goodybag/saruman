@@ -19,6 +19,7 @@ define(function(require){
       main:             require('./page-business-details-main')
     , locations:        require('./page-business-details-locations')
     , location:         require('./page-business-details-location-edit')
+    , 'menu-details':   require('./page-business-details-menu')
     }
   ;
 
