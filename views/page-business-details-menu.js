@@ -97,8 +97,10 @@ define(function(require){
       api.businesses.update(this.business.id, this.business, function(error){
         if (error) return console.error(error);
 
-        Backbone.history.navigate('businesses/page/1');
-        pubsub.publish(channels.app.changePage.businesses, { page: 1 });
+        Backbone.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
+        pubsub.publish(channels.business.changePage.locations, {
+          pageNum: 1
+        });
       });
     }
   });

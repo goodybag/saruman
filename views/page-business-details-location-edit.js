@@ -7,6 +7,16 @@ define(function(require){
   , channels  = require('../lib/channels')
 
   , template  = require('hbt!../templates/page-business-details-location-edit')
+
+  , days = [
+      'Monday'
+    , 'Tuesday'
+    , 'Wednesday'
+    , 'Thursday'
+    , 'Friday'
+    , 'Saturday'
+    , 'Sunday'
+    ]
   ;
 
   return Page.extend({
@@ -76,6 +86,28 @@ define(function(require){
       this.$el.find(
         '#location-state-input > option[value="' + this.location.state + '"]'
       ).attr('selected', 'selected');
+
+      // Set states for closed/24-hour/unknown
+      var start, end, day;
+      for (var i = days.length - 1; i >= 0; i--){
+        day   = days[i][0].toLowerCase() + days[i].substring(1);
+        start = this.location['start' + days[i]];
+        end   = this.location['end' + days[i]];
+
+        // Set closed
+        if (typeof start === "string" && start === end){
+          this.$el.find('#location-' + day + '-closed-input').attr('checked', true);
+          this.$el.find('#location-start-' + day + '-input').val("");
+          this.$el.find('#location-end-' + day + '-input').val("");
+        }else if (typeof start === "string" && typeof end === "string"){
+          // Set 24-hour
+          if (parseInt(end.split(':')[0]) - parseInt(start.split(':')[0]) === 24){
+            this.$el.find('#location-' + day + '-all-day-input').attr('checked', true);
+            this.$el.find('#location-start-' + day + '-input').val("");
+            this.$el.find('#location-end-' + day + '-input').val("");
+          }
+        }
+      }
 
       return this;
     }
