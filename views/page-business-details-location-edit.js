@@ -85,35 +85,70 @@ define(function(require){
 
       var this_ = this;
 
+      var fixTime = function(val){
+        if (val === "") return null;
+
+        val = val.split(':');
+        var ampm = "am";
+
+        if (val[0] >= 12){
+          val[0] -= 12;
+          ampm = "pm";
+        }
+
+        return val[0] + ":" + val[1] + " " + ampm;
+      }
+
       var data = {
         businessId:       this.business.id
-      , name:             $('#location-name-input').val()
-      , street1:          $('#location-street1-input').val()
-      , street2:          $('#location-street2-input').val()
-      , state:            $('#location-state-input').val()
-      , city:             $('#location-city-input').val()
-      , zip:              $('#location-zip-input').val()
-      , lat:              $('#location-lat-input').val()
-      , lon:              $('#location-lon-input').val()
-      , startSunday:      $('#location-start-sunday-input').val() || null
-      , endSunday:        $('#location-end-sunday-input').val() || null
-      , startMonday:      $('#location-start-monday-input').val() || null
-      , endMonday:        $('#location-end-monday-input').val() || null
-      , startTuesday:     $('#location-start-tuesday-input').val() || null
-      , endTuesday:       $('#location-end-tuesday-input').val() || null
-      , startWednesday:   $('#location-start-wednesday-input').val() || null
-      , endWednesday:     $('#location-end-wednesday-input').val() || null
-      , startThursday:    $('#location-start-thursday-input').val() || null
-      , endThursday:      $('#location-end-thursday-input').val() || null
-      , startFriday:      $('#location-start-friday-input').val() || null
-      , endFriday:        $('#location-end-friday-input').val() || null
-      , startSaturday:    $('#location-start-saturday-input').val() || null
-      , endSaturday:      $('#location-end-saturday-input').val() || null
+      , name:             this.$el.find('#location-name-input').val()
+      , street1:          this.$el.find('#location-street1-input').val()
+      , street2:          this.$el.find('#location-street2-input').val()
+      , state:            this.$el.find('#location-state-input').val()
+      , city:             this.$el.find('#location-city-input').val()
+      , zip:              this.$el.find('#location-zip-input').val()
+      , lat:              this.$el.find('#location-lat-input').val()
+      , lon:              this.$el.find('#location-lon-input').val()
+      , startSunday:      fixTime(this.$el.find('#location-start-sunday-input').val())
+      , endSunday:        fixTime(this.$el.find('#location-end-sunday-input').val())
+      , startMonday:      fixTime(this.$el.find('#location-start-monday-input').val())
+      , endMonday:        fixTime(this.$el.find('#location-end-monday-input').val())
+      , startTuesday:     fixTime(this.$el.find('#location-start-tuesday-input').val())
+      , endTuesday:       fixTime(this.$el.find('#location-end-tuesday-input').val())
+      , startWednesday:   fixTime(this.$el.find('#location-start-wednesday-input').val())
+      , endWednesday:     fixTime(this.$el.find('#location-end-wednesday-input').val())
+      , startThursday:    fixTime(this.$el.find('#location-start-thursday-input').val())
+      , endThursday:      fixTime(this.$el.find('#location-end-thursday-input').val())
+      , startFriday:      fixTime(this.$el.find('#location-start-friday-input').val())
+      , endFriday:        fixTime(this.$el.find('#location-end-friday-input').val())
+      , startSaturday:    fixTime(this.$el.find('#location-start-saturday-input').val())
+      , endSaturday:      fixTime(this.$el.find('#location-end-saturday-input').val())
       };
 
-      for (var key in data){
-        if (data[key] === null) delete data[key];
-      }
+      this.$el.find('input[type="radio"]').each(function(i, el){
+        if (!el.checked) return;
+        var
+          action = el.className
+        , day = el.name.split('-')[1]
+        , Day = day[0].toUpperCase() + day.substring(1)
+        ;
+
+        if (action === "closed"){
+          data['start' + Day] = "12:00 am";
+          data['end' + Day] = "12:00 am";
+        }
+
+        // this is wrong, but it doesn't seem like we're supporting the dates we had discussed
+        if (action === "all-day"){
+          data['start' + Day] = "12:00 am";
+          data['end' + Day] = "12:00 am";
+        }
+
+        if (action === "unknown"){
+          data['start' + Day] = null;
+          data['end' + Day] = null;
+        }
+      });
 
       if (this.create){
         return api.locations.create(data, function(error){
@@ -121,7 +156,7 @@ define(function(require){
 
           Backbone.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
           pubsub.publish(channels.business.changePage.locations, {
-            page: 1
+            pageNum: 1
           });
         });
       }
@@ -131,7 +166,7 @@ define(function(require){
 
         Backbone.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
         pubsub.publish(channels.business.changePage.locations, {
-          page: 1
+          pageNum: 1
         });
       });
     }

@@ -20,7 +20,10 @@ define(function(require){
     }
 
   , renderCurrent: function(){
-      if (this.current) this.pages[this.current].render();
+      if (this.current){
+        this.pages[this.current].render();
+        this.pages[this.current].delegateEvents();
+      }
       return this;
     }
 
@@ -39,6 +42,7 @@ define(function(require){
 
         // Set initial display to none so we can switch them out
         this.pages[page].render();
+        this.pages[page].delegateEvents();
         this.$el.append(this.pages[page].$el);
       }
 
