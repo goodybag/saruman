@@ -51,7 +51,6 @@ define(function(require){
       // Listen for page changes
       pubsub.subscribe(channels.business.changePage.base, function(channel, data){
         var page = channel.substring(channel.lastIndexOf('.') + 1);
-
         if (this.currentPage !== page){
           data = data || {};
           data.business = this_.business;
@@ -59,9 +58,9 @@ define(function(require){
         }
       });
 
-      this.changePage(this.currentPage, { business: this.business, page: 0 });
 
       pubsub.publish(channels.app.changePage.business, this.business);
+      this.changePage(this.currentPage, { business: this.business, page: 0 });
 
       return this;
     }
@@ -78,6 +77,7 @@ define(function(require){
 
         // Re-render the current page view with new business
         this_.render();
+        this_.delegateEvents();
       });
     }
 

@@ -25,7 +25,7 @@ define(function(require){
       var this_ = this;
 
       this.business = options.business;
-      this.currentPage = options.page > 0 ? (options.page - 1) : 0;
+      this.currentPage = options.pageNum > 0 ? (options.pageNum - 1) : 0;
 
       // Initial set of locations
       this.locations = [];
@@ -39,7 +39,7 @@ define(function(require){
 
       // Fetch locations when this view is requested
       pubsub.subscribe(channels.business.changePage.locations, function(channel, data){
-        this_.currentPage = data.page > 0 ? (data.page - 1) : this_.currentPage;
+        this_.currentPage = data.pageNum > 0 ? (data.pageNum - 1) : this_.currentPage;
         this_.paginator.setPage(this_.currentPage);
         this_.fetchLocations();
       });
@@ -91,6 +91,7 @@ define(function(require){
 
         $list.append(view.$el);
 
+        this.delegateEvents();
         view.delegateEvents();
       }
 
