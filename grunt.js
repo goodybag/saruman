@@ -218,8 +218,12 @@ module.exports = function(grunt) {
       }
     ;
 
-    for (var i = stuff.length - 1; i >= 0; i--){
-      fs.linkSync(stuff[i], dest + '/' + getFileName(stuff[i]));
+    for (var i = stuff.length - 1, stats; i >= 0; i--){
+      stats = fs.lstatSync(stuff[i]);
+      if (stat.isDirectory)
+        wrench.copyDirSyncRecursive(stuff[i], dest + '/' + getFileName(stuff[i]));
+      else
+        fs.linkSync(stuff[i], dest + '/' + getFileName(stuff[i]));
     }
 
     done(true);
