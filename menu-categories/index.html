@@ -4,14 +4,20 @@
   <title>Goodybag - India</title>
   <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="css/bootstrap-editable.css" rel="stylesheet">
+  <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>
 
   <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="select2/select2.js"></script>
+  <script src="js/handlebars.js"></script>
+  <script src="js/async.js"></script>
+  <script src="js/jquery.mockjax.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap-editable.js"></script>
-  <script src="js/handlebars.js"></script>
+  <script src="js/bootbox.min.js"></script>
   <script src="js/templates.js"></script>
 </head>
 <body>
+
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
@@ -23,15 +29,12 @@
         <a class="brand" href="#">Saruman 1.0</a>
         <div class="nav-collapse collapse">
           <ul class="nav">
-            {{#if loggedIn}}
               <li class="">
                 <a href="/#/businesses">Businesses</a>
               </li>
               <li class="">
                 <a href="/#/logout">Logout</a>
               </li>
-            {{else}}
-            {{/if}}
           </ul>
         </div>
       </div>
@@ -40,7 +43,7 @@
 
   <div class="container" style="margin-top: 100px">
     <div class="row">
-      <div class="span3">
+      <div class="span2">
         <ul class="nav nav-tabs nav-stacked">
           <li class="main">
             <a href="/#/businesses/{{id}}">Main Info</a>
@@ -59,14 +62,15 @@
           </li>
         </ul>
       </div>
-      <div class="span9">
+      <div class="span10">
         <h2>Menu Item Categories</h2>
         <table class="table table-striped table-bordered" style="word-wrap: break-word;">
           <thead>
             <tr>
-              <th style="width: 25%">Name</th>
-              <th style="width: 65%">Description</th>
-              <th style="width: 10%">Actions</th>
+              <th style="width: 5%">Order</th>
+              <th style="width: 30%">Name</th>
+              <th style="width: 60%">Description</th>
+              <th style="width: 5%">Actions</th>
             </tr>
           </thead>
           <tbody class="menu-categories-table">
@@ -76,167 +80,462 @@
         <button class="add-category-button btn btn-primary"><i class="icon-plus icon-white"></i> Add Category</button>
       </div>
     </div>
+    <div>
+    <div class="row">
+      <div class="span2"></div>
+      <div class="span10">
+        <h2>Menu Items</h2>
+        <table class="table table-striped table-bordered" style="word-wrap: break-word;">
+          <thead>
+            <tr>
+              <th style="width: 15%">Name</th>
+              <th style="width: 40%">Description</th>
+              <th style="width: 10%">Price</th>
+              <th style="width: 15%">Categories</th>
+              <th style="width: 15%">Tags</th>
+              <th style="width: 5%">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="menu-items-table">
+            <!-- hbs: category-row -->
+          </tbody>
+        </table>
+        <button class="add-item-button btn btn-primary"><i class="icon-plus icon-white"></i> Add Item</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    var base = 'http://localhost:3000/v1';
-    var businessId = 1;
+    $(function(){
+      var base = 'http://localhost:3000/v1';
+      var businessId = 1;
+      var tags = [];
+      var tagNamesToId = {};
 
-    // Get the business Id from the url query params
-    if (window.location.href.indexOf('businessId')){
-      businessId = window.location.href.split(/\?|\&/g);
-      for (var i = businessId.length - 1; i >= 0; i--){
-        if (businessId[i].indexOf('businessId=') > -1){
-          businessId = parseInt(businessId[i].substring(businessId[i].lastIndexOf('=') + 1));
-          break;
+      // Get the business Id from the url query params
+      if (window.location.href.indexOf('businessId')){
+        businessId = window.location.href.split(/\?|\&/g);
+        for (var i = businessId.length - 1; i >= 0; i--){
+          if (businessId[i].indexOf('businessId=') > -1){
+            businessId = parseInt(businessId[i].substring(businessId[i].lastIndexOf('=') + 1));
+            break;
+          }
         }
       }
-    }
 
-    // Fix Nav
-    $(function(){
-      $('.nav a').each(function(i, el){
-        el.href = el.href.replace("{{id}}", businessId);
-      });
-    });
-
-    $.ajax({
-        url: base+'/session'
-      , type: 'POST'
-      , data: {
-          email: 'admin@goodybag.com'
-        , password: 'password'
-        }
-      , dataType: 'json'
-      , xhrFields: {
-          withCredentials: true
-        }
-      , crossDomain: true
-      , success: function(content){
-          console.log(content);
-        }
+      // Fix Nav
+      $(function(){
+        $('.nav a').each(function(i, el){
+          el.href = el.href.replace("{{id}}", businessId);
+        });
       });
 
-    $('.add-category-button').click(function(){
-      var $html = $(Handlebars.templates['category-row']({data:[{name: "", description: ""}]}));
-      makeEditable($html);
-      $(".menu-categories-table").append($html);
-    });
+      // $.ajax({
+      //     url: base+'/session'
+      //   , type: 'POST'
+      //   , data: {
+      //       email: 'admin@goodybag.com'
+      //     , password: 'password'
+      //     }
+      //   , dataType: 'json'
+      //   , xhrFields: {
+      //       withCredentials: true
+      //     }
+      //   , crossDomain: true
+      //   , success: function(content){
+      //     }
+      //   });
 
-    $.getJSON(base+'/businesses/'+businessId+'/productCategories', function(data){
-      var $html = $(Handlebars.templates['category-row'](data));
-      makeEditable($html);
-      $(".menu-categories-table").append($html);
-    });
-  </script>
-
-  <script>
-    function makeEditable(context){
-      $('.category-name, .category-description', context).each(function(){
-        $(this)
-          .attr('data-original-title', 'Enter Description')
-          .attr('data-type', 'text')
-          .editable();
+      $('.add-category-button').click(function(){
+        bootbox.prompt("Category name?", function(value) {
+          if (!value) return;
+          createCategory({businessId: businessId, name: value}, function(result){
+            if(result.error) {bootbox.alert('error saving category: '+value); return console.error(result.error);}
+            var $html = $(Handlebars.templates['category-row']({data:[{id: result.data.id, name: value}]}));
+            console.log($html);
+            makeCategoryEditable($html);
+            $(".menu-categories-table").append($html);
+            $('.item-categories').each(function(){
+              delete $(this).data('editable').input.sourceData;
+            });
+          });
+        });
       });
 
-      $('.category-name', context).on('save', function(e, params){
-        var $self = $(this);
-        if($self.attr('data-id')){
+      $('.add-item-button').click(function(){
+        bootbox.prompt("Item name?", function(value) {
+          if (!value) return;
+          createItem({businessId: businessId, name: value}, function(result){
+            if(result.error) {bootbox.alert('error saving item: '+value); return console.error(result.error);}
+            var $html = $(Handlebars.templates['item-row']({data:[{id: result.data.id, name: value}]}));
+            console.log($html);
+            makeItemEditable($html);
+            $(".menu-items-table").append($html);
+          });
+        });
+      });
+
+      $.getJSON(base+'/businesses/'+businessId+'/productCategories', function(data){
+        var $html = $(Handlebars.templates['category-row'](data));
+        makeCategoryEditable($html);
+        $(".menu-categories-table").append($html);
+      });
+
+
+      $.getJSON(base+'/businesses/'+businessId+'/product-tags', function(response){
+        if(response.error) return console.log(response.error);
+
+        for(index in response.data){
+          tags.push(response.data[index].tag);
+          tagNamesToId[response.data[index].tag] = +response.data[index].id;
+        }
+        $.getJSON(base+'/businesses/'+businessId+'/products', function(data){
+          var $html = $(Handlebars.templates['item-row'](data));
+          makeItemEditable($html);
+          $(".menu-items-table").append($html);
+        });
+      });
+
+      function makeCategoryEditable(context){
+        $('.category-order, .category-name, .category-description', context).each(function(){
+          $(this)
+            .attr('data-original-title', 'Enter Value')
+            .attr('data-type', 'text')
+            .editable({
+              validate: function(value){
+                if(! +value){
+                  return 'This must be a number greater than 0';
+                }
+              }
+            });
+        });
+
+        $('.category-order', context).on('save', function(e, params){
+          var $self = $(this);
+          updateCategory($self.attr('data-id'), {order: params.newValue}, function(result){
+            if(result.error) return console.error(result.error);
+            $self.removeClass('editable-unsaved');
+          });
+        });
+
+        $('.category-name', context).on('save', function(e, params){
+          var $self = $(this);
           updateCategory($self.attr('data-id'), {name: params.newValue}, function(result){
             if(result.error) return console.error(result.error);
             $self.removeClass('editable-unsaved');
           });
-        } else {
-          $description = $('.category-description', $self.closest('tr'))
-          var description = $description.data('editable').value;
-
-          createCategory({businessId: businessId, name: params.newValue, description: description}, function(result){
-            if(result.error) return console.error(result.error);
-
-            $self.attr('data-id', result.data.id);
-            $description.attr('data-id', result.data.id);
-
-            $self.removeClass('editable-unsaved');
-            $description.removeClass('editable-unsaved');
-          });
-        }
-      });
-
-      $('.category-description', context).on('save', function(e, params){
-        var $self = $(this);
-        if($self.attr('data-id')){
-          updateCategory($self.attr('data-id'), {description: params.newValue}, function(result){
-            if(result.error) return console.error(result.error);
-            $self.removeClass('editable-unsaved');
-          });
-        }
-      });
-
-      $('.category-description', context).on('save', function(e, params){
-        var $self = $(this);
-        if($self.attr('data-id')){
-          updateCategory($self.attr('data-id'), {description: params.newValue}, function(result){
-            if(result.error) return console.error(result.error);
-            $self.removeClass('editable-unsaved');
-          });
-        }
-      });
-
-      $('.delete-category-button', context).click(function(){
-        var $self = $(this);
-        deleteCategory($self.attr('data-id'), function(result){
-          if(result.error) return console.error(result.error);
-          $self.closest('tr').remove();
         });
-      })
-    }
 
-    function updateCategory(id, data, callback){
-      $.ajax({
-        url: base+'/productCategories/' + id
-      , type: 'PATCH'
-      , data: data
-      , dataType: 'json'
-      , xhrFields: {
-          withCredentials: true
-        }
-      , crossDomain: true
-      , success: function(result){
-          callback(result);
-        }
-      });
-    }
+        $('.category-description', context).on('save', function(e, params){
+          var $self = $(this);
+          if($self.attr('data-id')){
+            updateCategory($self.attr('data-id'), {description: params.newValue}, function(result){
+              if(result.error) return console.error(result.error);
+              $self.removeClass('editable-unsaved');
+            });
+          }
+        });
 
-    function createCategory(data, callback){
-      $.ajax({
-        url: base+'/productCategories'
-      , type: 'POST'
-      , data: data
-      , dataType: 'json'
-      , xhrFields: {
-          withCredentials: true
-        }
-      , crossDomain: true
-      , success: function(result){
-          callback(result);
-        }
-      });
-    }
+        $('.delete-category-button', context).click(function(){
+          var $self = $(this);
+          bootbox.confirm("Are you sure?", function(confirm) {
+            if(!confirm) return;
+            deleteCategory($self.attr('data-id'), function(result){
+              if(result.error) return console.error(result.error);
+              $self.closest('tr').remove();
 
-    function deleteCategory(id, callback){
-      $.ajax({
-        url: base+'/productCategories/'+id
-      , type: 'DELETE'
-      , dataType: 'json'
-      , xhrFields: {
-          withCredentials: true
-        }
-      , crossDomain: true
-      , success: function(result){
-          callback(result);
-        }
+              $('.item-categories').each(function(){
+                delete $(this).data('editable').input.sourceData;
+              });
+            });
+          });
+        });
+      }
+
+      function updateCategory(id, data, callback){
+        $.ajax({
+          url: base+'/productCategories/' + id
+        , type: 'PATCH'
+        , data: data
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+
+      function createCategory(data, callback){
+        $.ajax({
+          url: base+'/productCategories'
+        , type: 'POST'
+        , data: data
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+
+      function deleteCategory(id, callback){
+        $.ajax({
+          url: base+'/productCategories/'+id
+        , type: 'DELETE'
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+
+      $.mockjax({
+          url: '/tags',
+          response: function(settings) {
+            var ret = [];
+            $('.category-name').each(function(){
+              ret.push({value: +$(this).attr('data-id'), text: $(this).data('editable').value});
+            });
+            this.responseText = ret;
+          }
       });
-    }
+      $.mockjax({
+          url: '/categories',
+          response: function(settings) {
+            var ret = [];
+            $('.category-name').each(function(){
+              ret.push({value: +$(this).attr('data-id'), text: $(this).data('editable').value});
+            });
+            this.responseText = ret;
+          }
+      });
+
+      function makeItemEditable(context){
+        $('.item-name, .item-description', context).each(function(){
+          $(this)
+            .attr('data-original-title', 'Enter Value')
+            .attr('data-type', 'text')
+            .editable();
+        });
+
+        $('.item-price', context).each(function(){
+          $(this)
+            .attr('data-original-title', 'Enter Value')
+            .attr('data-type', 'text')
+            .editable({
+              validate: function(value) {
+                if(isNaN(value)){
+                  return 'This must be a number';
+                }
+              }
+            });
+        })
+
+        $('.item-categories, .item-tags', context).each(function(){
+          var $self = $(this);
+          var id = $self.attr('data-id');
+          $.getJSON(base+'/products/'+id, function(response){
+            if(response.error) return console.log(response.error);
+            var categoryIds = [];
+            var _tags = [];
+            for(index in response.data.categories){
+              categoryIds.push(response.data.categories[index].id);
+            }
+            for(index in response.data.tags){
+              _tags.push(response.data.tags[index].tag);
+            }
+            if($self.hasClass('item-categories')){
+              $self
+                .attr('data-original-title', 'Enter Value')
+                .attr('data-type', 'checklist')
+                .editable({
+                  value: categoryIds
+                , sourceCache: false
+                , source: function(){
+                    var ret = [];
+                    $('.category-name').each(function(){
+                      ret.push({value: +$(this).attr('data-id'), text: $(this).data('editable').value});
+                    });
+                    return ret;
+                  }
+                });
+              // causes the list to refresh
+              $self.on('hidden', function(e, params){
+                delete $(this).data('editable').input.sourceData;
+              });
+            } else if ($self.hasClass('item-tags')){
+              $self.text(_tags.join(', '));
+              $self
+                .attr('data-original-title', 'Enter Value')
+                .attr('data-type', 'select2')
+                .editable({
+                  select2: {
+                    tags: tags
+                  , tokenSeparators: [","]
+                  }
+                });
+              // causes the list to refresh
+              $self.on('hidden', function(e, params){
+                delete $(this).data('editable').input.sourceData;
+              });
+            }
+          });
+        });
+
+        $('.item-name', context).on('save', function(e, params){
+          var $self = $(this);
+          updateItem($self.attr('data-id'), {name: params.newValue}, function(result){
+            if(result.error) return console.error(result.error);
+            $self.removeClass('editable-unsaved');
+          });
+        });
+
+        $('.item-description', context).on('save', function(e, params){
+          var $self = $(this);
+          updateItem($self.attr('data-id'), {description: params.newValue}, function(result){
+            if(result.error) return console.error(result.error);
+            $self.removeClass('editable-unsaved');
+          });
+        });
+
+        $('.item-price', context).on('save', function(e, params){
+          var $self = $(this);
+          updateItem($self.attr('data-id'), {price: params.newValue}, function(result){
+            if(result.error) return console.error(result.error);
+            $self.removeClass('editable-unsaved');
+          });
+        });
+
+        $('.item-categories', context).on('save', function(e, params){
+          var $self = $(this);
+
+          // for some reason it makes the ids strings so need to convert back to int
+          var categories = [];
+          for (val in params.newValue)
+            categories.push(+params.newValue[val]);
+          updateItem($self.attr('data-id'), {categories: params.newValue}, function(result){
+            if(result.error) return console.error(result.error);
+            $self.removeClass('editable-unsaved');
+          });
+        });
+
+        $('.item-tags', context).on('save', function(e, params){
+          var $self = $(this);
+          var productId = $self.attr('data-id');
+          var _tags = [];
+          var dne = [];
+          for(index in params.newValue){
+            var tag = params.newValue[index];
+            var id = tagNamesToId[tag];
+            if(id) _tags.push(id);
+            if(!id) dne.push(tag);
+          }
+          async.forEach(
+            dne
+          , function(tag, callback){
+              createProductTag({tag: tag}, function(response){
+                if(response.error) return callback(response.error);
+                tags.push(tag);
+                tagNamesToId[tag] = response.data.id;
+                _tags.push(tagNamesToId[tag]);
+                callback();
+              });
+            }
+          , function(err){
+              if(err) return console.error(err);
+              updateItem($self.attr('data-id'), {tags: _tags}, function(result){
+                if(result.error) return console.error(result.error);
+                $self.removeClass('editable-unsaved');
+              });
+            }
+          );
+        });
+
+        $('.delete-item-button', context).click(function(){
+          var $self = $(this);
+          bootbox.confirm("Are you sure?", function(confirm) {
+            if(!confirm) return;
+            deleteItem($self.attr('data-id'), function(result){
+              if(result.error) return console.error(result.error);
+              $self.closest('tr').remove();
+            });
+          });
+        });
+      }
+
+      function updateItem(id, data, callback){
+        $.ajax({
+          url: base+'/products/' + id
+        , type: 'PATCH'
+        , data: data
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+
+      function createItem(data, callback){
+        $.ajax({
+          url: base+'/products'
+        , type: 'POST'
+        , data: data
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+
+      function deleteItem(id, callback){
+        $.ajax({
+          url: base+'/products/'+id
+        , type: 'DELETE'
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+
+      function createProductTag(data, callback){
+        $.ajax({
+          url: base+'/businesses/'+businessId+'/product-tags'
+        , type: 'POST'
+        , data: data
+        , dataType: 'json'
+        , xhrFields: {
+            withCredentials: true
+          }
+        , crossDomain: true
+        , success: function(result){
+            callback(result);
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>
