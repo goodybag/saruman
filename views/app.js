@@ -1,6 +1,6 @@
 define(function(require){
   var
-    Backbone  = require('backbone')
+    utils     = require('../lib/utils')
   , $         = require('jquery')
 
   , Views = {
@@ -16,7 +16,7 @@ define(function(require){
     }
   ;
 
-  return Backbone.View.extend({
+  return utils.View.extend({
     className: 'app-view'
 
   , children: {

@@ -3,6 +3,7 @@ define(function(require){
     Page              = require('./page')
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
+  , utils             = require('../lib/utils')
   , channels          = require('../lib/channels')
   , Paginator         = require('../lib/paginator')
 
@@ -45,7 +46,7 @@ define(function(require){
       this.paginator.on('change:page', function(){
         if (this_.currentPage === this_.paginator.getPage()) return;
         this_.currentPage = this_.paginator.getPage();
-        Backbone.history.navigate('businesses/page/' + (this_.currentPage + 1));
+        utils.history.navigate('businesses/page/' + (this_.currentPage + 1));
 
         this_.fetchBusinesses();
       });

@@ -1,6 +1,6 @@
 define(function(require){
   var
-    Backbone  = require('backbone')
+    utils     = require('../lib/utils')
   , Page      = require('./page')
   , template  = require('hbt!./../templates/page-login')
   , user      = require('../models/user')
@@ -32,7 +32,7 @@ define(function(require){
         if (error)
           return this_.$el.find('.errors').html('<p class="text-error">Invalid Email/Password</p>');
 
-        Backbone.history.navigate('businesses');
+        utils.history.navigate('businesses');
         pubsub.publish(channels.app.changePage.businesses, { page: 1 });
       });
     }

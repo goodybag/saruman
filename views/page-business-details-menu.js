@@ -1,6 +1,6 @@
 define(function(require){
   var
-    Backbone  = require('backbone')
+    utils     = require('../lib/utils')
   , Page      = require('./page')
   , config    = require('../config')
   , api       = require('../lib/api')
@@ -97,7 +97,7 @@ define(function(require){
       api.businesses.update(this.business.id, this.business, function(error){
         if (error) return console.error(error);
 
-        Backbone.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
+        utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
         pubsub.publish(channels.business.changePage.locations, {
           pageNum: 1
         });

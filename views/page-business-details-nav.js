@@ -1,11 +1,11 @@
 define(function(require){
   var
-    Backbone = require('backbone')
+    utils = require('../lib/utils')
 
   , template = require('hbt!../templates/page-business-details-nav')
   ;
 
-  return Backbone.View.extend({
+  return utils.View.extend({
     className: 'nav nav-tabs nav-stacked'
 
   , events: {

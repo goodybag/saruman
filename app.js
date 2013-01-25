@@ -4,6 +4,7 @@ define(function(require){
   , $         = require('jquery')
   , pubsub    = require('lib/pubsub')
   , channels  = require('lib/channels')
+  , utils     = require('lib/utils')
 
   , user      = require('models/user')
   , AppView   = require('views/app')
@@ -38,7 +39,8 @@ define(function(require){
 
           pubsub.subscribe(channels.logout, app.logout);
 
-          Backbone.history.start();
+          utils.history = Backbone.history;
+          utils.history.start();
         });
       }
 

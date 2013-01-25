@@ -1,41 +1,4 @@
 define(function(require){
-  return {
-    apiUrl: 'http://localhost:3000/'
-
-  , cuisineTypes: [
-      'American'
-    , 'Asian'
-    , 'Fusion'
-    , 'Barbeque'
-    , 'Brazillian'
-    , 'Breakfast'
-    , 'Burgers'
-    , 'Cafes'
-    , 'Caribbean'
-    , 'Chinese'
-    , 'Cuban'
-    , 'Diners'
-    , 'Ethiopian'
-    , 'Greek'
-    , 'Indian'
-    , 'Italian'
-    , 'Japanese'
-    , 'Korean'
-    , 'Mediterranean'
-    , 'Mexican'
-    , 'Pizza'
-    , 'Sandwiches'
-    , 'Seafood'
-    , 'Sushi'
-    , 'Thai'
-    , 'Vegan'
-    , 'Vegetarian'
-    , 'Vietnamese'
-    ]
-  };
-});
-
-define(function(require){
   var config = {
     dev: {
       apiUrl: 'http://localhost:3000/'
@@ -73,7 +36,7 @@ define(function(require){
     }
 
   , prod: {
-      apiUrl: 'http://localhost:3000/'
+      apiUrl: 'http://magic.staging.goodybag.com/'
 
     , cuisineTypes: [
         'American'

@@ -1,12 +1,10 @@
 define(function(require){
   var
-    Backbone = require('backbone')
-
-  , utils = require('../lib/utils')
+    utils = require('../lib/utils')
   , api   = require('../lib/api')
   ;
 
-  return new (Backbone.Model.extend({
+  return new (utils.Model.extend({
     defaults: {
       loggedIn: false
     , email: null

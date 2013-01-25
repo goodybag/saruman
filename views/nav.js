@@ -1,12 +1,12 @@
 define(function(require){
   var
-    Backbone = require('backbone')
+    utils = require('../lib/utils')
 
   , template = require('hbt!../templates/nav')
   , user     = require('../models/user')
   ;
 
-  return Backbone.View.extend({
+  return utils.View.extend({
     className: 'navbar navbar-inverse navbar-fixed-top'
 
   , initialize: function(){

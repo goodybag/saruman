@@ -1,6 +1,6 @@
 define(function(require){
   var
-    Backbone = require('backbone')
+    utils    = require('../lib/utils')
 
   , api      = require('../lib/api')
   , pubsub   = require('../lib/pubsub')
@@ -9,7 +9,7 @@ define(function(require){
   , template = require('hbt!../templates/page-business-details-location')
   ;
 
-  return Backbone.View.extend({
+  return utils.View.extend({
     className:  'location'
   , tagName:    'section'
 
@@ -30,7 +30,7 @@ define(function(require){
     }
 
   , onClickEdit: function(e){
-      Backbone.history.navigate('businesses/' + this.location.businessId + '/locations/' + this.location.id);
+      utils.history.navigate('businesses/' + this.location.businessId + '/locations/' + this.location.id);
       pubsub.publish(channels.business.changePage.location, {
         location: this.location
       , parent: this

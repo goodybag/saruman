@@ -1,6 +1,6 @@
 define(function(require){
   var
-    Backbone  = require('backbone')
+    utils     = require('../lib/utils')
   , Page      = require('./page')
   , api       = require('../lib/api')
   , pubsub    = require('../lib/pubsub')
@@ -192,7 +192,7 @@ define(function(require){
         return api.locations.create(data, function(error){
           if (error) return console.error(error);
 
-          Backbone.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
+          utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
           pubsub.publish(channels.business.changePage.locations, {
             pageNum: 1
           });
@@ -202,7 +202,7 @@ define(function(require){
       api.locations.update(this.location.id, data, function(error){
         if (error) return console.error(error);
 
-        Backbone.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
+        utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
         pubsub.publish(channels.business.changePage.locations, {
           pageNum: 1
         });

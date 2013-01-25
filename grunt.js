@@ -1,7 +1,9 @@
 var
-  fs     = require('fs')
-, jsdom  = require('jsdom')
-, wrench = require('wrench')
+  fs            = require('fs')
+, sys           = require('sys')
+, childProcess  = require('child_process')
+, jsdom         = require('jsdom')
+, wrench        = require('wrench')
 ;
 
 /*global module:false*/
@@ -9,6 +11,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-mincss');
   grunt.loadNpmTasks('grunt-s3');
+  // grunt.loadNpmTasks('grunt-jam');
   // grunt.loadNpmTasks('grunt-escher');
 
   // Project configuration.
@@ -25,14 +28,14 @@ module.exports = function(grunt) {
     makeBuildDir: {
       build: {
         dir: './build'
-      , subs: ['css', 'js']
+      , subs: ['css']
       }
     },
 
     mincss: {
       compress: {
         files: {
-          'build/<%= pkg.name %>.css': [
+          'build/css/app.css': [
             'css/bootstrap.css',
             'css/bootstrap-responsive.css',
             'css/app.css'
@@ -41,10 +44,27 @@ module.exports = function(grunt) {
       }
     },
 
+    jam: {
+      dist: {
+        src: [
+          'app.js'
+        , 'lib/'
+        , 'lib/api/'
+        , 'views/'
+        , 'models/'
+        ]
+      , dest: 'build/app.js'
+      , noMinify: false
+      , noLicense: true
+      , verbose: false
+      , almond: false
+      }
+    },
+
     s3: {
       key: 'AKIAI5ASK2M6JIZDPIYA',
       secret: '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',
-      bucket: 'merlin.staging.goodybag.com',
+      bucket: 'saruman.goodybag.com',
       access: 'public-read',
 
       upload: [
@@ -59,13 +79,8 @@ module.exports = function(grunt) {
         , gzip: false
         }
       , {
-          src: 'build/js/*.js'
-        , dest: 'js/'
-        , gzip: true
-        }
-      , {
-          src: 'build/img/*.png'
-        , dest: '/img'
+          src: 'build/app.js'
+        , dest: 'app.js'
         , gzip: false
         }
       , {
@@ -79,20 +94,26 @@ module.exports = function(grunt) {
         , gzip: false
         }
       , {
-          src: 'build/menu-categories/'
-        , dest: '/'
+          src: 'build/menu-categories/*'
+        , dest: '/menu-categories/'
+        }
+      , {
+          src: 'build/menu-categories/js/*'
+        , dest: '/menu-categories/js'
+        }
+      , {
+          src: 'build/menu-categories/css/*'
+        , dest: '/menu-categories/css'
+        }
+      , {
+          src: 'build/menu-categories/img/*'
+        , dest: '/menu-categories/img'
+        }
+      , {
+          src: 'build/menu-categories/handlebars/*'
+        , dest: '/menu-categories/handlebars'
         }
       ]
-    },
-
-    modifyImagePaths: {
-      build: {
-        file: 'build/merlin.css'
-      , path: ''
-      , oldPaths: [
-          '../img/'
-        ]
-      }
     },
 
     copyStuff: {
@@ -124,8 +145,50 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'makeBuildDir mincss copyIndex changeConfig copyStuff restoreConfig');
+  grunt.registerTask('default', 'makeBuildDir mincss copyIndex changeConfig copyStuff jam restoreConfig');
   grunt.registerTask('deploy', 'default s3');
+
+  grunt.registerMultiTask('jam', 'Builds jam stuff', function(){
+    var
+      done    = this.async()
+    , command = "jam compile"
+    , dest    = this.data.dest
+    , incs    = this.data.src
+    , jam     = require(process.cwd() + '/jam/require.config.js')
+    ;
+
+    for (var i = incs.length - 1; i >= 0; i--){
+      // Is directory
+      if (incs[i][incs[i].length -1] === "/"){
+        var files = fs.readdirSync(incs[i]);
+        for (var n = files.length - 1; n >= 0; n--){
+          if (files[n].indexOf('.js') > -1)
+            command += " -i " + incs[i] + files[n].replace(".js", "");
+        }
+      }else{
+        command += " -i " + incs[i].replace(".js", "");
+      }
+    }
+
+    for (var i = jam.packages.length - 1; i >= 0; i--){
+      command += " -i " + jam.packages[i].name
+    }
+
+    command += " -o " + dest;
+
+    if (this.data.noLicense) command += " --no-license";
+    if (this.data.noMinify) command += " --no-minify";
+    if (this.data.verbose) command += " -v";
+    if (this.data.almond) command += " -a";
+
+    if (this.data.verbose) console.log(command);
+
+    childProcess.exec(command, function(error, stdout){
+      if (error) return console.log(error), done(false);
+      sys.puts(stdout)
+      done(true);
+    });
+  });
 
   grunt.registerMultiTask('makeBuildDir', 'Creates the build dir', function(){
     var error, dir, this_ = this, done = this.async();

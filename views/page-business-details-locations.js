@@ -3,6 +3,7 @@ define(function(require){
     Page              = require('./page')
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
+  , utils             = require('../lib/utils')
   , channels          = require('../lib/channels')
   , Paginator         = require('../lib/paginator')
 
@@ -50,7 +51,7 @@ define(function(require){
         this_.currentPage = this_.paginator.getPage();
         var curr = window.location.hash.substring(1);
         curr = curr.substring(0, curr.lastIndexOf('/') + 1);
-        Backbone.history.navigate(curr + parseInt((this_.currentPage) + 1));
+        utils.history.navigate(curr + parseInt((this_.currentPage) + 1));
 
         this_.fetchLocations();
       });
@@ -114,7 +115,7 @@ define(function(require){
     }
 
   , onAddLocationClick: function(e){
-      Backbone.history.navigate('businesses/' + this.business.id + '/locations/create')
+      utils.history.navigate('businesses/' + this.business.id + '/locations/create')
 
       pubsub.publish(channels.business.changePage.location, {
         create: true

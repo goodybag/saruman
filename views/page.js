@@ -1,9 +1,9 @@
 define(function(require){
   var
-    Backbone = require('backbone')
+    utils = require('../lib/utils')
   ;
 
-  return Backbone.View.extend({
+  return utils.View.extend({
     className: 'page'
 
   , render: function(){
