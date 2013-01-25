@@ -1,0 +1,10 @@
+{{#each data}}<tr class="item-row", data-id="{{id}}">
+  <td><a class="item-name" href="#" data-id="{{id}}">{{name}}</a></td>
+  <td><a class="item-description" href="#" data-id="{{id}}">{{description}}</a></td>
+  <td>$ <a class="item-price" href="#" data-id="{{id}}">{{price}}</a></td>
+  <td><a class="item-categories" href="#" data-id="{{id}}"></a></td>
+  <td><a class="item-tags" href="#" data-id="{{id}}">{{tags}}</a></td>
+  <td>
+    <button class="delete-item-button btn btn-small btn-danger" data-id="{{id}}">Delete</button>
+  </td>
+</tr>{{/each}}
