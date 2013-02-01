@@ -113,6 +113,10 @@ module.exports = function(grunt) {
           src: 'build/menu-categories/handlebars/*'
         , dest: '/menu-categories/handlebars'
         }
+      , {
+          src: 'build/menu-categories/select2/*'
+        , dest: '/menu-categories/select2'
+        }
       ]
     },
 
