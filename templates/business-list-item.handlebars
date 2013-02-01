@@ -5,6 +5,6 @@
   </td>
   <td class="actions">
     <a href="#/businesses/{{id}}" class="icon-edit"></a>
-    <a href="#/businesses" class="icon-check{{#if complete}} {{else}}-empty{{/if}}"></a>
+    <a href="#" data-id="{{id}}" class="is-verified icon-check{{#if isVerified}} {{else}}-empty{{/if}}" style='color:{{#if isVerified}}green{{else}}red{{/if}};'></a>
   </td>
 </tr>
