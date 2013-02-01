@@ -70,10 +70,27 @@ define(function(require){
   , renderBusinesses: function(){
       var fragment = document.createDocumentFragment();
       for (var i = 0, len = this.businesses.length; i < len; i++){
-        fragment.innerHTML += businessItemTmpl(this.businesses[i]);
+        var html = businessItemTmpl(this.businesses[i]);
+        fragment.innerHTML += html;
       }
 
+      // $('.is-verified', $(fragment.innerHTML)).each(function(){
+      //   console.log(this);
+      // });
       this.$el.find('#businesses-list').html(fragment.innerHTML);
+     $('.is-verified', this.$el.find('#businesses-list')).click(function(){
+        if($(this).hasClass('icon-check')){
+          api.businesses.update(+$(this).attr('data-id'), {isVerified: false}, function(){});
+          $(this).removeClass('icon-check').addClass('icon-check-empty');
+          $(this).css('color', 'red');
+        } else if ($(this).hasClass('icon-check-empty')) {
+          api.businesses.update(+$(this).attr('data-id'), {isVerified: true}, function(){});
+          $(this).removeClass('icon-check-empty').addClass('icon-check');
+          $(this).css('color', 'green');
+        }
+
+        return false;
+      });
 
       if (this.paginator.maxPages <= 1) return this;
       this.children.paginatorTop.render()
