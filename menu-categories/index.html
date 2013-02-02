@@ -366,10 +366,10 @@
             var categoryIds = [];
             var _tags = [];
             for(index in response.data.categories){
-              categoryIds.push(response.data.categories[index].id);
+              if (response.data.categories[index] && response.data.categories[index].id) categoryIds.push(response.data.categories[index].id);
             }
             for(index in response.data.tags){
-              _tags.push(response.data.tags[index].tag);
+              if (response.data.tags[index] && response.data.tags[index].tag) _tags.push(response.data.tags[index].tag);
             }
             if($self.hasClass('item-categories')){
               $self
