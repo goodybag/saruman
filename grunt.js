@@ -150,8 +150,15 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'makeBuildDir mincss copyIndex changeConfig copyStuff jam restoreConfig');
+  grunt.registerTask('default', 'makeBuildDir mincss copyIndex changeConfig copyStuff changeMenuCategoriesUrl jam restoreConfig');
   grunt.registerTask('deploy', 'default s3');
+
+  grunt.registerTask('changeMenuCategoriesUrl', 'Changes the menu categories api url', function(){
+    var file = fs.readFileSync('./build/menu-categories/index.html', 'utf-8');
+    file = file.replace(/http:\/\/localhost:3000/g, "http://magic.india.goodybag.com");
+    fs.writeFileSync('./build/menu-categories/index.html', file);
+    return true;
+  });
 
   grunt.registerMultiTask('jam', 'Builds jam stuff', function(){
     var
