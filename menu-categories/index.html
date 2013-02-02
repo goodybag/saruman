@@ -207,7 +207,7 @@
       });
 
       function makeCategoryEditable(context){
-        $('.category-order, .category-name, .category-description', context).each(function(){
+        $('.category-order', context).each(function(){
           $(this)
             .attr('data-original-title', 'Enter Value')
             .attr('data-type', 'text')
@@ -218,6 +218,13 @@
                 }
               }
             });
+        });
+
+        $('.category-name, .category-description', context).each(function(){
+          $(this)
+            .attr('data-original-title', 'Enter Value')
+            .attr('data-type', 'text')
+            .editable({});
         });
 
         $('.category-order', context).on('save', function(e, params){
