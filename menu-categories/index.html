@@ -255,7 +255,7 @@
       function updateCategory(id, data, callback){
         $.ajax({
           url: base+'/productCategories/' + id
-        , type: 'PATCH'
+        , type: 'PUT'
         , data: data
         , dataType: 'json'
         , xhrFields: {
@@ -476,7 +476,7 @@
       function updateItem(id, data, callback){
         $.ajax({
           url: base+'/products/' + id
-        , type: 'PATCH'
+        , type: 'PUT'
         , data: data
         , dataType: 'json'
         , xhrFields: {
