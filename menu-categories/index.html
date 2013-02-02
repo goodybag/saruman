@@ -106,6 +106,16 @@
   </div>
 
   <script>
+    $.getJSON = function(url, successCallback){
+      $.ajax({
+        type: 'GET'
+      , crossDomain: true
+      , xhrFields: {withCredentials: true}
+      , url: url
+      , success: successCallback
+      });
+    };
+
     $(function(){
       var base = 'http://localhost:3000/v1';
       var businessId = 1;
