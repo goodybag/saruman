@@ -49,11 +49,11 @@ function program1(depth0,data) {
   else { return ''; }});
 templates['item-row'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; data = data || {};
-  var stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data) {
   
-  var buffer = "", stack1, foundHelper;
+  var buffer = "", stack1, stack2, foundHelper;
   buffer += "<tr class=\"item-row\", data-id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
@@ -79,9 +79,10 @@ function program1(depth0,data) {
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
   buffer += escapeExpression(stack1) + "\">";
-  foundHelper = helpers.price;
-  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
-  else { stack1 = depth0.price; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  stack1 = depth0.price;
+  stack2 = {};
+  foundHelper = helpers.money;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:stack2,data:data}) : helperMissing.call(depth0, "money", stack1, {hash:stack2,data:data});
   buffer += escapeExpression(stack1) + "</a></td>\n  <td><a class=\"item-categories\" href=\"#\" data-id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
@@ -104,6 +105,7 @@ function program1(depth0,data) {
   stack1 = depth0.data;
   stack2 = {};
   stack1 = helpers.each.call(depth0, stack1, {hash:stack2,inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { return stack1; }
-  else { return ''; }});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;});
 })();
