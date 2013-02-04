@@ -106,6 +106,11 @@
   </div>
 
   <script>
+    Handlebars.registerHelper('money', function(text) {
+      var amount = (+text) ? (+text)/100 : "";
+      return amount+"";
+    });
+
     $.getJSON = function(url, successCallback){
       $.ajax({
         type: 'GET'
@@ -427,7 +432,8 @@
 
         $('.item-price', context).on('save', function(e, params){
           var $self = $(this);
-          updateItem($self.attr('data-id'), {price: params.newValue}, function(result){
+          var price = (+params.newValue)*100;
+          updateItem($self.attr('data-id'), {price: price}, function(result){
             if(result.error) return console.error(result.error);
             $self.removeClass('editable-unsaved');
           });
