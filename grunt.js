@@ -57,7 +57,7 @@ module.exports = function(grunt) {
       , dest: 'build/app.js'
       , noMinify: false
       , noLicense: true
-      , verbose: false
+      , verbose: true
       , almond: false
       }
     },

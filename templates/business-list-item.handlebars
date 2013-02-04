@@ -1,5 +1,8 @@
 <tr>
-  <td>{{id}}</td>
+  <td>
+    <a href="#" title="{{#if isflagged}}{{comment}}{{/if}}" data-id="{{id}}" class="is-flagged icon-flag" style='color:{{#if isflagged}}blue{{else}}grey{{/if}};'></a>
+    {{id}}
+  </td>
   <td>
     <a href="#/businesses/{{id}}">{{name}}</a>
   </td>

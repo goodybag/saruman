@@ -74,12 +74,9 @@ define(function(require){
         fragment.innerHTML += html;
       }
 
-      // $('.is-verified', $(fragment.innerHTML)).each(function(){
-      //   console.log(this);
-      // });
       this.$el.find('#businesses-list').html(fragment.innerHTML);
      $('.is-verified', this.$el.find('#businesses-list')).click(function(){
-        if($(this).hasClass('icon-check')){
+        if ($(this).hasClass('icon-check')) {
           api.businesses.update(+$(this).attr('data-id'), {isVerified: false}, function(){});
           $(this).removeClass('icon-check').addClass('icon-check-empty');
           $(this).css('color', 'red');
@@ -91,6 +88,22 @@ define(function(require){
 
         return false;
       });
+     $('.is-flagged', this.$el.find('#businesses-list')).click(function(){
+      var $this = $(this);
+      bootbox.prompt("Enter in any notes<br/><h5>Current Notes:</h5><h6 style='color:grey;'>"+$this.attr('title')+"</h6>", "cancel", "confirm", function(result) {
+        if (result === null) return;
+        if (result === "") {
+          api.businesses.update(+$this.attr('data-id'), {comment: null, isflagged: false}, function(){});
+          $this.attr('title', "");
+          $this.css('color', 'grey');
+        } else {
+          api.businesses.update(+$this.attr('data-id'), {comment: result, isflagged: true}, function(){});
+          $this.attr('title', result);
+          $this.css('color', 'blue');
+        }
+      }, $this.attr('title'));
+      return false;
+     });
 
       if (this.paginator.maxPages <= 1) return this;
       this.children.paginatorTop.render()
