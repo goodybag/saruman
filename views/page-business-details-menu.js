@@ -25,9 +25,10 @@ define(function(require){
 
       this.business = options.business;
 
-      // pubsub.subscribe(channels.business.changePage.menuDetails, function(channel, data){
-      //   this_.render();
-      // });
+      pubsub.subscribe(channels.business.changePage.menuDetails, function(channel, data){
+        this_.tags = this_.business.tags;
+        this_.render();
+      });
 
       return this;
     }
