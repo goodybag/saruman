@@ -3,6 +3,7 @@
 <head>
   <title>Goodybag - India</title>
   <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css/bootstrap-responsive.css" rel="stylesheet" media="screen">
   <link href="css/bootstrap-editable.css" rel="stylesheet">
   <link href="select2/select2.css" rel="stylesheet" type="text/css"></link>
 
@@ -15,6 +16,17 @@
   <script src="js/bootstrap-editable.js"></script>
   <script src="js/bootbox.min.js"></script>
   <script src="js/templates.js"></script>
+  <script type="text/javascript">
+    (function(a){if(window.filepicker){return}var b=a.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===a.location.protocol?"https:":"http:")+"//api.filepicker.io/v1/filepicker.js";var c=a.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c);var d={};d._queue=[];var e="pick,pickMultiple,pickAndStore,read,write,writeUrl,export,convert,store,storeUrl,remove,stat,setKey,constructWidget,makeDropPane".split(",");var f=function(a,b){return function(){b.push([a,arguments])}};for(var g=0;g<e.length;g++){d[e[g]]=f(e[g],d._queue)}window.filepicker=d})(document);
+  </script>
+  <script type="text/javascript">filepicker.setKey('AfYrJ8jdRQykuY971MKeQz');</script>
+
+  <style type="text/css">
+    .product-img {
+      cursor: pointer;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -89,10 +101,11 @@
           <thead>
             <tr>
               <th style="width: 15%">Name</th>
-              <th style="width: 40%">Description</th>
+              <th style="width: 35%">Description</th>
               <th style="width: 10%">Price</th>
               <th style="width: 15%">Categories</th>
-              <th style="width: 15%">Tags</th>
+              <th style="width: 10%">Tags</th>
+              <th style="width: 10%">Photo</th>
               <th style="width: 5%">Actions</th>
             </tr>
           </thead>
@@ -126,6 +139,25 @@
       var businessId = 1;
       var tags = [];
       var tagNamesToId = {};
+
+      var productImgClickHandler = function(e){
+        var
+          $target = $(e.target)
+        , pid = $target.data('id')
+        ;
+        filepicker.pick(
+          { mimetypes:['image/*'] },
+          function(file) {
+            $target.attr('src', file.url);
+            updateItem(pid, { photoUrl: file.url }, function(result){
+              if (result.error) alert(result.error.message);
+            });
+          },
+          function(error) {
+            alert(error);
+          }
+        )
+      };
 
       // Get the business Id from the url query params
       if (window.location.href.indexOf('businessId')){
@@ -185,6 +217,7 @@
             var $html = $(Handlebars.templates['item-row']({data:[{id: result.data.id, name: value}]}));
             console.log($html);
             makeItemEditable($html);
+            $html.find('.product-img').click(productImgClickHandler);
             $(".menu-items-table").append($html);
           });
         });
@@ -208,6 +241,8 @@
           var $html = $(Handlebars.templates['item-row'](data));
           makeItemEditable($html);
           $(".menu-items-table").append($html);
+
+          $('.product-img').click(productImgClickHandler);
         });
       });
 

@@ -36,10 +36,13 @@ define(function(require){
       this.location = options.location;
       this.parent   = options.parent;
       this.create   = options.create;
-
+console.log(options);
       if (options.locationId){
-        this.location = { id: options.locationId }
-        this.fetchLocation();
+          console.log("fetch location");
+        if (this.location && this.location.id !== options.locationId){
+          this.location = { id: options.locationId };
+          this.fetchLocation();
+        }
       }
 
       if (this.create || !this.location){

@@ -27,6 +27,7 @@ define(function(require){
     className: 'page page-business-details'
 
   , initialize: function(options){
+    console.log("initializing");
       this.business = {
         id: options.id
       };
@@ -55,11 +56,12 @@ define(function(require){
         if (this.currentPage !== page){
           data = data || {};
           data.business = this_.business;
+          console.log(channel, data);
           this_.changePage(page, data);
         }
       });
 
-
+console.log("business change page subscriber made!");
       pubsub.publish(channels.app.changePage.business, this.business);
       this.changePage(this.currentPage, { business: this.business, page: 0 });
 
@@ -87,9 +89,9 @@ define(function(require){
     }
 
   , render: function(){
+      this.$el.html(template(this.business));
       this.children.nav.render();
       this.children.pages.renderCurrent();
-      this.$el.html(template(this.business));
       this.$el.find('#business-details-nav').append(this.children.nav.$el);
       this.$el.find('#business-details-pages').append(this.children.pages.$el);
 
@@ -98,7 +100,7 @@ define(function(require){
 
       // Delegate events to current Page
       console.log("rendered", this.children.pages.current);
-      this.children.pages.pages[this.children.pages.current].delegateEvents();
+      // this.children.pages.pages[this.children.pages.current].delegateEvents();
 
       return this;
     }
