@@ -36,7 +36,7 @@ define(function(require){
     }
 
   , prod: {
-      apiUrl: 'http://magic.goodybag.com/'
+      apiUrl: 'http://magic.india.goodybag.com/'
 
     , cuisineTypes: [
         'American'

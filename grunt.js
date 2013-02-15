@@ -155,7 +155,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('changeMenuCategoriesUrl', 'Changes the menu categories api url', function(){
     var file = fs.readFileSync('./build/menu-categories/index.html', 'utf-8');
-    file = file.replace(/http:\/\/localhost:3000/g, "http://magic.goodybag.com");
+    file = file.replace(/http:\/\/localhost:3000/g, "http://magic.india.goodybag.com");
     fs.writeFileSync('./build/menu-categories/index.html', file);
     return true;
   });
