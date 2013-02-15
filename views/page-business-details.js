@@ -27,7 +27,6 @@ define(function(require){
     className: 'page page-business-details'
 
   , initialize: function(options){
-    console.log("initializing");
       this.business = {
         id: options.id
       };
@@ -61,7 +60,6 @@ define(function(require){
         }
       });
 
-console.log("business change page subscriber made!");
       pubsub.publish(channels.app.changePage.business, this.business);
       this.changePage(this.currentPage, { business: this.business, page: 0 });
 

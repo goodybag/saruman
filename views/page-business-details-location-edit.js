@@ -27,6 +27,7 @@ define(function(require){
       'focus input[type="time"]':         'onTimeFocus'
     , 'change .hour-action > input':      'onRadioSelect'
     , 'submit #location-details-form':    'onFormSubmit'
+    , 'click .form-actions > .cancel':    'onFormCancel'
     }
 
   , initialize: function(options){
@@ -36,9 +37,10 @@ define(function(require){
       this.location = options.location;
       this.parent   = options.parent;
       this.create   = options.create;
-console.log(options);
+      this.isNew    = options.isNew;
+      console.log("Location Options", options, options.location, options.location ? options.location.id : '');
+
       if (options.locationId){
-          console.log("fetch location");
         if (this.location && this.location.id !== options.locationId){
           this.location = { id: options.locationId };
           this.fetchLocation();
@@ -51,9 +53,14 @@ console.log(options);
       }
 
       pubsub.subscribe(channels.business.changePage.location, function(channel, data){
+        // Reset previous state
+        this_.create = null;
+        this_.isNew = null;
+
         if (data.business) this_.business = data.business;
         if (data.location) this_.location = data.location;
         if (data.create)   this_.create   = data.create;
+        if (data.isNew)    this_.isNew    = data.isNew;
 
         if (data.locationId){
           this_.location = { id: data.locationId };
@@ -113,6 +120,28 @@ console.log(options);
       }
 
       return this;
+    }
+
+  , onFormCancel: function(e){
+      e.preventDefault();
+
+      var this_ = this;
+
+      if (this.isNew){
+        api.locations.delete(this.location.id, function(error){
+          if (error) alert(error);
+
+          utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
+          pubsub.publish(channels.business.changePage.locations, {
+            pageNum: 1
+          });
+        });
+      } else {
+        utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
+        pubsub.publish(channels.business.changePage.locations, {
+          pageNum: 1
+        });
+      }
     }
 
   , onFormSubmit: function(e){
