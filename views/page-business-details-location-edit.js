@@ -53,9 +53,14 @@ define(function(require){
       }
 
       pubsub.subscribe(channels.business.changePage.location, function(channel, data){
+        // Reset previous state
+        this_.create = null;
+        this_.isNew = null;
+
         if (data.business) this_.business = data.business;
         if (data.location) this_.location = data.location;
         if (data.create)   this_.create   = data.create;
+        if (data.isNew)    this_.isNew    = data.isNew;
 
         if (data.locationId){
           this_.location = { id: data.locationId };
