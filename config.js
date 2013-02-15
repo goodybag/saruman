@@ -50,7 +50,7 @@ define(function(require){
     }
 
   , prod: {
-      apiUrl: 'http://magic.india.goodybag.com/'
+      apiUrl: 'http://magic.goodybag.com/'
     }
   };
 
