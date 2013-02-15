@@ -223,7 +223,7 @@
         });
       });
 
-      $.getJSON(base+'/businesses/'+businessId+'/productCategories', function(data){
+      $.getJSON(base+'/businesses/'+businessId+'/product-categories', function(data){
         var $html = $(Handlebars.templates['category-row'](data));
         makeCategoryEditable($html);
         $(".menu-categories-table").append($html);
@@ -311,7 +311,7 @@
 
       function updateCategory(id, data, callback){
         $.ajax({
-          url: base+'/productCategories/' + id
+          url: base+'/product-categories/' + id
         , type: 'PUT'
         , data: data
         , dataType: 'json'
@@ -327,7 +327,7 @@
 
       function createCategory(data, callback){
         $.ajax({
-          url: base+'/productCategories'
+          url: base+'/product-categories'
         , type: 'POST'
         , data: data
         , dataType: 'json'
@@ -343,7 +343,7 @@
 
       function deleteCategory(id, callback){
         $.ajax({
-          url: base+'/productCategories/'+id
+          url: base+'/product-categories/'+id
         , type: 'DELETE'
         , dataType: 'json'
         , xhrFields: {
