@@ -3,6 +3,7 @@ define(function(require){
     Page              = require('./page')
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
+  , config            = require('../config')
   , utils             = require('../lib/utils')
   , channels          = require('../lib/channels')
   , Paginator         = require('../lib/paginator')
@@ -115,11 +116,14 @@ define(function(require){
     }
 
   , onAddLocationClick: function(e){
-      utils.history.navigate('businesses/' + this.business.id + '/locations/create')
+      var location = utils.clone(config.defaults.location), this_ = this;
+      location.businessId = this.business.id;
+      api.locations.create(location, function(error, result){
+        if (error) return alert(error);
 
-      pubsub.publish(channels.business.changePage.location, {
-        create: true
-      , parent: this
+        pubsub.publish(channels.app.changePage.business, { id: this_.business.id, page: 'location' });
+        pubsub.publish(channels.business.changePage.location, { locationId: result.id, location: location, isNew: true });
+        utils.history.navigate('businesses/' + this_.business.id + '/locations/' + result.id);
       });
     }
   });
