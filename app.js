@@ -46,14 +46,6 @@ define(function(require){
 
     , changePage: function(page, options){
         app.appView.changePage(page, options);
-
-        // The history setting is very hacky :/
-
-        // if (page === "businesses" && typeof options.page !== "undefined")
-        //   page += "/page/" + options.page;
-
-        // In most cases the page name corresponds to the route
-        // Backbone.history.navigate(page);
       }
 
     , router: new AppRouter()
