@@ -32,6 +32,8 @@ define(function(require){
       , 'Vietnamese'
       ]
 
+    , groups: ['admin', 'sales', 'cashier', 'manager', 'consumer', 'tapin-station']
+
     , defaults: {
         location: {
           name:     'Location 1'
