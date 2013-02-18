@@ -11,6 +11,7 @@ define(function(require){
 
   return utils.View.extend({
     className:  'location'
+
   , tagName:    'section'
 
   , events: {

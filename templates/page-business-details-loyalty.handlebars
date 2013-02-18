@@ -1,0 +1,47 @@
+<div class="errors">
+
+</div>
+
+{{#if reward}}
+{{#if regularPunchesRequired}}
+{{#if requiredItem}}
+<p class="lead resulting-sentence" id="resulting-sentence">{{reward}} after you buy {{regularPunchesRequired}} {{requiredItem}}.</p>
+{{/if}}
+{{/if}}
+{{/if}}
+
+<form id="business-details-form" class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="loyalty-required-item">Required Item</label>
+    <div class="controls">
+      <input class="span5" type="text" id="loyalty-required-item" value="{{requiredItem}}" placeholder="e.g. Tacos">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="loyalty-reward">Reward</label>
+    <div class="controls">
+      <input class="span5" type="text" id="loyalty-reward" value="{{reward}}" placeholder="e.g. Burrito">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="loyalty-regular-punches-required">Punches Required</label>
+    <div class="controls">
+      <input class="span5" type="text" id="loyalty-regular-punches-required" value="{{regularPunchesRequired}}" placeholder="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="loyalty-elite-punches-required">Elite Punches Required</label>
+    <div class="controls">
+      <input class="span5" type="text" id="loyalty-elite-punches-required" value="{{elitePunchesRequired}}" placeholder="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="loyalty-punches-required-to-become-elite">Punches Until Elite</label>
+    <div class="controls">
+      <input class="span5" type="text" id="loyalty-punches-required-to-become-elite" value="{{punchesRequiredToBecomeElite}}" placeholder="">
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Save changes</button>
+  </div>
+</form>

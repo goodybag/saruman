@@ -5,11 +5,13 @@ define(function(require){
   , api               = require('../lib/api')
   , channels          = require('../lib/channels')
 
-  , template          = require('hbt!./../templates/page-business-details-main')
+  , template          = require('hbt!./../templates/page-business-details-loyalty')
   ;
 
   return Page.extend({
     className: 'page page-business-details'
+
+  , name: 'Loyalty'
 
   , events: {
       'submit #business-details-form': 'onSubmit'
@@ -20,11 +22,39 @@ define(function(require){
 
       options = options || {};
 
-      this.business = options.business;
+      this.businessId = options.businessId;
+      this.business   = options.business;
+      this.loyalty    = options.loyalty;
+    }
+
+  , onShow: function(options){
+      options = options || {};
+console.log("onshow", options);
+      this.businessId = options.businessId;
+      this.business   = options.business;
+      this.loyalty    = options.loyalty;
+
+      this.fetchLoyalty();
+    }
+
+  , fetchLoyalty: function(){
+      if (this.business == null || this.isFetchingLoyalty) return;
+      this.isFetchingLoyalty = true;
+console.log('fetching loyalty');
+      var this_ = this;
+
+      api.businesses.loyalty.get(this.business ? this.business.id : this.businessId, function(error, loyalty){
+        this.isFetchingLoyalty = false;
+        if (error) console.error(error);
+console.log(loyalty);
+        this_.loyalty = loyalty;
+        this_.render();
+      });
     }
 
   , render: function(){
-      this.$el.html(template(this.business || {}));
+    console.log("rendering with", this.loyalty);
+      this.$el.html(template(this.loyalty || {}));
       return this;
     }
 

@@ -19,6 +19,8 @@ define(function(require){
   return Page.extend({
     className: 'page page-business-details-locations'
 
+  , name: 'Locations'
+
   , events: {
       'click .add-location': 'onAddLocationClick'
     }
