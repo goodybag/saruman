@@ -1,0 +1,32 @@
+<td class="id">
+  {{id}}
+</td>
+<td class="email">
+  <input type="email" id="user-{{id}}-email">
+</td>
+<td class="password">
+  <input type="password" id="user-{{id}}-password">
+</td>
+<td class="singly-id">
+  <input type="text" id="user-{{id}}-singlyId">
+</td>
+<td class="singly-access-token">
+  <input type="text" id="user-{{id}}-singlyAccessToken">
+</td>
+<td class="groups">
+  <select name="groups" id="user-{{id}}-groups">
+  {{#each groups}}
+    <option value="{{this.id}}">{{this.name}}</option>
+  {{/each}}
+  </select>
+</td>
+<td class="actions">
+  <div class="btn-group">
+    <button class="btn btn-danger">
+      <i class="icon-trash icon-group"></i>
+    </button>
+    <button class="btn btn-danger">
+      <i class="icon-trash icon-large"></i>
+    </button>
+  </div>
+</td>

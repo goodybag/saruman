@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <div class="page-header">
+      <h1><a href="#/accounts">Accounts</a><span class="accounts-page-name">{{#if page}} <i class="icon-double-angle-right"></i> <span class="name">{{page}}</span>{{/if}}</span></h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span3" id="accounts-nav">
+      <ul class="nav nav-tabs nav-stacked">
+        <li class="users">
+          <a href="/#/accounts/{{#if isAdmin}}users{{else}}tapin-stations{{/if}}">Main Info</a>
+          <ul class="sub-nav">
+            <li class="cashiers">
+              <a href="/#/accounts/cashiers">Cashiers</a>
+            </li>
+          {{#if isAdmin}}
+            <li class="consumers">
+              <a href="/#/accounts/consumers">Consumers</a>
+            </li>
+          {{/if}}
+            <li class="managers">
+              <a href="/#/accounts/managers">Managers</a>
+            </li>
+          {{#if isAdmin}}
+            <li class="sales">
+              <a href="/#/accounts/sales">Sales</a>
+            </li>
+          {{/if}}
+            <li class="tapin-stations">
+              <a href="/#/accounts/tapin-stations">Tapin Stations</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="span9">
+      <div id="accounts-pages">
+
+      </div>
+    </div>
+  </div>
+</div>
