@@ -1,11 +1,12 @@
 define(function(require){
   var
     Page              = require('./page')
-  , pubsub            = require('../lib/pubsub')
+  , utils             = require('../lib/utils')
   , api               = require('../lib/api')
-  , channels          = require('../lib/channels')
+  , troller           = require('../lib/troller')
 
   , template          = require('hbt!./../templates/page-business-details-loyalty')
+  , resultTemplate    = require('hbt!./../templates/loyalty-result')
   ;
 
   return Page.extend({
@@ -14,7 +15,8 @@ define(function(require){
   , name: 'Loyalty'
 
   , events: {
-      'submit #business-details-form': 'onSubmit'
+      'submit #loyalty-form':  'onSubmit'
+    , 'keyup .show-in-result':          'onShowInResultKeyup'
     }
 
   , initialize: function(options){
@@ -29,7 +31,6 @@ define(function(require){
 
   , onShow: function(options){
       options = options || {};
-console.log("onshow", options);
       this.businessId = options.businessId;
       this.business   = options.business;
       this.loyalty    = options.loyalty;
@@ -40,13 +41,11 @@ console.log("onshow", options);
   , fetchLoyalty: function(){
       if (this.business == null || this.isFetchingLoyalty) return;
       this.isFetchingLoyalty = true;
-console.log('fetching loyalty');
       var this_ = this;
 
       api.businesses.loyalty.get(this.business ? this.business.id : this.businessId, function(error, loyalty){
         this.isFetchingLoyalty = false;
         if (error) console.error(error);
-console.log(loyalty);
         this_.loyalty = loyalty;
         this_.render();
       });
@@ -55,29 +54,45 @@ console.log(loyalty);
   , render: function(){
     console.log("rendering with", this.loyalty);
       this.$el.html(template(this.loyalty || {}));
+      this.renderResults();
       return this;
+    }
+
+  , renderResults: function(){
+      this.$el.find('#loyalty-result').html(resultTemplate(this.loyalty || {}));
+      return this;
+    }
+
+  , updateModelWithFormData: function(){
+      var $el;
+      for (var key in this.loyalty){
+        if (($el = this.$el.find('#loyalty-' + key)).length > 0)
+          this.loyalty[key] = $el.val();
+      }
+      return this;
+    }
+
+  , onShowInResultKeyup: function(e){
+      this.updateModelWithFormData();
+      this.renderResults();
     }
 
   , onSubmit: function(e){
       e.preventDefault();
 
-      var data = {
-        name:               this.$el.find('#business-name').val()
-      , businessCategory:   this.$el.find('#business-category').val()
-      , url:                this.$el.find('#business-url').val()
-      };
+      this.updateModelWithFormData();
 
       var this_ = this;
 
-      api.businesses.update(this.business.id, data, function(error){
+      var loyalty = utils.clone(this.loyalty);
+      delete loyalty.id;
+      delete loyalty.businessId;
+
+      api.businesses.loyalty.update(this.business.id, loyalty, function(error){
         if (error) return console.error(error);
 
-        // Copy over business object
-        for (var key in data){
-          this_.business[key] = data[key];
-        }
-
-        this_.parentView.render();
+        troller.business.changePage('main');
+        utils.history.navigate('/businesses/' + this_.business.id);
       });
     }
   });

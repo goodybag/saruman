@@ -3,8 +3,7 @@ define(function(require){
     Backbone  = require('backbone')
   , $         = require('jquery')
   , api       = require('../lib/api')
-  , pubsub    = require('../lib/pubsub')
-  , channels  = require('../lib/channels')
+  , troller   = require('../lib/troller')
 
   , Page      = require('./page')
 
@@ -28,51 +27,40 @@ define(function(require){
     className: 'page page-business-details'
 
   , initialize: function(options){
+      var this_ = this;
+
+      troller.add('business.changePage', function(page, options){
+        console.log("change to page", page, options);
+        this_.changePage(page, options);
+      });
+
       this.business = {
         id: options.id
       };
-
-      this.hasLoadOnced = false;
-
-      this.currentPage = options.page || 'main';
 
       this.children = {
         nav:    new Views.Nav({ business: this.business })
       , pages:  new Views.PageManager({ Pages: Pages, parentView: this })
       };
 
-      var this_ = this;
+      this.hasLoadOnced = false;
 
-      // Listen for when we go to this section
-      pubsub.subscribe(channels.app.changePage.business, function(channel, data){
-        console.log(channel, data);
+      this.currentPage = options.page || 'main';
 
-        // Update the businessId
-        this_.business.id = data.id;
-
-        // Change page
-        if (data.page && this_.hasLoadedOnce) this_.changePage(data.page);
-
-        // Get new business
-        if ((this_.business && this_.business.id != data.id) || !this_.hasLoadedOnce) this_.fetchBusiness();
-      });
-
-      // Listen for page changes
-      pubsub.subscribe(channels.business.changePage.base, function(channel, data){
-        var page = channel.substring(channel.lastIndexOf('.') + 1);
-        if (this.currentPage !== page){
-          data = data || {};
-          data.business = this_.business;
-          data.businessId = this_.business.id;
-          console.log(channel, data);
-          this_.changePage(page, data);
-        }
-      });
-
-      pubsub.publish(channels.app.changePage.business, this.business);
       this.changePage(this.currentPage, { business: this.business, page: 0 });
 
       return this;
+    }
+
+  , onShow: function(options){
+      // Update the businessId
+      this.business.id = options.id;
+
+      // Change page
+      if (options.page && this.hasLoadedOnce) this.changePage(options.page);
+
+      // Get new business
+      if ((this.business && this.business.id != options.id) || !this.hasLoadedOnce) this.fetchBusiness();
     }
 
   , fetchBusiness: function(){
@@ -124,6 +112,11 @@ define(function(require){
     }
 
   , changePage: function(page, options){
+    console.log("changing to", page);
+      options = options || {};
+      options.business = this.business;
+      options.businessId = this.business.id;
+
       this.children.pages.changePage(page, options);
       this.currentPage = page;
 
@@ -133,7 +126,7 @@ define(function(require){
 
       // Change page name
       var current = this.children.pages.pages[this.currentPage];
-      console.log(current);
+
       if (current.name)
         this.$el.find('.business-page-name > .name').css('display', 'inline').html(current.name);
       else

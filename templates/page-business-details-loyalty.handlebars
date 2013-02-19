@@ -2,31 +2,25 @@
 
 </div>
 
-{{#if reward}}
-{{#if regularPunchesRequired}}
-{{#if requiredItem}}
-<p class="lead resulting-sentence" id="resulting-sentence">{{reward}} after you buy {{regularPunchesRequired}} {{requiredItem}}.</p>
-{{/if}}
-{{/if}}
-{{/if}}
+<div id="loyalty-result"></div>
 
-<form id="business-details-form" class="form-horizontal">
+<form id="loyalty-form" class="form-horizontal">
   <div class="control-group">
-    <label class="control-label" for="loyalty-required-item">Required Item</label>
+    <label class="control-label" for="loyalty-requiredItem">Required Item</label>
     <div class="controls">
-      <input class="span5" type="text" id="loyalty-required-item" value="{{requiredItem}}" placeholder="e.g. Tacos">
+      <input class="span5 show-in-result" type="text" id="loyalty-requiredItem" value="{{requiredItem}}" placeholder="e.g. Tacos">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="loyalty-reward">Reward</label>
     <div class="controls">
-      <input class="span5" type="text" id="loyalty-reward" value="{{reward}}" placeholder="e.g. Burrito">
+      <input class="span5 show-in-result" type="text" id="loyalty-reward" value="{{reward}}" placeholder="e.g. Burrito">
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="loyalty-regular-punches-required">Punches Required</label>
+    <label class="control-label" for="loyalty-regularPunchesRequired">Punches Required</label>
     <div class="controls">
-      <input class="span5" type="text" id="loyalty-regular-punches-required" value="{{regularPunchesRequired}}" placeholder="">
+      <input class="span5 show-in-result" type="text" id="loyalty-regularPunchesRequired" value="{{regularPunchesRequired}}" placeholder="">
     </div>
   </div>
   <div class="control-group">

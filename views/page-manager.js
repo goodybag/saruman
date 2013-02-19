@@ -28,7 +28,7 @@ define(function(require){
     }
 
   , changePage: function(page, options){
-      if (this.current === page) return this;
+      // if (this.current === page) return this;
 
       if (!this.Pages[page]) return this;
 
