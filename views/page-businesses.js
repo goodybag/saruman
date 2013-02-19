@@ -6,6 +6,7 @@ define(function(require){
   , utils             = require('../lib/utils')
   , channels          = require('../lib/channels')
   , Paginator         = require('../lib/paginator')
+  , troller           = require('../lib/troller')
 
   , template          = require('hbt!./../templates/page-businesses')
   , businessItemTmpl  = require('hbt!./../templates/business-list-item')
@@ -32,12 +33,7 @@ define(function(require){
 
       var this_ = this;
 
-      // Whenever we change to businesses, fetch a new list
-      pubsub.subscribe(channels.app.changePage.businesses, function(){
-        this_.fetchBusinesses();
-      });
-
-      pubsub.subscribe(channels.businesses.pagination, function(channel, page){
+      troller.add('businesses.setPage', function(page){
         this_.paginator.setPage(page - 1);
       });
 
@@ -50,10 +46,10 @@ define(function(require){
 
         this_.fetchBusinesses();
       });
+    }
 
-      // Change-page subscription made after the message was published
-      // So fetch on init as well
-      this_.fetchBusinesses();
+  , onShow: function(){
+      this.fetchBusinesses();
     }
 
   , fetchBusinesses: function(){

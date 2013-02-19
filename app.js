@@ -5,6 +5,7 @@ define(function(require){
   , pubsub    = require('lib/pubsub')
   , channels  = require('lib/channels')
   , utils     = require('lib/utils')
+  , troller   = require('lib/troller')
 
   , user      = require('models/user')
   , AppView   = require('views/app')
@@ -21,31 +22,27 @@ define(function(require){
 
           $(document.body).append(app.appView.$el);
 
-          // Handle change page requests
-          pubsub.subscribe(channels.app.changePage.base, function(channel, data){
-            // Parse out the page from the sub-channel
-            var page = channel.substring(channel.lastIndexOf('.') + 1);
-
-            user.isLoggedIn(function(error, loggedIn){
-              if (error) return console.log(error);
-              if (!loggedIn) return app.changePage("login");
-
-              if (page === "login") page = "dashboard";
-
-              // Make sure to apply view arguments
-              app.changePage(page, data);
-            });
-          });
-
-          pubsub.subscribe(channels.logout, app.logout);
-
           utils.history = Backbone.history;
           utils.history.start();
         });
       }
 
-    , changePage: function(page, options){
-        app.appView.changePage(page, options);
+    , changePage: function(page, options, callback){
+        if (typeof options === "function"){
+          callback = options;
+          options = {};
+        }
+        user.isLoggedIn(function(error, loggedIn){
+          if (error) return console.log(error), callback(error);
+          if (!loggedIn) return app.changePage("login");
+
+          if (page === "login") page = "dashboard";
+
+          // Make sure to apply view arguments
+          app.appView.changePage(page, options);
+
+          if (callback) callback(null, app.appView.children.pages.pages[page]);
+        });
       }
 
     , router: new AppRouter()
@@ -56,6 +53,11 @@ define(function(require){
       }
     }
   ;
+
+  troller.add('app.init',       app.init);
+  troller.add('app.changePage', app.changePage);
+  troller.add('app.logout',     app.logout);
+
 
   return app;
 });

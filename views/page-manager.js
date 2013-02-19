@@ -28,7 +28,7 @@ define(function(require){
     }
 
   , changePage: function(page, options){
-      if (this.current === page) return this;
+      // if (this.current === page) return this;
 
       if (!this.Pages[page]) return this;
 
@@ -38,7 +38,7 @@ define(function(require){
           this.Pages[page].prototype.parentView = this.parentView;
 
         this.pages[page] = new this.Pages[page](options);
-        this.pages[page].hide();
+        this.pages[page].hide(options);
 
         // Set initial display to none so we can switch them out
         this.pages[page].render();
@@ -50,7 +50,7 @@ define(function(require){
       if (this.current) this.pages[this.current].hide();
 
       // Now show the new page
-      this.pages[page].show();
+      this.pages[page].show(options);
       this.current = page;
 
       return this;
