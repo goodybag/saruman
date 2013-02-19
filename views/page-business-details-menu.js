@@ -4,8 +4,7 @@ define(function(require){
   , Page      = require('./page')
   , config    = require('../config')
   , api       = require('../lib/api')
-  , pubsub    = require('../lib/pubsub')
-  , channels  = require('../lib/channels')
+  , troller   = require('../lib/troller')
 
   , template  = require('hbt!../templates/page-business-details-menu')
   ;
@@ -25,12 +24,11 @@ define(function(require){
 
       this.business = options.business;
 
-      pubsub.subscribe(channels.business.changePage.menuDetails, function(channel, data){
-        this_.tags = this_.business.tags;
-        this_.render();
-      });
-
       return this;
+    }
+
+  , onShow: function(){
+      this.tags = this.business.tags;
     }
 
   , render: function(){
@@ -90,18 +88,22 @@ define(function(require){
       });
 
       // Reset local tags collection to reflect changes
+      console.log(this.tags)
       this.tags = this.tags.map(function(t){
         t.checked = this_.business.tags.indexOf(t.name) > -1;
         return t;
       });
 
-      api.businesses.update(this.business.id, this.business, function(error){
+      var data = {
+        menuDescription: this.business.menuDescription
+      , tags: this.business.tags
+      };
+
+      api.businesses.update(this.business.id, data, function(error){
         if (error) return console.error(error);
 
         utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
-        pubsub.publish(channels.business.changePage.locations, {
-          pageNum: 1
-        });
+        troller.business.changePage('locations', { pageNum: 1 });
       });
     }
   });

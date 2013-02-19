@@ -1,11 +1,10 @@
 define(function(require){
   var
     Page              = require('./page')
-  , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
   , config            = require('../config')
   , utils             = require('../lib/utils')
-  , channels          = require('../lib/channels')
+  , troller           = require('../lib/troller')
   , Paginator         = require('../lib/paginator')
 
   , template          = require('hbt!./../templates/page-business-details-locations')
@@ -18,6 +17,8 @@ define(function(require){
 
   return Page.extend({
     className: 'page page-business-details-locations'
+
+  , name: 'Locations'
 
   , events: {
       'click .add-location': 'onAddLocationClick'
@@ -39,13 +40,6 @@ define(function(require){
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
-      // Fetch locations when this view is requested
-      pubsub.subscribe(channels.business.changePage.locations, function(channel, data){
-        this_.currentPage = data.pageNum > 0 ? (data.pageNum - 1) : this_.currentPage;
-        this_.paginator.setPage(this_.currentPage);
-        this_.fetchLocations();
-      });
-
       // When the paginator changes page
       this.paginator.on('change:page', function(){
         if (this_.currentPage === this_.paginator.getPage()) return;
@@ -61,11 +55,12 @@ define(function(require){
       this.paginator.on('change:total', function(){
         this_.$el.find('.count').html(this_.paginator.total);
       });
+    }
 
-      // Fetch locations when this view is instantiated
-      pubsub.publish(channels.business.changePage.locations, {
-        page: this.currentPage
-      });
+  , onShow: function(options){
+      this.currentPage = options.pageNum > 0 ? (options.pageNum - 1) : this.currentPage;
+      this.paginator.setPage(this.currentPage);
+      this.fetchLocations();
     }
 
   , fetchLocations: function(){
@@ -121,9 +116,10 @@ define(function(require){
       api.locations.create(location, function(error, result){
         if (error) return alert(error);
 
-        pubsub.publish(channels.app.changePage.business, { id: this_.business.id, page: 'location' });
-        pubsub.publish(channels.business.changePage.location, { locationId: result.id, location: location, isNew: true });
-        utils.history.navigate('businesses/' + this_.business.id + '/locations/' + result.id);
+        location.id = result.id;
+
+        troller.business.changePage('location', { locationId: result.id, location: location, isNew: true });
+        utils.history.navigate('/businesses/' + this_.business.id + '/locations/create');
       });
     }
   });

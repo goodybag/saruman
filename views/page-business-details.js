@@ -3,8 +3,7 @@ define(function(require){
     Backbone  = require('backbone')
   , $         = require('jquery')
   , api       = require('../lib/api')
-  , pubsub    = require('../lib/pubsub')
-  , channels  = require('../lib/channels')
+  , troller   = require('../lib/troller')
 
   , Page      = require('./page')
 
@@ -17,6 +16,7 @@ define(function(require){
 
   , Pages = {
       main:             require('./page-business-details-main')
+    , loyalty:          require('./page-business-details-loyalty')
     , locations:        require('./page-business-details-locations')
     , location:         require('./page-business-details-location-edit')
     , 'menu-details':   require('./page-business-details-menu')
@@ -27,49 +27,48 @@ define(function(require){
     className: 'page page-business-details'
 
   , initialize: function(options){
+      var this_ = this;
+
+      troller.add('business.changePage', function(page, options){
+        console.log("change to page", page, options);
+        this_.changePage(page, options);
+      });
+
       this.business = {
         id: options.id
       };
-
-      this.currentPage = options.page || 'main';
 
       this.children = {
         nav:    new Views.Nav({ business: this.business })
       , pages:  new Views.PageManager({ Pages: Pages, parentView: this })
       };
 
-      var this_ = this;
+      this.hasLoadOnced = false;
 
-      // Listen for when we go to this section
-      pubsub.subscribe(channels.app.changePage.business, function(channel, data){
-        // Update the businessId
-        this_.business.id = data.id;
+      this.currentPage = options.page || 'main';
 
-        // Get new business
-        this_.fetchBusiness();
-      });
-
-      // Listen for page changes
-      pubsub.subscribe(channels.business.changePage.base, function(channel, data){
-        var page = channel.substring(channel.lastIndexOf('.') + 1);
-        if (this.currentPage !== page){
-          data = data || {};
-          data.business = this_.business;
-          console.log(channel, data);
-          this_.changePage(page, data);
-        }
-      });
-
-      pubsub.publish(channels.app.changePage.business, this.business);
       this.changePage(this.currentPage, { business: this.business, page: 0 });
 
       return this;
+    }
+
+  , onShow: function(options){
+      // Update the businessId
+      this.business.id = options.id;
+
+      // Change page
+      if (options.page && this.hasLoadedOnce) this.changePage(options.page);
+
+      // Get new business
+      if ((this.business && this.business.id != options.id) || !this.hasLoadedOnce) this.fetchBusiness();
     }
 
   , fetchBusiness: function(){
       var this_ = this;
       api.businesses.get(this.business.id, function(error, business){
         if (error) return console.error(error);
+
+        this_.hasLoadedOnce = true;
 
         // Mix into object so it reflects across all objects
         for (var key in business){
@@ -80,6 +79,11 @@ define(function(require){
         delete this_.business.isGB;
         delete this_.business.isVerified;
 
+        // Alert the current view that the business has changed
+        console.log(this_.children.pages.current)
+        if (this_.children.pages.current.onBusinessChange)
+          this_.children.pages.current.onBusinessChange();
+
         // Re-render the current page view with new business
         this_.render();
         this_.delegateEvents();
@@ -87,7 +91,11 @@ define(function(require){
     }
 
   , render: function(){
-      this.$el.html(template(this.business));
+      this.$el.html(template({
+        business: this.business || {}
+      , page: this.children.pages.pages[this.currentPage].name
+      }));
+
       this.children.nav.render();
       this.children.pages.renderCurrent();
       this.$el.find('#business-details-nav').append(this.children.nav.$el);
@@ -97,17 +105,33 @@ define(function(require){
       this.children.nav.$el.find('.' + this.currentPage).addClass('active');
 
       // Delegate events to current Page
-      console.log("rendered", this.children.pages.current);
+      console.log("rendered", this.currentPage);
       // this.children.pages.pages[this.children.pages.current].delegateEvents();
 
       return this;
     }
 
   , changePage: function(page, options){
+    console.log("changing to", page);
+      options = options || {};
+      options.business = this.business;
+      options.businessId = this.business.id;
+
       this.children.pages.changePage(page, options);
       this.currentPage = page;
+
       // Highlight menu
+      this.children.nav.$el.find('li').removeClass('active');
       this.children.nav.$el.find('.' + this.currentPage).addClass('active');
+
+      // Change page name
+      var current = this.children.pages.pages[this.currentPage];
+
+      if (current.name)
+        this.$el.find('.business-page-name > .name').css('display', 'inline').html(current.name);
+      else
+        this.$el.find('.business-page-name > .name').css('display', 'none');
+
       return this;
     }
   });

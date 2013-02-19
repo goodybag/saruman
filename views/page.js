@@ -11,13 +11,15 @@ define(function(require){
       return this;
     }
 
-  , show: function(){
+  , show: function(options){
       this.$el.css('display', 'block');
+      if (this.onShow) this.onShow(options);
       return this;
     }
 
-  , hide: function(){
+  , hide: function(options){
       this.$el.css('display', 'none');
+      if (this.onHide) this.onHide(options);
       return this;
     }
   });

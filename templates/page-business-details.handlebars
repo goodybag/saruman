@@ -7,7 +7,7 @@
 <div class="container">
   <div class="row">
     <div class="page-header">
-      <h1><a href="#/businesses">Businesses List</a> <i class="icon-double-angle-right"></i> Business Details</h1>
+      <h1><a href="#/businesses">Businesses List</a> <i class="icon-double-angle-right"></i> Business Details <span class="business-page-name">{{#if page}}<i class="icon-double-angle-right"></i> <span class="name">{{page}}</span>{{/if}}</span></h1>
     </div>
   </div>
   <div class="row">
@@ -16,7 +16,7 @@
     </div>
     <div class="span9">
       <h3 class="business-name-url">
-        {{name}}{{#if url}} - <a href="{{url}}" target="_blank">{{url}}</a>{{/if}}
+        {{business.name}}{{#if business.url}} - <a href="{{business.url}}" target="_blank">{{business.url}}</a>{{/if}}
       </h3>
 
       <div id="business-details-pages">
