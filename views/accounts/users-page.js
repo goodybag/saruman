@@ -33,7 +33,7 @@ define(function(require){
 
       var this_ = this;
 
-      troller.add('businesses.setPage', function(page){
+      troller.add('users.setPage', function(page){
         this_.paginator.setPage(page - 1);
       });
 
@@ -42,17 +42,17 @@ define(function(require){
       this.paginator.on('change:page', function(){
         if (this_.currentPage === this_.paginator.getPage()) return;
         this_.currentPage = this_.paginator.getPage();
-        utils.history.navigate('businesses/page/' + (this_.currentPage + 1));
+        utils.history.navigate('/accounts/users/page/' + (this_.currentPage + 1));
 
-        this_.fetchBusinesses();
+        this_.fetchUsers();
       });
     }
 
   , onShow: function(){
-      this.fetchBusinesses();
+      this.fetchUsers();
     }
 
-  , fetchBusinesses: function(){
+  , fetchUsers: function(){
       var this_ = this;
       api.businesses.list(this.paginator.getCurrent(), function(error, businesses, meta){
         if (error) return console.error(error);
