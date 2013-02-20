@@ -3,14 +3,14 @@ define(function(require){
     utils    = require('../lib/utils')
 
   , api      = require('../lib/api')
-  , pubsub   = require('../lib/pubsub')
-  , channels = require('../lib/channels')
+  , troller  = require('../lib/troller')
 
   , template = require('hbt!../templates/page-business-details-location')
   ;
 
   return utils.View.extend({
     className:  'location'
+
   , tagName:    'section'
 
   , events: {
@@ -31,7 +31,7 @@ define(function(require){
 
   , onClickEdit: function(e){
       utils.history.navigate('businesses/' + this.location.businessId + '/locations/' + this.location.id);
-      pubsub.publish(channels.business.changePage.location, {
+      troller.business.changePage('location', {
         location: this.location
       , parent: this
       });

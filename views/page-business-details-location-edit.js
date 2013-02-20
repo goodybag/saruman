@@ -3,8 +3,7 @@ define(function(require){
     utils     = require('../lib/utils')
   , Page      = require('./page')
   , api       = require('../lib/api')
-  , pubsub    = require('../lib/pubsub')
-  , channels  = require('../lib/channels')
+  , troller   = require('../lib/troller')
 
   , template  = require('hbt!../templates/page-business-details-location-edit')
 
@@ -38,13 +37,36 @@ define(function(require){
       this.parent   = options.parent;
       this.create   = options.create;
       this.isNew    = options.isNew;
-      console.log("Location Options", options, options.location, options.location ? options.location.id : '');
 
-      if (options.locationId){
-        if (this.location && this.location.id !== options.locationId){
-          this.location = { id: options.locationId };
-          this.fetchLocation();
-        }
+      // if (options.locationId){
+      //   if ((this.location && this.location.id !== options.locationId) || !this.location){
+      //     this.location = { id: options.locationId };
+      //     this.fetchLocation();
+      //   }
+      // }
+
+      if (this.create || !this.location){
+        this.create = true;
+        this.location = {};
+      }
+
+      return this;
+    }
+
+  , onShow: function(data){
+      // Reset previous state
+      this.create = null;
+      this.isNew = null;
+
+      if (data.business) this.business = data.business;
+      if (data.location) this.location = data.location;
+      if (data.create)   this.create   = data.create;
+      if (data.isNew)    this.isNew    = data.isNew;
+
+      console.log(data);
+      if (data.locationId){
+        this.location = { id: data.locationId };
+        this.fetchLocation();
       }
 
       if (this.create || !this.location){
@@ -52,30 +74,7 @@ define(function(require){
         this.location = {};
       }
 
-      pubsub.subscribe(channels.business.changePage.location, function(channel, data){
-        // Reset previous state
-        this_.create = null;
-        this_.isNew = null;
-
-        if (data.business) this_.business = data.business;
-        if (data.location) this_.location = data.location;
-        if (data.create)   this_.create   = data.create;
-        if (data.isNew)    this_.isNew    = data.isNew;
-
-        if (data.locationId){
-          this_.location = { id: data.locationId };
-          this_.fetchLocation();
-        }
-
-        if (this_.create || !this_.location){
-          this_.create = true;
-          this_.location = {};
-        }
-
-        this_.render();
-      });
-
-      return this;
+      this.render();
     }
 
   , fetchLocation: function(){
@@ -132,15 +131,11 @@ define(function(require){
           if (error) alert(error);
 
           utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
-          pubsub.publish(channels.business.changePage.locations, {
-            pageNum: 1
-          });
+          troller.business.changePage('locations', { pageNum: 1 });
         });
       } else {
         utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
-        pubsub.publish(channels.business.changePage.locations, {
-          pageNum: 1
-        });
+        troller.business.changePage('locations', { pageNum: 1 });
       }
     }
 
@@ -225,9 +220,7 @@ define(function(require){
           if (error) return console.error(error);
 
           utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
-          pubsub.publish(channels.business.changePage.locations, {
-            pageNum: 1
-          });
+          troller.business.changePage('locations', { pageNum: 1 });
         });
       }
 
@@ -235,9 +228,7 @@ define(function(require){
         if (error) return console.error(error);
 
         utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
-        pubsub.publish(channels.business.changePage.locations, {
-          pageNum: 1
-        });
+        troller.business.changePage('locations', { pageNum: 1 });
       });
     }
 

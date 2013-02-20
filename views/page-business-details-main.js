@@ -18,11 +18,13 @@ define(function(require){
   , initialize: function(options){
       var this_ = this;
 
+      options = options || {};
+
       this.business = options.business;
     }
 
   , render: function(){
-      this.$el.html(template(this.business));
+      this.$el.html(template(this.business || {}));
       return this;
     }
 
