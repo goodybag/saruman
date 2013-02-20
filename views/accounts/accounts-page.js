@@ -80,9 +80,9 @@ define(function(require){
       var current = this.children.pages.pages[this.currentPage];
 
       if (current.name)
-        this.$el.find('.business-page-name > .name').css('display', 'inline').html(current.name);
+        this.$el.find('.page-name > .name').css('display', 'inline').html(current.name);
       else
-        this.$el.find('.business-page-name > .name').css('display', 'none');
+        this.$el.find('.page-name > .name').css('display', 'none');
 
       return this;
     }

@@ -12,12 +12,15 @@ define(function(require){
   , businessItemTmpl  = require('hbt!./../templates/business-list-item')
 
   , Views = {
-      Paginator       : require('./paginator')
+      Paginator       : require('../paginator')
+      UserItem        : require('./user-list-item')
     }
   ;
 
   return Page.extend({
     className: 'page page-businesses'
+
+  , name: 'Users'
 
   , initialize: function(options){
       this.template = template;
@@ -54,7 +57,7 @@ define(function(require){
 
   , fetchUsers: function(){
       var this_ = this;
-      api.businesses.list(this.paginator.getCurrent(), function(error, businesses, meta){
+      api.users.list(this.paginator.getCurrent(), function(error, businesses, meta){
         if (error) return console.error(error);
 
         this_.paginator.setTotal(meta.total);
@@ -65,47 +68,11 @@ define(function(require){
 
   , renderBusinesses: function(){
       var fragment = document.createDocumentFragment();
-      for (var i = 0, len = this.businesses.length; i < len; i++){
-        var html = businessItemTmpl(this.businesses[i]);
-        fragment.innerHTML += html;
+      for (var i = 0, len = this.users.length, view; i < len; i++){
+        fragment.append( new Views.UserItem(this.users[i]).render().$el[0] );
       }
 
-      this.$el.find('#businesses-list').html(fragment.innerHTML);
-     $('.is-verified', this.$el.find('#businesses-list')).click(function(){
-        if ($(this).hasClass('icon-check')) {
-          api.businesses.update(+$(this).attr('data-id'), {isVerified: false}, function(){});
-          $(this).removeClass('icon-check').addClass('icon-check-empty');
-          $(this).css('color', 'red');
-        } else if ($(this).hasClass('icon-check-empty')) {
-          api.businesses.update(+$(this).attr('data-id'), {isVerified: true}, function(){});
-          $(this).removeClass('icon-check-empty').addClass('icon-check');
-          $(this).css('color', 'green');
-        }
-
-        return false;
-      });
-     $('.is-flagged', this.$el.find('#businesses-list')).click(function(){
-      var $this = $(this);
-      bootbox.prompt("Enter in any notes<br/><h5>Current Notes:</h5><h6 style='color:grey;'>"+$this.attr('title')+"</h6>", "cancel", "confirm", function(result) {
-        if (result === null) return;
-        if (result === "") {
-          api.businesses.update(+$this.attr('data-id'), {comment: null, isflagged: false}, function(){});
-          $this.attr('title', "");
-          $this.css('color', 'grey');
-        } else {
-          api.businesses.update(+$this.attr('data-id'), {comment: result, isflagged: true}, function(){});
-          $this.attr('title', result);
-          $this.css('color', 'blue');
-        }
-      }, $this.attr('title'));
-      return false;
-     });
-
-      if (this.paginator.maxPages <= 1) return this;
-      this.children.paginatorTop.render()
-      this.children.paginatorBottom.render()
-      this.$el.find('#business-paginator-top').append(this.children.paginatorTop.$el);
-      this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
+      this.$el.find('.users-list').html(fragment);
 
       return this;
     }
