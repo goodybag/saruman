@@ -1,33 +1,34 @@
 define(function(require){
   var
-    Page              = require('./page')
-  , pubsub            = require('../lib/pubsub')
-  , api               = require('../lib/api')
-  , utils             = require('../lib/utils')
-  , channels          = require('../lib/channels')
-  , Paginator         = require('../lib/paginator')
-  , troller           = require('../lib/troller')
+    Page              = require('../page')
+  , api               = require('../../lib/api')
+  , utils             = require('../../lib/utils')
+  , Paginator         = require('../../lib/paginator')
+  , troller           = require('../../lib/troller')
 
-  , template          = require('hbt!./../templates/page-businesses')
-  , businessItemTmpl  = require('hbt!./../templates/business-list-item')
+  , template          = require('hbt!./../../templates/accounts/users-page')
 
   , Views = {
       Paginator       : require('../paginator')
-      UserItem        : require('./user-list-item')
+    , UserItem        : require('./user-list-item')
     }
   ;
 
   return Page.extend({
-    className: 'page page-businesses'
+    className: 'page page-users'
 
   , name: 'Users'
 
   , initialize: function(options){
       this.template = template;
 
+      options = options || {};
+
+      options.page = options.page || 1;
+
       this.currentPage = options.page - 1;
 
-      this.paginator = new Paginator({ page: options.page - 1, limit: 100 });
+      this.paginator = new Paginator({ page: this.currentPage, limit: 10 });
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
@@ -37,6 +38,7 @@ define(function(require){
       var this_ = this;
 
       troller.add('users.setPage', function(page){
+        console.log("setting to page", page);
         this_.paginator.setPage(page - 1);
       });
 
@@ -57,22 +59,59 @@ define(function(require){
 
   , fetchUsers: function(){
       var this_ = this;
-      api.users.list(this.paginator.getCurrent(), function(error, businesses, meta){
-        if (error) return console.error(error);
 
-        this_.paginator.setTotal(meta.total);
-        this_.businesses = businesses;
-        this_.renderBusinesses();
-      });
+      utils.parallel({
+        users: function(done){
+          api.users.list(this_.paginator.getCurrent(), function(error, users, meta){
+            if (error) return done(error);
+
+            this_.paginator.setTotal(meta.total);
+
+            return done(null, users);
+          });
+        }
+
+      , groups: function(done){
+          api.groups.list(function(error, groups){
+            if (error) return done(error);
+            return done(null, groups);
+          });
+        }
+      }, function(error, results){
+          if (error) return alert(error);
+
+          this_.users = results.users;
+          this_.groups = results.groups;
+
+          this_.renderUsers();
+        }
+      );
+
+      return this;
     }
 
-  , renderBusinesses: function(){
+  , renderUsers: function(users, callback){
+      if (typeof users === "function"){
+        callback = users;
+        users = [];
+      } else users = users || this.users || [];
+
       var fragment = document.createDocumentFragment();
-      for (var i = 0, len = this.users.length, view; i < len; i++){
-        fragment.append( new Views.UserItem(this.users[i]).render().$el[0] );
+      for (var i = 0, len = users.length, view; i < len; i++){
+        fragment.appendChild(
+          new Views.UserItem({
+            model:      users[i]
+          , allGroups:  this.groups
+          }).render().$el[0]
+        );
       }
 
-      this.$el.find('.users-list').html(fragment);
+      this.$el.find('#users-list').html(fragment);
+
+      this.children.paginatorTop.render();
+      this.children.paginatorBottom.render();
+
+      if (callback) callback();
 
       return this;
     }
@@ -80,14 +119,16 @@ define(function(require){
   , render: function(){
       this.$el.html(template());
 
+      this.renderUsers();
+console.log(this.paginator.maxPages, this.users);
       // Insert paginators
-      console.log(this.paginator);
-
       if (this.paginator.maxPages <= 1) return this;
-      this.children.paginatorTop.render()
-      this.children.paginatorBottom.render()
-      this.$el.find('#business-paginator-top').append(this.children.paginatorTop.$el);
-      this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
+      this.children.paginatorTop.render();
+      this.children.paginatorBottom.render();
+      console.log(this.$el.find('#users-paginator-top'))
+      this.$el.find('#users-paginator-top').append(this.children.paginatorTop.$el);
+      this.$el.find('#users-paginator-bottom').append(this.children.paginatorBottom.$el);
+
 
       return this;
     }

@@ -3,6 +3,8 @@ define(function(require){
     utils     = require('../../lib/utils')
   , api       = require('../../lib/api')
   , troller   = require('../../lib/troller')
+
+  , template  = require('hbt!./../../templates/accounts/user-list-item')
   ;
 
   return utils.View.extend({
@@ -10,18 +12,76 @@ define(function(require){
 
   , events: {
       'keyup .live-bind':         'onKeyUpLiveBind'
+    , 'click .btn-edit-save':     'onEditSaveClick'
+    , 'click .btn-cancel':        'onCancelClick'
     }
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
-      this.model = options.user;
+      this.mode = 'read';
+      this.allGroups = options.allGroups;
+
 
       return this;
     }
 
   , render: function(){
-      this.$el.html(template(this.model.toJSON()));
+      this.$el.html(template({ model: this.model, groups: this.allGroups }));
+
+      var $selects = this.$el.find('select').select2({
+        placeholder: "Select a Group"
+      , allowClear: true
+      , disabled: true
+      });
+
+      $selects.select2('disable');
+
+      return this;
+    }
+
+  , enterEditMode: function(){
+      if (this.mode === "edit") return this;
+
+      this.$el.find('.btn-edit').removeClass('btn-edit').addClass('btn-save btn-success');
+      this.$el.find('.icon-edit').removeClass('icon-edit').addClass('icon-save');
+      this.$el.find('.btn-cancel').removeClass('hide');
+
+      this.$el.find('.btn-copy').addClass('hide');
+
+      this.$el.find('.read-mode-value').css({ display: 'none', opacity: 0 });
+      this.$el.find('.edit-mode-value').css({
+        display: 'inline-block'
+      , opacity: 1
+      });
+
+      this.$el.find('select').select2('enable');
+
+      this.mode = "edit";
+
+      return this;
+    }
+
+  , enterReadMode: function(){
+      if (this.mode === "read") return this;
+
+      this.$el.find('.btn-save').removeClass('btn-save btn-success').addClass('btn-edit');
+      this.$el.find('.icon-save').removeClass('icon-save').addClass('icon-edit');
+
+      this.$el.find('.btn-cancel').addClass('hide');
+
+      this.$el.find('.btn-copy').removeClass('hide');
+
+      this.$el.find('.edit-mode-value').css({ display: 'none', opacity: 0 });
+      this.$el.find('.read-mode-value').css({
+        display: 'inline-block'
+      , opacity: 1
+      });
+
+      this.$el.find('select').select2('disable');
+
+      this.mode = "read";
+
       return this;
     }
 
@@ -35,7 +95,9 @@ define(function(require){
     }
 
   , saveModel: function(){
-      api.users.update(this.model.id, this.model, function(error){
+      var model = utils.clone(this.model);
+      delete model.id;
+      api.users.update(this.model.id, model, function(error){
         if (error) alert(error.message);
       });
       return this;
@@ -48,6 +110,23 @@ define(function(require){
         this_.saveModel();
       }, this.keyupSaveTimeout);
       return this;
+    }
+
+  , onCancelClick: function(e){
+      e.preventDefault();
+
+      this.render();
+      this.enterReadMode();
+    }
+
+  , onEditSaveClick: function(e){
+      e.preventDefault();
+
+      if (this.mode === 'read') this.enterEditMode();
+      else {
+        this.enterReadMode();
+        this.saveModel();
+      }
     }
 
   , onKeyUpLiveBind: function(e){

@@ -52,3 +52,30 @@ body {
 .location-edit #location-state-input {
   margin-top: 5px;
 }
+
+.btn-new-user > i {
+  margin-right: 6px;
+}
+
+table select {
+  margin-bottom: 0;
+}
+
+.edit-mode-value, .read-mode-value {
+  -webkit-transition: opacity 0.3s linear;
+  -moz-transition: opacity 0.3s linear;
+  transition: opacity 0.3s linear;
+}
+
+input.edit-mode-value {
+  display: none;
+}
+
+.accounts-nav {
+  margin-top: -28px;
+  border: none;
+}
+
+.groups-select {
+  width: 200px;
+}
