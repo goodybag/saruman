@@ -19,6 +19,9 @@ define(function(require){
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
+      this.model.groups = this.model.groups || [];
+      this.groupIds = this.model.groups.map(function(g){ return g.id; });
+
       this.mode = 'read';
       this.allGroups = options.allGroups;
 
@@ -27,7 +30,13 @@ define(function(require){
     }
 
   , render: function(){
-      this.$el.html(template({ model: this.model, groups: this.allGroups }));
+      this.$el.html(
+        template({
+          model: this.model
+        , groups: this.allGroups
+        , groupIds: this.groupIds
+        })
+      );
 
       var $selects = this.$el.find('select').select2({
         placeholder: "Select a Group"
@@ -88,7 +97,7 @@ define(function(require){
   , updateModelWithFormData: function(){
       var $el;
       for (var key in this.model){
-        if (($el = this.$el.find('#users-' + this.model.id + '-' + key)).length > 0)
+        if (($el = this.$el.find('#user-' + this.model.id + '-' + key)).length > 0)
           this.model[key] = $el.val();
       }
       return this;
@@ -125,7 +134,9 @@ define(function(require){
       if (this.mode === 'read') this.enterEditMode();
       else {
         this.enterReadMode();
+        this.updateModelWithFormData();
         this.saveModel();
+        this.render();
       }
     }
 

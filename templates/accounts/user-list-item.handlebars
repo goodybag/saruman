@@ -3,7 +3,7 @@
 </td>
 <td class="email">
   <input class="edit-mode-value input-medium" value="{{model.email}}" type="email" id="user-{{model.id}}-email">
-  <span class="read-mode-value">{{model.email}}</span>
+  <span class="read-mode-value">{{truncate model.email 23}}</span>
 </td>
 <td class="password">
   <input class="edit-mode-value input-medium" type="password" id="user-{{model.id}}-password">
@@ -20,12 +20,12 @@
 <td class="groups">
   <select name="groups" class="groups-select" id="user-{{model.id}}-groups" multiple="true">
   {{#each groups}}
-    <option value="{{this.id}}">{{this.name}}</option>
+    <option value="{{this.id}}"{{#in ../groupIds this.id}} selected="true"{{/in}}>{{this.name}}</option>
   {{/each}}
   </select>
 </td>
 <td class="actions">
-  <div class="btn-group open">
+  <div class="btn-group">
     <button class="btn btn-small btn-edit btn-edit-save">
       <i class="icon-edit"></i>
     </button>
@@ -35,9 +35,19 @@
     <button class="btn btn-small btn-copy">
       <i class="icon-copy"></i>
     </button>
-    <button class="btn btn-small btn-open-group">
+    <button class="btn btn-small btn-open-group{{#if model.groups}} dropdown-toggle{{/if}}" data-toggle="dropdown">
       <i class="icon-group"></i>
     </button>
+    {{#if model.groups}}
+    <ul class="dropdown-menu">
+      <li class="nav-header">Open User Extension Table</li>
+      {{#each model.groups}}
+        <li>
+          <a href="#">{{this.name}}</a>
+        </li>
+      {{/each}}
+    </ul>
+    {{/if}}
     <button class="btn btn-small btn-delete btn-danger">
       <i class="icon-trash"></i>
     </button>

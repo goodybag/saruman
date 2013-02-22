@@ -17,6 +17,10 @@ define(function(require){
   return Page.extend({
     className: 'page page-users'
 
+  , events: {
+      'keyup #users-search':            'onUsersSearchKeyUp'
+    }
+
   , name: 'Users'
 
   , initialize: function(options){
@@ -58,11 +62,21 @@ define(function(require){
     }
 
   , fetchUsers: function(){
-      var this_ = this;
+      var
+        this_   = this
+      , paging  = this.paginator.getCurrent()
+      , options = {
+          limit : paging.limit
+        , offset: paging.offset
+        }
+      , filter  = this.$search.val()
+      ;
+
+      if (filter) options.filter = filter;
 
       utils.parallel({
         users: function(done){
-          api.users.list(this_.paginator.getCurrent(), function(error, users, meta){
+          api.users.list(options, function(error, users, meta){
             if (error) return done(error);
 
             this_.paginator.setTotal(meta.total);
@@ -72,6 +86,8 @@ define(function(require){
         }
 
       , groups: function(done){
+          if (this_.groups) return done(null, this_.groups);
+
           api.groups.list(function(error, groups){
             if (error) return done(error);
             return done(null, groups);
@@ -111,6 +127,16 @@ define(function(require){
       this.children.paginatorTop.render();
       this.children.paginatorBottom.render();
 
+      // Insert paginators
+      if (this.paginator.maxPages <= 1){
+          if (callback) callback();
+         return this;
+      }
+      this.children.paginatorTop.render();
+      this.children.paginatorBottom.render();
+      this.$el.find('#users-paginator-top').append(this.children.paginatorTop.$el);
+      this.$el.find('#users-paginator-bottom').append(this.children.paginatorBottom.$el);
+
       if (callback) callback();
 
       return this;
@@ -119,18 +145,33 @@ define(function(require){
   , render: function(){
       this.$el.html(template());
 
-      this.renderUsers();
-console.log(this.paginator.maxPages, this.users);
-      // Insert paginators
-      if (this.paginator.maxPages <= 1) return this;
-      this.children.paginatorTop.render();
-      this.children.paginatorBottom.render();
-      console.log(this.$el.find('#users-paginator-top'))
-      this.$el.find('#users-paginator-top').append(this.children.paginatorTop.$el);
-      this.$el.find('#users-paginator-bottom').append(this.children.paginatorBottom.$el);
+      this.$search = this.$el.find('#users-search');
 
+      this.renderUsers();
 
       return this;
+    }
+
+  , onUsersSearchKeyUp: function(e){
+      var
+        this_ = this
+      , paging = this.paginator.getCurrent()
+      , options = {
+          filter: this.$search.val()
+        , limit:  paging.limit
+        , offset: paging.offset
+        }
+      ;
+
+
+
+      api.users.list(options, function(error, users, meta){
+        if (error) return alert(error);
+
+        this_.users = users;
+        this_.paginator.setTotal(meta.total);
+        this_.renderUsers();
+      });
     }
   });
 });
