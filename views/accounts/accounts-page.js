@@ -13,10 +13,12 @@ define(function(require){
 
   , Pages = {
       users:        require('./users-page')
+    , consumers:    require('./consumers-page')
     }
 
   , pageNames = {
       users:            'Users'
+    , consumers:        'Consumers'
     , cashiers:         'Cashiers'
     , managers:         'Managers'
     , 'tapin-stations': 'TapIn Stations'
@@ -45,8 +47,6 @@ define(function(require){
 
       this.currentPage = options.page || 'users';
 
-      // this.changePage(this.currentPage, { business: this.business, page: 0 });
-
       return this;
     }
 
@@ -74,7 +74,6 @@ define(function(require){
     }
 
   , changePage: function(page, options){
-    console.log("changing to", page);
       options = options || {};
 
       this.children.pages.changePage(page, options);
@@ -87,7 +86,7 @@ define(function(require){
       // Change page name
       var current = this.children.pages.pages[this.currentPage];
 
-      if (current.name)
+      if (pageNames[this.currentPage])
         this.$el.find('.page-name > .name').css('display', 'inline').html(current.name);
       else
         this.$el.find('.page-name > .name').css('display', 'none');

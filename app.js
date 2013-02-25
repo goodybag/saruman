@@ -34,7 +34,7 @@ define(function(require){
         }
 
         user.isLoggedIn(function(error, loggedIn){
-          if (error) return console.log(error), callback(error);
+          if (error) return console.log(error), callback && callback(error);
           if (!loggedIn){
             app.appView.changePage("login");
             return utils.history.navigate('/login');

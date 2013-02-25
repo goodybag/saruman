@@ -14,12 +14,26 @@ define(function(require){
       'keyup .live-bind':         'onKeyUpLiveBind'
     , 'click .btn-edit-save':     'onEditSaveClick'
     , 'click .btn-cancel':        'onCancelClick'
+    , 'click .btn-delete':        'onDeleteClick'
+    , 'click .btn-copy':          'onCopyClick'
     }
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
-      this.model.groups = this.model.groups || [];
+      options = options || {};
+
+      this.isNew = !!options.isNew;
+
+      // Model defaults - should move to a separate module!
+      // But since I'm not using Backbone models, I need to do it somewhere
+      this.model.id                 = this.model.id                 || 'New';
+      this.model.email              = this.model.email              || null;
+      this.model.password           = this.model.password           || null;
+      this.model.singlyId           = this.model.singlyId           || null;
+      this.model.singlyAccessToken  = this.model.singlyAccessToken  || null;
+      this.model.groups             = this.model.groups             || [];
+
       this.groupIds = this.model.groups.map(function(g){ return g.id; });
 
       this.mode = 'read';
@@ -103,12 +117,26 @@ define(function(require){
       return this;
     }
 
-  , saveModel: function(){
-      var model = utils.clone(this.model);
+  , saveModel: function(callback){
+      var model = utils.clone(this.model), this_ = this;
       delete model.id;
+
+      model.groups = (model.groups || []).map(function(g){ return parseInt(g); });
+
+      if (this.isNew){
+        api.users.create(model, function(error, result){
+          if (error) alert(error.message);
+
+          this_.model.id = result.id;
+          if (callback) callback(null, result);
+        });
+        return this;
+      }
+
       api.users.update(this.model.id, model, function(error){
         if (error) alert(error.message);
       });
+
       return this;
     }
 
@@ -121,8 +149,37 @@ define(function(require){
       return this;
     }
 
+  , destroy: function(){
+      if (!this.isNew) api.users.delete(this.model.id);
+
+      this.undelegateEvents();
+
+      this.$el.removeData().unbind();
+
+      //Remove view from DOM
+      this.remove();
+
+      Backbone.View.prototype.remove.call(this);
+
+      this.trigger('destroy');
+    }
+
+  , onCopyClick: function(e){
+      this.trigger('copy', this.model);
+    }
+
+  , onDeleteClick: function(e){
+      if (!confirm("Are you sure you want to delete " + (this.model.email || "this record") + "?"))
+        return;
+
+      this.destroy();
+    }
+
   , onCancelClick: function(e){
-      e.preventDefault();
+      e.preventDefault()
+
+      // We just want to delete the whole thing on cancel if it's a new item
+      if (this.isNew) return this.destroy();
 
       this.render();
       this.enterReadMode();
@@ -133,10 +190,12 @@ define(function(require){
 
       if (this.mode === 'read') this.enterEditMode();
       else {
+        var this_ = this;
         this.enterReadMode();
         this.updateModelWithFormData();
-        this.saveModel();
-        this.render();
+        this.saveModel(function(){
+          this_.render();
+        });
       }
     }
 

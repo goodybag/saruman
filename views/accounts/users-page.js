@@ -19,6 +19,7 @@ define(function(require){
 
   , events: {
       'keyup #users-search':            'onUsersSearchKeyUp'
+    , 'click #users-new-user-btn':      'onNewUserBtnClick'
     }
 
   , name: 'Users'
@@ -32,7 +33,7 @@ define(function(require){
 
       this.currentPage = options.page - 1;
 
-      this.paginator = new Paginator({ page: this.currentPage, limit: 10 });
+      this.paginator = new Paginator({ page: this.currentPage, limit: 20 });
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
@@ -42,7 +43,6 @@ define(function(require){
       var this_ = this;
 
       troller.add('users.setPage', function(page){
-        console.log("setting to page", page);
         this_.paginator.setPage(page - 1);
       });
 
@@ -58,7 +58,10 @@ define(function(require){
     }
 
   , onShow: function(){
-      this.fetchUsers();
+      if (!this.hasShownOnce){
+        this.fetchUsers();
+        this.hasShownOnce = true;
+      }
     }
 
   , fetchUsers: function(){
@@ -112,17 +115,20 @@ define(function(require){
         users = [];
       } else users = users || this.users || [];
 
-      var fragment = document.createDocumentFragment();
+      var fragment = document.createDocumentFragment(), this_ = this;
       for (var i = 0, len = users.length, view; i < len; i++){
         fragment.appendChild(
           new Views.UserItem({
             model:      users[i]
           , allGroups:  this.groups
-          }).render().$el[0]
+          }).render()
+            .on('destroy', function(item){ this_.onItemDestroy(item) })
+            .on('copy', function(item){ this_.onItemCopy(item) })
+            .$el[0]
         );
       }
 
-      this.$el.find('#users-list').html(fragment);
+      this.$usersList.html(fragment);
 
       this.children.paginatorTop.render();
       this.children.paginatorBottom.render();
@@ -145,11 +151,57 @@ define(function(require){
   , render: function(){
       this.$el.html(template());
 
+      this.$usersList = this.$el.find('#users-list');
       this.$search = this.$el.find('#users-search');
 
       this.renderUsers();
 
       return this;
+    }
+
+  , onItemCopy: function(item){
+      var this_ = this;
+
+      item = utils.clone(item);
+      item.id = 'New';
+
+      this.$usersList[0].insertBefore(
+        new Views.UserItem({
+          model:      item
+        , allGroups:  this.groups
+        , isNew:      true
+        }).render()
+          .enterEditMode()
+          .on('destroy', function(item){ this_.onItemDestroy(item) })
+          .on('copy', function(item){ this_.onItemCopy(item) })
+          .$el[0]
+
+      , this.$usersList[0].childNodes[0]
+      );
+    }
+
+  , onItemDestroy: function(item){
+      if (!item || item.id === "New") return;
+      this.users = utils.removeFromArray(this.users, item, 'id', true);
+      this.renderUsers();
+    }
+
+  , onNewUserBtnClick: function(e){
+      var this_ = this;
+
+      this.$usersList[0].insertBefore(
+        new Views.UserItem({
+          model:      {}
+        , allGroups:  this.groups
+        , isNew:      true
+        }).render()
+          .enterEditMode()
+          .on('destroy', function(item){ this_.onItemDestroy(item) })
+          .on('copy', function(item){ this_.onItemCopy(item) })
+          .$el[0]
+
+      , this.$usersList[0].childNodes[0]
+      );
     }
 
   , onUsersSearchKeyUp: function(e){
@@ -163,7 +215,7 @@ define(function(require){
         }
       ;
 
-
+      troller.users.setPage(1);
 
       api.users.list(options, function(error, users, meta){
         if (error) return alert(error);
