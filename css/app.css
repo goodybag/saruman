@@ -52,3 +52,73 @@ body {
 .location-edit #location-state-input {
   margin-top: 5px;
 }
+
+.btn-new-user > i {
+  margin-right: 6px;
+}
+
+table select,
+table textarea,
+table input[type="text"],
+table input[type="password"],
+table input[type="datetime"],
+table input[type="datetime-local"],
+table input[type="date"],
+table input[type="month"],
+table input[type="time"],
+table input[type="week"],
+table input[type="number"],
+table input[type="email"],
+table input[type="url"],
+table input[type="search"],
+table input[type="tel"],
+table input[type="color"],
+table .uneditable-input {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.edit-mode-value, .read-mode-value {
+  -webkit-transition: opacity 0.3s linear;
+  -moz-transition: opacity 0.3s linear;
+  transition: opacity 0.3s linear;
+}
+
+input.edit-mode-value {
+  display: none;
+}
+
+.accounts-nav {
+  margin-top: -28px;
+  border: none;
+}
+
+.groups-select {
+  width: 200px;
+}
+
+/* Overqualified to have enough specificity to override bootstrap */
+#accounts-pages table .actions .btn-group .btn.dropdown-toggle {
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.page-header > .nav .dropdown-menu {
+  margin-left: -77px;
+}
+
+#users-table td {
+  max-width: 164px;
+}
+
+#users-table td.actions,
+#users-table td.id {
+  max-width: auto;
+}
+
+table .read-mode-value {
+  display: inline-block;
+  word-wrap: break-word;
+}

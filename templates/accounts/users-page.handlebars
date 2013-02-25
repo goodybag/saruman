@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="span12 page-actions">
+    <div class="input-append pull-right">
+      <input class="span2" placeholder="Search by Email" id="users-search" type="text">
+      <button class="btn" type="button">
+        <i class="icon-search"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="users-paginator-top"></div>
+<table id="users-table" class="table table-striped">
+  <thead>
+    <tr>
+      <th class="id">Id</th>
+      <th class="email">Email</th>
+      <th class="password">Password</th>
+      <th class="singly-id">Singly Id</th>
+      <th class="singly-access-token">Singly Access Token</th>
+      <th class="groups">Groups</th>
+      <th class="actions">
+        <button class="btn btn-primary btn-new-user" id="users-new-user-btn">
+          <i class="icon-plus-sign-alt"></i>
+          New User
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody id="users-list"></tbody>
+</table>
+
+<div id="users-paginator-bottom"></div>
