@@ -3,17 +3,17 @@ define(function(require){
     api       = require('../../lib/api')
   , troller   = require('../../lib/troller')
 
-  , Page      = require('../page')
-
   , template  = require('hbt!../../templates/accounts/accounts-page')
 
   , Views = {
       PageManager:  require('../page-manager')
+    , Page:         require('../page')
     }
 
   , Pages = {
       users:        require('./users-page')
     , consumers:    require('./consumers-page')
+    , cashiers:     require('./cashiers-page')
     }
 
   , pageNames = {
@@ -26,7 +26,7 @@ define(function(require){
     }
   ;
 
-  return Page.extend({
+  return Views.Page.extend({
     className: 'page page-accounts'
 
   , initialize: function(options){
@@ -42,8 +42,6 @@ define(function(require){
         , parentView: this
         })
       };
-
-      this.hasLoadOnced = false;
 
       this.currentPage = options.page || 'users';
 
@@ -68,7 +66,8 @@ define(function(require){
 
       // Delegate events to current Page
       console.log("rendered", this.currentPage);
-      // this.children.pages.pages[this.children.pages.current].delegateEvents();
+      console.log(this.children.pages);
+      // if (this.currentPage) this.children.pages.pages[this.currentPage].delegateEvents();
 
       return this;
     }
@@ -87,7 +86,7 @@ define(function(require){
       var current = this.children.pages.pages[this.currentPage];
 
       if (pageNames[this.currentPage])
-        this.$el.find('.page-name > .name').css('display', 'inline').html(current.name);
+        this.$el.find('.page-name > .name').css('display', 'inline').html(pageNames[current]);
       else
         this.$el.find('.page-name > .name').css('display', 'none');
 

@@ -5,7 +5,7 @@ define(function(require){
   , api       = require('../../lib/api')
   , troller   = require('../../lib/troller')
 
-  , template  = require('hbt!./../../templates/accounts/consumer-list-item')
+  , template  = require('hbt!../../templates/accounts/user-list-item')
   ;
 
   return utils.View.extend({
@@ -25,6 +25,8 @@ define(function(require){
 
       options = options || {};
 
+      this.template = template;
+
       this.isNew = !!options.isNew;
 
       this.mode = 'read';
@@ -34,20 +36,26 @@ define(function(require){
 
   , render: function(){
       this.$el.html(
-        template({
-          model: this.model.toJSON()
-        })
+        this.template(
+          utils.extend(this.getAdditionalRenderProperties(), {
+            model: this.model.toJSON()
+          })
+        )
       );
 
       var $selects = this.$el.find('select').select2({
-        placeholder: "Select a Group"
-      , allowClear: true
-      , disabled: true
+        placeholder:  "Select a Group"
+      , allowClear:   true
+      , disabled:     true
       });
 
       $selects.select2('disable');
 
       return this;
+    }
+
+  , getAdditionalRenderProperties: function(){
+      return {};
     }
 
   , enterEditMode: function(){
@@ -120,7 +128,7 @@ define(function(require){
     }
 
   , destroy: function(){
-      if (!this.isNew) api.users.consumers.delete(this.model.id);
+      if (!this.isNew) api[this.type].delete(this.model.id);
 
       this.undelegateEvents();
 

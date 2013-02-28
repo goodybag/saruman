@@ -9,16 +9,14 @@ define(function(require){
         'id'
       , 'email'
       , 'password'
-      , 'firstName'
-      , 'lastName'
-      , 'screenName'
+      , 'singlyId'
+      , 'singlyAccessToken'
+      , 'groups'
       , 'cardId'
-      , 'avatarUrl'
       ]
 
     , defaults: {
         id: 'New'
-      , avatarUrl: config.defaults.avatarUrl
       }
 
     , initialize: function(attributes){

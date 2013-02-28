@@ -23,6 +23,7 @@ define(function(require){
 
   , events: {
       'keyup .users-search':            'onUsersSearchKeyUp'
+    , 'click .users-search':            'onUsersSearchKeyUp'
     , 'click .btn-new-user':            'onNewUserBtnClick'
     }
 
@@ -81,7 +82,7 @@ define(function(require){
 
       utils.parallel({
         users: function(done){
-          api.users.consumers.list(options, function(error, users, meta){
+          api.consumers.list(options, function(error, users, meta){
             if (error) return done(error);
 
             this_.paginator.setTotal(meta.total);
@@ -164,12 +165,12 @@ define(function(require){
   , onItemCopy: function(item){
       var this_ = this;
 
-      item = utils.clone(item);
-      item.id = 'New';
+      item = item.clone();
+      item.makeNewUser();
 
       this.$usersList[0].insertBefore(
         new Views.UserItem({
-          model:      new Models.Consumer(item)
+          model:      item
         , allGroups:  this.groups
         , isNew:      true
         }).render()
@@ -207,7 +208,6 @@ define(function(require){
     }
 
   , onUsersSearchKeyUp: function(e){
-    console.log("lkajdf");
       var
         this_ = this
       , paging = this.paginator.getCurrent()
@@ -218,9 +218,9 @@ define(function(require){
         }
       ;
 
-      troller.users.setPage(1);
+      troller.consumers.setPage(1);
 
-      api.users.consumers.list(options, function(error, users, meta){
+      api.consumers.list(options, function(error, users, meta){
         if (error) return alert(error);
 
         this_.users = users;

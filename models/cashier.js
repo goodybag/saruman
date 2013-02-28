@@ -9,19 +9,21 @@ define(function(require){
         'id'
       , 'email'
       , 'password'
-      , 'firstName'
-      , 'lastName'
-      , 'screenName'
-      , 'cardId'
-      , 'avatarUrl'
+      , 'userId'
+      , 'locationId'
+      , 'businessId'
       ]
 
     , defaults: {
         id: 'New'
-      , avatarUrl: config.defaults.avatarUrl
       }
 
     , initialize: function(attributes){
+        if (this.attributes.userId){
+          this.attributes.id = this.attributes.userId;
+          delete this.attributes.userId;
+        }
+
         for (var key in this.attributes){
           if (this.acceptable.indexOf(key) === -1)
             delete this.attributes[key];
@@ -33,7 +35,7 @@ define(function(require){
       }
 
     , makeNewUser: function(){
-        this.set('email', 'consumer-' + utils.guid() + '@goodybag.com');
+        this.set('email', 'cashier-' + utils.guid() + '@goodybag.com');
         this.set('password', utils.guid());
         this.set('id', 'New');
         return this;
@@ -57,12 +59,13 @@ define(function(require){
         if (data) this.set(data);
 
         var attr = utils.clone(this.attributes), this_ = this;
+        attr.userId = attr.id;
         delete attr.id;
 
         if (this.attributes.id && this.attributes.id !== 'New')
-          api.consumers.update(this.attributes.id, attr, callback);
+          api.cashiers.update(this.attributes.id, attr, callback);
         else {
-          api.consumers.create(attr, function(error, result){
+          api.cashiers.create(attr, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);

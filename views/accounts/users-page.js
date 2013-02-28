@@ -12,6 +12,10 @@ define(function(require){
       Paginator       : require('../paginator')
     , UserItem        : require('./user-list-item')
     }
+
+  , Models = {
+      User            : require('../../models/user-list-item')
+    }
   ;
 
   return Page.extend({
@@ -99,7 +103,7 @@ define(function(require){
       }, function(error, results){
           if (error) return alert(error);
 
-          this_.users = results.users;
+          this_.users  = results.users;
           this_.groups = results.groups;
 
           this_.renderUsers();
@@ -119,8 +123,9 @@ define(function(require){
       for (var i = 0, len = users.length, view; i < len; i++){
         fragment.appendChild(
           new Views.UserItem({
-            model:      users[i]
+            model:      new Models.User(users[i])
           , allGroups:  this.groups
+          , groupIds:   this.groupIds
           }).render()
             .on('destroy', function(item){ this_.onItemDestroy(item) })
             .on('copy', function(item){ this_.onItemCopy(item) })
@@ -168,7 +173,7 @@ define(function(require){
       this.$usersList[0].insertBefore(
         new Views.UserItem({
           model:      item
-        , allGroups:  this.groups
+        , allGroups:  this.groups.map(function(g){ return g.name })
         , isNew:      true
         }).render()
           .enterEditMode()

@@ -6,9 +6,10 @@ define(function(require){
   , Paginator         = require('../../lib/paginator')
   , troller           = require('../../lib/troller')
 
+  , template          = require('hbt!./../../templates/accounts/consumers-page')
+
   , Views = {
       Paginator       : require('../paginator')
-    , UserItem        : require('./user-list-item')
     }
   ;
 
@@ -17,18 +18,25 @@ define(function(require){
 
   , events: {
       'keyup .users-search':            'onUsersSearchKeyUp'
-    , 'click .users-new-user-btn':      'onNewUserBtnClick'
+    , 'click .users-search':            'onUsersSearchKeyUp'
+    , 'click .btn-new-user':            'onNewUserBtnClick'
     }
 
   , initialize: function(options){
+      this.template = template;
 
       options = options || {};
-      options.page = options.page || 1;
 
+      // Pass in all of the views, model, and type or extend from this
+      // and overide initialize
+      this.type         = options.type;
+      this.ItemModel    = options.ItemModel;
+      this.ItemView     = options.ItemView;
 
-      this.currentPage = options.page - 1;
+      options.page      = options.page || 1;
+      this.currentPage  = options.page - 1;
 
-      this.paginator = new Paginator({ page: this.currentPage, limit: 20 });
+      this.paginator    = new Paginator({ page: this.currentPage, limit: 20 });
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
@@ -37,7 +45,7 @@ define(function(require){
 
       var this_ = this;
 
-      troller.add('users.setPage', function(page){
+      troller.add('consumers.setPage', function(page){
         this_.paginator.setPage(page - 1);
       });
 
@@ -53,7 +61,10 @@ define(function(require){
     }
 
   , onShow: function(){
-      this.fetchUsers();
+      if (!this.hasShownOnce){
+        this.fetchUsers();
+        this.hasShownOnce = true;
+      }
     }
 
   , fetchUsers: function(){
@@ -71,7 +82,7 @@ define(function(require){
 
       utils.parallel({
         users: function(done){
-          api.users.list(options, function(error, users, meta){
+          api[this_.type].list(options, function(error, users, meta){
             if (error) return done(error);
 
             this_.paginator.setTotal(meta.total);
@@ -83,7 +94,7 @@ define(function(require){
       , groups: function(done){
           if (this_.groups) return done(null, this_.groups);
 
-          api.groups.list(function(error, groups){
+          api[this_.type].list(function(error, groups){
             if (error) return done(error);
             return done(null, groups);
           });
@@ -107,19 +118,23 @@ define(function(require){
         users = [];
       } else users = users || this.users || [];
 
-      var fragment = document.createDocumentFragment(), this_ = this;
+      var
+        fragment  = document.createDocumentFragment()
+      , this_     = this
+      ;
+
       for (var i = 0, len = users.length, view; i < len; i++){
         fragment.appendChild(
-          new Views.UserItem({
-            model:      users[i]
-          , allGroups:  this.groups
-          }).render()
-            .on('destroy', function(item){ this_.onItemDestroy(item) })
-            .on('copy', function(item){ this_.onItemCopy(item) })
-            .$el[0]
+          new this.ItemView(
+            utils.extend(this.getAdditionalViewOptions(), {
+              model: new this.ItemModel(users[i])
+            })
+          ).render()
+          .on('destroy', function(item){ this_.onItemDestroy(item) })
+          .on('copy', function(item){ this_.onItemCopy(item) })
+          .$el[0]
         );
       }
-
       this.$usersList.html(fragment);
 
       this.children.paginatorTop.render();
@@ -127,9 +142,10 @@ define(function(require){
 
       // Insert paginators
       if (this.paginator.maxPages <= 1){
-          if (callback) callback();
-         return this;
+        if (callback) callback();
+        return this;
       }
+
       this.children.paginatorTop.render();
       this.children.paginatorBottom.render();
       this.$el.find('.users-paginator-top').append(this.children.paginatorTop.$el);
@@ -151,14 +167,18 @@ define(function(require){
       return this;
     }
 
+  , getAdditionalViewOptions: function(){
+      return {};
+    }
+
   , onItemCopy: function(item){
       var this_ = this;
 
-      item = utils.clone(item);
-      item.id = 'New';
+      item = item.clone();
+      item.makeNewUser();
 
       this.$usersList[0].insertBefore(
-        new Views.UserItem({
+        new this.ItemView({
           model:      item
         , allGroups:  this.groups
         , isNew:      true
@@ -182,8 +202,8 @@ define(function(require){
       var this_ = this;
 
       this.$usersList[0].insertBefore(
-        new Views.UserItem({
-          model:      {}
+        new this.ItemView({
+          model:      new this.ItemModel()
         , allGroups:  this.groups
         , isNew:      true
         }).render()
@@ -207,9 +227,9 @@ define(function(require){
         }
       ;
 
-      troller.users.setPage(1);
+      troller.consumers.setPage(1);
 
-      api.users.list(options, function(error, users, meta){
+      api[this.type].list(options, function(error, users, meta){
         if (error) return alert(error);
 
         this_.users = users;

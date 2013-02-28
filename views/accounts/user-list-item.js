@@ -1,10 +1,11 @@
 define(function(require){
   var
     utils     = require('../../lib/utils')
+  , config    = require('../../config')
   , api       = require('../../lib/api')
   , troller   = require('../../lib/troller')
 
-  , template  = require('hbt!./../../templates/accounts/user-list-item')
+  , template  = require('hbt!../../templates/accounts/user-list-item')
   ;
 
   return utils.View.extend({
@@ -16,39 +17,30 @@ define(function(require){
     , 'click .btn-cancel':        'onCancelClick'
     , 'click .btn-delete':        'onDeleteClick'
     , 'click .btn-copy':          'onCopyClick'
+    , 'click .avatarUrl':         'onAvatarClick'
     }
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
       options = options || {};
+      this.allGroups = options.allGroups;
+
+      this.template = template;
 
       this.isNew = !!options.isNew;
 
-      // Model defaults - should move to a separate module!
-      // But since I'm not using Backbone models, I need to do it somewhere
-      this.model.id                 = this.model.id                 || 'New';
-      this.model.email              = this.model.email              || null;
-      this.model.password           = this.model.password           || null;
-      this.model.singlyId           = this.model.singlyId           || null;
-      this.model.singlyAccessToken  = this.model.singlyAccessToken  || null;
-      this.model.groups             = this.model.groups             || [];
-
-      this.groupIds = this.model.groups.map(function(g){ return g.id; });
-
       this.mode = 'read';
-      this.allGroups = options.allGroups;
-
 
       return this;
     }
 
   , render: function(){
       this.$el.html(
-        template({
-          model: this.model
-        , groups: this.allGroups
-        , groupIds: this.groupIds
+        this.template({
+          model:    this.model.toJSON()
+        , groups:   this.allGroups
+        , groupIds: this.model.attributes.groups.map(function(g){ return g.id; })
         })
       );
 
@@ -110,32 +102,15 @@ define(function(require){
 
   , updateModelWithFormData: function(){
       var $el;
-      for (var key in this.model){
+      for (var key in this.model.attributes){
         if (($el = this.$el.find('#user-' + this.model.id + '-' + key)).length > 0)
-          this.model[key] = $el.val();
+          this.model.set(key, $el.val());
       }
       return this;
     }
 
   , saveModel: function(callback){
-      var model = utils.clone(this.model), this_ = this;
-      delete model.id;
-
-      model.groups = (model.groups || []).map(function(g){ return parseInt(g); });
-
-      if (this.isNew){
-        api.users.create(model, function(error, result){
-          if (error) alert(error.message);
-
-          this_.model.id = result.id;
-          if (callback) callback(null, result);
-        });
-        return this;
-      }
-
-      api.users.update(this.model.id, model, function(error){
-        if (error) alert(error.message);
-      });
+      this.model.save(callback);
 
       return this;
     }
@@ -150,7 +125,7 @@ define(function(require){
     }
 
   , destroy: function(){
-      if (!this.isNew) api.users.delete(this.model.id);
+      if (!this.isNew) api[this.type].delete(this.model.id);
 
       this.undelegateEvents();
 
@@ -162,6 +137,19 @@ define(function(require){
       Backbone.View.prototype.remove.call(this);
 
       this.trigger('destroy');
+    }
+
+  , onAvatarClick: function(e){
+      var this_ = this;
+      filepicker.pick(
+        { mimetypes:['image/*'] },
+        function(file) {
+          this_.model.avatarUrl = file.url;
+        },
+        function(error) {
+          console.log(error);
+        }
+      );
     }
 
   , onCopyClick: function(e){
@@ -193,7 +181,8 @@ define(function(require){
         var this_ = this;
         this.enterReadMode();
         this.updateModelWithFormData();
-        this.saveModel(function(){
+        this.saveModel(function(error){
+          if (error) alert(error.message);
           this_.render();
         });
       }
