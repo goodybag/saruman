@@ -37,12 +37,8 @@ define(function(require){
       var this_ = this;
       filepicker.pick(
         { mimetypes:['image/*'] },
-        function(file) {
-          this_.model.avatarUrl = file.url;
-        },
-        function(error) {
-          console.log(error);
-        }
+        function(file) { this_.model.avatarUrl = file.url; },
+        function(error) { alert(error); }
       );
     }
   });
