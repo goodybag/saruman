@@ -112,6 +112,7 @@ define(function(require){
         if (($el = this.$el.find('#user-' + this.model.id + '-' + key)).length > 0)
           this.model.set(key, $el.val());
       }
+
       return this;
     }
 
@@ -131,7 +132,7 @@ define(function(require){
     }
 
   , destroy: function(){
-      if (!this.isNew) api[this.type].delete(this.model.id);
+      if (this.model.get('id') && this.model.get('id') !== 'New') this.model.delete();
 
       this.undelegateEvents();
 

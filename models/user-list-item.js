@@ -31,10 +31,15 @@ define(function(require){
       }
 
     , makeNewUser: function(){
-        this.set('email', 'consumer-' + utils.guid() + '@goodybag.com');
+        this.set('email', 'user-' + utils.guid() + '@generated.goodybag.com');
+        if (!this.attributes.groups) this.set('groups', []);
         this.set('password', utils.guid());
         this.set('id', 'New');
         return this;
+      }
+
+    , generateEmailFromId: function(){
+        this.set('email', 'user-' + this.attributes.id + '@generated.goodybag.com')
       }
 
     , set: function(key, value){
@@ -57,13 +62,20 @@ define(function(require){
         var attr = utils.clone(this.attributes), this_ = this;
         delete attr.id;
 
-        if (this.attributes.id && this.attributes.id !== 'New')
-          api.consumers.update(this.attributes.id, attr, callback);
+        if (this.attributes.id && this.attributes.id !== 'New'){
+          if (!attr.groups || attr.groups.length === 0) return r;
+          for (var i = 0, l = attr.groups.length; i < l; ++i){
+            delete attr.groups[i].metaTotal;
+          }
+          api.users.update(this.attributes.id, attr, callback);
+        }
         else {
-          api.consumers.create(attr, function(error, result){
+          api.users.create(attr, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);
+
+            if (callback) callback(null, result)
           });
         }
 
@@ -71,7 +83,7 @@ define(function(require){
       }
 
     , delete: function(){
-
+        api.users.delete(this.attributes.id);
       }
     })
   ;

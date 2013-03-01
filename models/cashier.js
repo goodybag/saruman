@@ -82,7 +82,7 @@ define(function(require){
       }
 
     , delete: function(){
-
+        api.cashiers.delete(this.attributes.id);
       }
     })
   ;

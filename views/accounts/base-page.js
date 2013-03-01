@@ -155,7 +155,37 @@ define(function(require){
       var this_ = this;
 
       item = item.clone();
-      item.makeNewUser();
+      item.set('id', 'New');
+      item.set('email', this.type + '-' + utils.guid() + '@generated.goodybag.com');
+      item.set('password', 'password');
+
+      return this_.$usersList[0].insertBefore(
+        new this_.ItemView(
+          utils.extend({
+            model: item
+          , isNew: true
+          }, this_.getAdditionalViewOptions())
+        ).render()
+          .enterEditMode()
+          .on('destroy', function(item){ this_.onItemDestroy(item) })
+          .on('copy', function(item){ this_.onItemCopy(item) })
+          .$el[0]
+
+      , this_.$usersList[0].childNodes[0]
+      );
+    }
+
+  , onItemDestroy: function(item){
+      if (!item || item.id === "New") return;
+      this.users = utils.removeFromArray(this.users, item, 'id', true);
+      this.renderUsers();
+    }
+
+  , onNewUserBtnClick: function(e){
+      var
+        this_ = this
+      , item  = new this.ItemModel().makeNewUser()
+      ;
 
       item.save(function(error){
         if (error) return alert(error.message);
@@ -165,10 +195,12 @@ define(function(require){
         item.save(function(error){
           if (error) return alert(error.message);
 
+          this_.users.push(item.toJSON());
+
           this_.$usersList[0].insertBefore(
             new this_.ItemView(
               utils.extend({
-                model: new this_.ItemModel(item)
+                model: item
               , isNew: true
               }, this_.getAdditionalViewOptions())
             ).render()
@@ -181,32 +213,6 @@ define(function(require){
           );
         });
       });
-
-    }
-
-  , onItemDestroy: function(item){
-      if (!item || item.id === "New") return;
-      this.users = utils.removeFromArray(this.users, item, 'id', true);
-      this.renderUsers();
-    }
-
-  , onNewUserBtnClick: function(e){
-      var this_ = this;
-
-      this.$usersList[0].insertBefore(
-        new this.ItemView(
-          utils.extend({
-            model: new this.ItemModel().makeNewUser()
-          , isNew: true
-          }, this.getAdditionalViewOptions())
-        ).render()
-          .enterEditMode()
-          .on('destroy', function(item){ this_.onItemDestroy(item) })
-          .on('copy', function(item){ this_.onItemCopy(item) })
-          .$el[0]
-
-      , this.$usersList[0].childNodes[0]
-      );
     }
 
   , onUsersSearchKeyUp: function(e){

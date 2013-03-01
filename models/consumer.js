@@ -33,9 +33,21 @@ define(function(require){
       }
 
     , makeNewUser: function(){
-        this.set('email', 'consumer-' + utils.guid() + '@goodybag.com');
-        this.set('password', utils.guid());
+        this.set('email', 'consumer-' + utils.guid() + '@generated.goodybag.com');
+        this.set('screenName', null);
+        this.set('cardId', null);
+        this.set('password', 'password');
         this.set('id', 'New');
+        return this;
+      }
+
+    , generateEmailFromId: function(){
+        this.set('email', 'consumer-' + this.attributes.id + '@generated.goodybag.com')
+        return this;
+      }
+
+    , generatePasswordFromId: function(){
+        this.set('password', 'password' + this.get('id'));
         return this;
       }
 
@@ -59,13 +71,27 @@ define(function(require){
         var attr = utils.clone(this.attributes), this_ = this;
         delete attr.id;
 
-        if (this.attributes.id && this.attributes.id !== 'New')
-          api.consumers.update(this.attributes.id, attr, callback);
+        if (this.attributes.id && this.attributes.id !== 'New'){
+          var password = attr.password;
+          delete attr.password;
+
+          utils.parallel({
+            consumers: function(done){
+              api.consumers.update(this_.attributes.id, attr, done);
+            }
+
+          , users: function(done){
+              api.users.update(this_.attributes.id, { password: password }, done);
+            }
+          }, callback);
+        }
         else {
           api.consumers.create(attr, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);
+
+            if (callback) callback(null, result)
           });
         }
 
@@ -73,7 +99,7 @@ define(function(require){
       }
 
     , delete: function(){
-
+        api.consumers.delete(this.attributes.id);
       }
     })
   ;

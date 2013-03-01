@@ -5,193 +5,59 @@ define(function(require){
   , api       = require('../../lib/api')
   , troller   = require('../../lib/troller')
 
-  , template  = require('hbt!../../templates/accounts/user-list-item')
+  , BaseListItem = require('./base-list-item')
+
+  , template  = require('hbt!./../../templates/accounts/user-list-item')
   ;
 
-  return utils.View.extend({
-    tagName: 'tr'
-
-  , events: {
-      'keyup .live-bind':         'onKeyUpLiveBind'
-    , 'click .btn-edit-save':     'onEditSaveClick'
-    , 'click .btn-cancel':        'onCancelClick'
-    , 'click .btn-delete':        'onDeleteClick'
-    , 'click .btn-copy':          'onCopyClick'
-    , 'click .avatarUrl':         'onAvatarClick'
-    }
+  return BaseListItem.extend({
+    type: 'users'
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
       options = options || {};
-      this.allGroups = options.allGroups;
 
-      this.template = template;
-
-      this.isNew = !!options.isNew;
-
+      this.isNew      = !!options.isNew;
+      this.allGroups  = options.allGroups;
+      this.groupsById = options.groupsById;
+console.log(this.groupsById);
       this.mode = 'read';
 
-      return this;
-    }
-
-  , render: function(){
-      this.$el.html(
-        this.template({
-          model:    this.model.toJSON()
-        , groups:   this.allGroups
-        , groupIds: this.model.attributes.groups.map(function(g){ return g.id; })
-        })
-      );
-
-      var $selects = this.$el.find('select').select2({
-        placeholder: "Select a Group"
-      , allowClear: true
-      , disabled: true
-      });
-
-      $selects.select2('disable');
-
-      return this;
-    }
-
-  , enterEditMode: function(){
-      if (this.mode === "edit") return this;
-
-      this.$el.find('.btn-edit').removeClass('btn-edit').addClass('btn-save btn-success');
-      this.$el.find('.icon-edit').removeClass('icon-edit').addClass('icon-save');
-      this.$el.find('.btn-cancel').removeClass('hide');
-
-      this.$el.find('.btn-copy').addClass('hide');
-
-      this.$el.find('.read-mode-value').css({ display: 'none', opacity: 0 });
-      this.$el.find('.edit-mode-value').css({
-        display: 'inline-block'
-      , opacity: 1
-      });
-
-      this.$el.find('select').select2('enable');
-
-      this.mode = "edit";
-
-      return this;
-    }
-
-  , enterReadMode: function(){
-      if (this.mode === "read") return this;
-
-      this.$el.find('.btn-save').removeClass('btn-save btn-success').addClass('btn-edit');
-      this.$el.find('.icon-save').removeClass('icon-save').addClass('icon-edit');
-
-      this.$el.find('.btn-cancel').addClass('hide');
-
-      this.$el.find('.btn-copy').removeClass('hide');
-
-      this.$el.find('.edit-mode-value').css({ display: 'none', opacity: 0 });
-      this.$el.find('.read-mode-value').css({
-        display: 'inline-block'
-      , opacity: 1
-      });
-
-      this.$el.find('select').select2('disable');
-
-      this.mode = "read";
+      this.template = template;
 
       return this;
     }
 
   , updateModelWithFormData: function(){
-      var $el;
+      var $el, this_ = this;
       for (var key in this.model.attributes){
-        if (($el = this.$el.find('#user-' + this.model.id + '-' + key)).length > 0)
+        if (key === "groups"){
+          $el = this.$el.find('#user-' + this.model.id + '-' + key);
+          this.model.set(key, $el.val().map(function(v){
+            return this_.groupsById[v];
+          }));
+        } else if (($el = this.$el.find('#user-' + this.model.id + '-' + key)).length > 0){
           this.model.set(key, $el.val());
-      }
-      return this;
-    }
-
-  , saveModel: function(callback){
-      this.model.save(callback);
-
-      return this;
-    }
-
-  , saveModelWithTimeout: function(){
-      var this_ = this;
-      clearTimeout(this.saveModelTimeout);
-      this.saveModelTimeout = setTimeout(function(){
-        this_.saveModel();
-      }, this.keyupSaveTimeout);
-      return this;
-    }
-
-  , destroy: function(){
-      if (!this.isNew) api[this.type].delete(this.model.id);
-
-      this.undelegateEvents();
-
-      this.$el.removeData().unbind();
-
-      //Remove view from DOM
-      this.remove();
-
-      Backbone.View.prototype.remove.call(this);
-
-      this.trigger('destroy');
-    }
-
-  , onAvatarClick: function(e){
-      var this_ = this;
-      filepicker.pick(
-        { mimetypes:['image/*'] },
-        function(file) {
-          this_.model.avatarUrl = file.url;
-        },
-        function(error) {
-          console.log(error);
         }
-      );
-    }
-
-  , onCopyClick: function(e){
-      this.trigger('copy', this.model);
-    }
-
-  , onDeleteClick: function(e){
-      if (!confirm("Are you sure you want to delete " + (this.model.email || "this record") + "?"))
-        return;
-
-      this.destroy();
-    }
-
-  , onCancelClick: function(e){
-      e.preventDefault()
-
-      // We just want to delete the whole thing on cancel if it's a new item
-      if (this.isNew) return this.destroy();
-
-      this.render();
-      this.enterReadMode();
-    }
-
-  , onEditSaveClick: function(e){
-      e.preventDefault();
-
-      if (this.mode === 'read') this.enterEditMode();
-      else {
-        var this_ = this;
-        this.enterReadMode();
-        this.updateModelWithFormData();
-        this.saveModel(function(error){
-          if (error) alert(error.message);
-          this_.render();
-        });
       }
+      return this;
     }
 
-  , onKeyUpLiveBind: function(e){
-      this.updateModelWithFormData();
-      this.saveModelWithTimeout();
-      return this;
+
+  , getAdditionalRenderProperties: function(){
+      return {
+        groups:   this.allGroups
+      , groupIds: (this.model.attributes.groups || []).map(function(g){ return g.id || g; })
+      };
+    }
+
+  , getAdditionalSelect2Properties: function(){
+      return {
+        placeholder: "Select a Group"
+      , allowClear: true
+      , disabled: true
+      };
     }
   });
 });

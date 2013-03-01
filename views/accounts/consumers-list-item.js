@@ -14,7 +14,12 @@ define(function(require){
     type: 'consumers'
 
   , events: {
-      'click .avatarUrl':         'onAvatarClick'
+      'keyup .live-bind':         'onKeyUpLiveBind'
+    , 'click .btn-edit-save':     'onEditSaveClick'
+    , 'click .btn-cancel':        'onCancelClick'
+    , 'click .btn-delete':        'onDeleteClick'
+    , 'click .btn-copy':          'onCopyClick'
+    , 'click .avatarUrl':         'onAvatarClick'
     }
 
   , initialize: function(options){
@@ -22,9 +27,7 @@ define(function(require){
 
       options = options || {};
 
-      this.isNew        = !!options.isNew;
-      this.businesses   = options.businesses;
-      this.businessIds  = options.businessIds;
+      this.isNew  = !!options.isNew;
 
       this.mode = 'read';
 
