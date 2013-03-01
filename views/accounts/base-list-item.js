@@ -37,26 +37,29 @@ define(function(require){
   , render: function(){
       this.$el.html(
         this.template(
-          utils.extend(this.getAdditionalRenderProperties(), {
+          utils.extend({
             model: this.model.toJSON()
-          })
+          }, this.getAdditionalRenderProperties())
         )
       );
 
-      var $selects = this.$el.find('select').select2({
-        placeholder:  "Select a Group"
-      , allowClear:   true
-      , disabled:     true
-      });
+      var $selects = this.$el.find('select').select2(
+        utils.extend({
+          allowClear:   true
+        , disabled:     true
+        }, this.getAdditionalSelect2Properties())
+      );
 
       $selects.select2('disable');
+
+      this.delegateEvents();
 
       return this;
     }
 
-  , getAdditionalRenderProperties: function(){
-      return {};
-    }
+  , getAdditionalSelect2Properties: function(){ return {}; }
+
+  , getAdditionalRenderProperties: function(){ return {}; }
 
   , enterEditMode: function(){
       if (this.mode === "edit") return this;

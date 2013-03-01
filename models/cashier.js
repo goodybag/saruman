@@ -35,10 +35,14 @@ define(function(require){
       }
 
     , makeNewUser: function(){
-        this.set('email', 'cashier-' + utils.guid() + '@goodybag.com');
+        this.set('email', 'cashier-' + utils.guid() + '@generated.goodybag.com');
         this.set('password', utils.guid());
         this.set('id', 'New');
         return this;
+      }
+
+    , generateEmailFromId: function(){
+        this.set('email', 'cashier-' + this.attributes.id + '@generated.goodybag.com')
       }
 
     , set: function(key, value){
@@ -62,9 +66,10 @@ define(function(require){
         attr.userId = attr.id;
         delete attr.id;
 
-        if (this.attributes.id && this.attributes.id !== 'New')
+        if (this.attributes.id && this.attributes.id !== 'New'){
+          delete attr.userId;
           api.cashiers.update(this.attributes.id, attr, callback);
-        else {
+        } else {
           api.cashiers.create(attr, function(error, result){
             if (error) return callback && callback(error);
 

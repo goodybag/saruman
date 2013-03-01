@@ -126,9 +126,9 @@ define(function(require){
       for (var i = 0, len = users.length, view; i < len; i++){
         fragment.appendChild(
           new this.ItemView(
-            utils.extend(this.getAdditionalViewOptions(), {
+            utils.extend({
               model: new this.ItemModel(users[i])
-            })
+            }, this.getAdditionalViewOptions())
           ).render()
           .on('destroy', function(item){ this_.onItemDestroy(item) })
           .on('copy', function(item){ this_.onItemCopy(item) })
@@ -177,19 +177,31 @@ define(function(require){
       item = item.clone();
       item.makeNewUser();
 
-      this.$usersList[0].insertBefore(
-        new this.ItemView({
-          model:      item
-        , allGroups:  this.groups
-        , isNew:      true
-        }).render()
-          .enterEditMode()
-          .on('destroy', function(item){ this_.onItemDestroy(item) })
-          .on('copy', function(item){ this_.onItemCopy(item) })
-          .$el[0]
+      item.save(function(error){
+        if (error) return alert(error.message);
 
-      , this.$usersList[0].childNodes[0]
-      );
+        item.generateEmailFromId();
+
+        item.save(function(error){
+          if (error) return alert(error.message);
+
+          this_.$usersList[0].insertBefore(
+            new this_.ItemView(
+              utils.extend({
+                model: new this_.ItemModel(item)
+              , isNew: true
+              }, this_.getAdditionalViewOptions())
+            ).render()
+              .enterEditMode()
+              .on('destroy', function(item){ this_.onItemDestroy(item) })
+              .on('copy', function(item){ this_.onItemCopy(item) })
+              .$el[0]
+
+          , this_.$usersList[0].childNodes[0]
+          );
+        });
+      });
+
     }
 
   , onItemDestroy: function(item){
@@ -202,11 +214,12 @@ define(function(require){
       var this_ = this;
 
       this.$usersList[0].insertBefore(
-        new this.ItemView({
-          model:      new this.ItemModel()
-        , allGroups:  this.groups
-        , isNew:      true
-        }).render()
+        new this.ItemView(
+          utils.extend({
+            model: new this.ItemModel().makeNewUser()
+          , isNew: true
+          }, this.getAdditionalViewOptions())
+        ).render()
           .enterEditMode()
           .on('destroy', function(item){ this_.onItemDestroy(item) })
           .on('copy', function(item){ this_.onItemCopy(item) })

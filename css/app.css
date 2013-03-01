@@ -1,3 +1,7 @@
+/**
+ * Sorry, this CSS is a hack :(
+ */
+
 body {
   padding-top: 50px;
 }
@@ -139,4 +143,8 @@ table input.avatarUrl {
 table img.avatarUrl {
   width: 50px;
   cursor: pointer;
+}
+
+table .select-box {
+  width: 100%;
 }

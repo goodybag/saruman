@@ -7,11 +7,13 @@ define(function(require){
 
   , BaseListItem = require('./base-list-item')
 
-  , template  = require('hbt!./../../templates/accounts/consumer-list-item')
+  , template  = require('hbt!./../../templates/accounts/cashier-list-item')
   ;
 
   return BaseListItem.extend({
     type: 'cashiers'
+
+  , 'change .businesses-select':       'onBusinessChange'
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
@@ -29,26 +31,39 @@ define(function(require){
       return this;
     }
 
+  , onBusinessChange: function(e){
+console.log('lkja');
+      // this.model.set('businessId', parseInt(e.target.value));
+      // this.render();
+    }
+
+  , getAdditionalSelect2Properties: function(){
+      return {
+        allowClear: false
+      };
+    }
+
+    /**
+     * When the view renders, the object returned by this function
+     * will be mixed into the object that gets passed into the template
+     */
   , getAdditionalRenderProperties: function(){
       var
-        locations = this.businessIds[this.model.get('businessId')].locations
+        businessId = this.model.get('id') === 'New'
+                   ? this.businesses[0].id
+                   : this.model.get('businessId')
+
+      , locations  = this.businessIds[businessId].locations
       , locationName
       ;
 
-      // Find the location since we can't necessarily cache the list
-      if (locations){
-        for (var i = 0, l = locations.length; i < l; ++i){
-          if (locations[i].id === this.model.get('locationId')){
-            locationName = locations[i].name;
-            break;
-          }
-        }
-      }
+      if (this.model.get('id') === 'New')
+        this.model.set('businessId', businessId);
 
       return {
         businesses:   this.businesses
-      , businessName: this.businessIds[this.model.get('businessId')].name
-      , locationName: locationName
+      , businessName: this.businessIds[businessId].name
+      , locations:    this.businessIds[businessId].locations
       }
     }
   });

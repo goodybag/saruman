@@ -6,7 +6,7 @@ define(function(require){
   , Paginator         = require('../../lib/paginator')
   , troller           = require('../../lib/troller')
 
-  , template          = require('hbt!./../../templates/accounts/consumers-page')
+  , template          = require('hbt!./../../templates/accounts/cashiers-page')
 
   , Views = {
       Paginator       : require('../paginator')
@@ -14,7 +14,7 @@ define(function(require){
     }
 
   , Models = {
-      ItemModel       : require('../../models/consumer')
+      ItemModel       : require('../../models/cashier')
     }
   ;
 

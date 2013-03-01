@@ -66,7 +66,6 @@ define(function(require){
 
       // Delegate events to current Page
       console.log("rendered", this.currentPage);
-      console.log(this.children.pages);
       // if (this.currentPage) this.children.pages.pages[this.currentPage].delegateEvents();
 
       return this;
