@@ -63,17 +63,18 @@ define(function(require){
         if (data) this.set(data);
 
         var attr = utils.clone(this.attributes), this_ = this;
-        attr.userId = attr.id;
+        // attr.userId = attr.id;
         delete attr.id;
 
         if (this.attributes.id && this.attributes.id !== 'New'){
-          delete attr.userId;
           api.cashiers.update(this.attributes.id, attr, callback);
         } else {
           api.cashiers.create(attr, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);
+
+            if (callback) callback(null, result)
           });
         }
 
