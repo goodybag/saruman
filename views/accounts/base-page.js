@@ -80,34 +80,14 @@ define(function(require){
 
       if (filter) options.filter = filter;
 
-      utils.parallel({
-        users: function(done){
-          api[this_.type].list(options, function(error, users, meta){
-            if (error) return done(error);
+      api[this_.type].list(options, function(error, users, meta){
+        if (error) return alert(error.message);
 
-            this_.paginator.setTotal(meta.total);
+        this_.paginator.setTotal(meta.total);
+        this_.users = users;
 
-            return done(null, users);
-          });
-        }
-
-      , groups: function(done){
-          if (this_.groups) return done(null, this_.groups);
-
-          api[this_.type].list(function(error, groups){
-            if (error) return done(error);
-            return done(null, groups);
-          });
-        }
-      }, function(error, results){
-          if (error) return alert(error);
-
-          this_.users = results.users;
-          this_.groups = results.groups;
-
-          this_.renderUsers();
-        }
-      );
+        this_.renderUsers();
+      });
 
       return this;
     }
