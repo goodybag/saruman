@@ -225,7 +225,7 @@
         });
       });
 
-      $.getJSON(base+'/businesses/'+businessId+'/product-categories', function(data){
+      $.getJSON(base+'/businesses/'+businessId+'/product-categories?limit=1000', function(data){
         data = data || {};
         var $html = $(Handlebars.templates['category-row'](data));
         makeCategoryEditable($html);
@@ -233,7 +233,7 @@
       });
 
 
-      $.getJSON(base+'/businesses/'+businessId+'/product-tags', function(response){
+      $.getJSON(base+'/businesses/'+businessId+'/product-tags?limit=1000', function(response){
         response = response || {};
         if(response.error) return console.log(response.error);
 
@@ -241,7 +241,7 @@
           tags.push(response.data[index].tag);
           tagNamesToId[response.data[index].tag] = +response.data[index].id;
         }
-        $.getJSON(base+'/businesses/'+businessId+'/products', function(data){
+        $.getJSON(base+'/businesses/'+businessId+'/products?limit=1000', function(data){
           data = data || {};
           var $html = $(Handlebars.templates['item-row'](data));
           makeItemEditable($html);
@@ -406,7 +406,7 @@
         $('.item-categories, .item-tags', context).each(function(){
           var $self = $(this);
           var id = $self.attr('data-id');
-          $.getJSON(base+'/products/'+id, function(response){
+          $.getJSON(base+'/products/'+id+"?limit=1000", function(response){
             response = response || {};
             if(response.error) return console.log(response.error);
             var categoryIds = [];

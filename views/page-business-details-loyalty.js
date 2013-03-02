@@ -65,6 +65,7 @@ define(function(require){
 
   , updateModelWithFormData: function(){
       var $el;
+      this.loyalty = this.loyalty || {};
       for (var key in this.loyalty){
         if (($el = this.$el.find('#loyalty-' + key)).length > 0)
           this.loyalty[key] = $el.val();
