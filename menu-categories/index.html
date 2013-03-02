@@ -131,6 +131,7 @@
       , xhrFields: {withCredentials: true}
       , url: url
       , success: successCallback
+      , error: successCallback
       });
     };
 
@@ -150,6 +151,7 @@
           function(file) {
             $target.attr('src', file.url);
             updateItem(pid, { photoUrl: file.url }, function(result){
+              result = result || {};
               if (result.error) alert(result.error.message);
             });
           },
@@ -223,7 +225,8 @@
         });
       });
 
-      $.getJSON(base+'/businesses/'+businessId+'/productCategories', function(data){
+      $.getJSON(base+'/businesses/'+businessId+'/product-categories', function(data){
+        data = data || {};
         var $html = $(Handlebars.templates['category-row'](data));
         makeCategoryEditable($html);
         $(".menu-categories-table").append($html);
@@ -231,6 +234,7 @@
 
 
       $.getJSON(base+'/businesses/'+businessId+'/product-tags', function(response){
+        response = response || {};
         if(response.error) return console.log(response.error);
 
         for(index in response.data){
@@ -238,6 +242,7 @@
           tagNamesToId[response.data[index].tag] = +response.data[index].id;
         }
         $.getJSON(base+'/businesses/'+businessId+'/products', function(data){
+          data = data || {};
           var $html = $(Handlebars.templates['item-row'](data));
           makeItemEditable($html);
           $(".menu-items-table").append($html);
@@ -311,7 +316,7 @@
 
       function updateCategory(id, data, callback){
         $.ajax({
-          url: base+'/productCategories/' + id
+          url: base+'/product-categories/' + id
         , type: 'PUT'
         , data: data
         , dataType: 'json'
@@ -327,7 +332,7 @@
 
       function createCategory(data, callback){
         $.ajax({
-          url: base+'/productCategories'
+          url: base+'/product-categories'
         , type: 'POST'
         , data: data
         , dataType: 'json'
@@ -343,7 +348,7 @@
 
       function deleteCategory(id, callback){
         $.ajax({
-          url: base+'/productCategories/'+id
+          url: base+'/product-categories/'+id
         , type: 'DELETE'
         , dataType: 'json'
         , xhrFields: {
@@ -402,6 +407,7 @@
           var $self = $(this);
           var id = $self.attr('data-id');
           $.getJSON(base+'/products/'+id, function(response){
+            response = response || {};
             if(response.error) return console.log(response.error);
             var categoryIds = [];
             var _tags = [];
@@ -452,6 +458,7 @@
         $('.item-name', context).on('save', function(e, params){
           var $self = $(this);
           updateItem($self.attr('data-id'), {name: params.newValue}, function(result){
+            result = result || {};
             if(result.error) return console.error(result.error);
             $self.removeClass('editable-unsaved');
           });
@@ -460,6 +467,7 @@
         $('.item-description', context).on('save', function(e, params){
           var $self = $(this);
           updateItem($self.attr('data-id'), {description: params.newValue}, function(result){
+            result = result || {};
             if(result.error) return console.error(result.error);
             $self.removeClass('editable-unsaved');
           });
@@ -469,6 +477,7 @@
           var $self = $(this);
           var price = Math.round((+params.newValue)*100);
           updateItem($self.attr('data-id'), {price: price}, function(result){
+            result = result || {};
             if(result.error) return console.error(result.error);
             $self.removeClass('editable-unsaved');
           });
@@ -482,6 +491,7 @@
           for (val in params.newValue)
             categories.push(+params.newValue[val]);
           updateItem($self.attr('data-id'), {categories: params.newValue}, function(result){
+            result = result || {};
             if(result.error) return console.error(result.error);
             $self.removeClass('editable-unsaved');
           });
@@ -512,6 +522,7 @@
           , function(err){
               if(err) return console.error(err);
               updateItem($self.attr('data-id'), {tags: _tags}, function(result){
+                result = result || {};
                 if(result.error) return console.error(result.error);
                 $self.removeClass('editable-unsaved');
               });
