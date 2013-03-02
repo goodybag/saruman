@@ -44,7 +44,10 @@ define(function(require){
         , lat:      0
         , lon:      0
         }
+
+      , avatarUrl: 'http://placekitten.com/250/250'
       }
+
     }
 
   , dev: {

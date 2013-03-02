@@ -12,10 +12,22 @@
           <li class="">
             <a href="#/businesses/page/1">Businesses</a>
           </li>
+          {{#ifAdmin}}
+          <li class="">
+            <a href="#/accounts/users/page/1">Accounts</a>
+          </li>
+          {{else}}
+          <li class="">
+            <a href="#/accounts/tapin-stations/page/1">Tablets and Users</a>
+          </li>
+          {{/ifAdmin}}
           <li class="">
             <a href="#/logout">Logout</a>
           </li>
         {{else}}
+        <li class="">
+          <a href="#/login">Login</a>
+        </li>
         {{/if}}
       </ul>
     </div>
