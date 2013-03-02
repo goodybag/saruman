@@ -63,9 +63,10 @@ define(function(require){
         delete attr.id;
 
         if (this.attributes.id && this.attributes.id !== 'New'){
-          if (!attr.groups || attr.groups.length === 0) return r;
-          for (var i = 0, l = attr.groups.length; i < l; ++i){
-            delete attr.groups[i].metaTotal;
+          if (attr.groups){
+            for (var i = 0, l = attr.groups.length; i < l; ++i){
+              delete attr.groups[i].metaTotal;
+            }
           }
           api.users.update(this.attributes.id, attr, callback);
         }

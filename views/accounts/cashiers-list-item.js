@@ -49,7 +49,7 @@ console.log('lkja');
      */
   , getAdditionalRenderProperties: function(){
       var
-        businessId = this.model.get('id') === 'New'
+        businessId = this.model.get('id') === 'New' && !this.model.get('businessId')
                    ? this.businesses[0].id
                    : this.model.get('businessId')
 

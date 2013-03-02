@@ -156,7 +156,6 @@ define(function(require){
 
       item = item.clone();
       item.set('id', 'New');
-      item.set('email', this.type + '-' + utils.guid() + '@generated.goodybag.com');
       item.set('password', 'password');
 
       return this_.$usersList[0].insertBefore(

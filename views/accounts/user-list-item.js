@@ -21,7 +21,7 @@ define(function(require){
       this.isNew      = !!options.isNew;
       this.allGroups  = options.allGroups;
       this.groupsById = options.groupsById;
-console.log(this.groupsById);
+
       this.mode = 'read';
 
       this.template = template;
