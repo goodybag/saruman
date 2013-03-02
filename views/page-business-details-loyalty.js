@@ -7,6 +7,14 @@ define(function(require){
 
   , template          = require('hbt!./../templates/page-business-details-loyalty')
   , resultTemplate    = require('hbt!./../templates/loyalty-result')
+
+  , defaultModel = {
+      requiredItem: null
+    , reward: null
+    , regularPunchesRequired: null
+    , elitePunchesRequired: null
+    , punchesRequiredToBecomeElite: null
+    }
   ;
 
   return Page.extend({
@@ -33,7 +41,7 @@ define(function(require){
       options = options || {};
       this.businessId = options.businessId;
       this.business   = options.business;
-      this.loyalty    = options.loyalty;
+      this.loyalty    = options.loyalty || utils.clone(defaultModel);
 
       this.fetchLoyalty();
     }
@@ -52,23 +60,24 @@ define(function(require){
     }
 
   , render: function(){
-    console.log("rendering with", this.loyalty);
-      this.$el.html(template(this.loyalty || {}));
+      this.$el.html(template(this.loyalty || utils.clone(defaultModel)));
       this.renderResults();
       return this;
     }
 
   , renderResults: function(){
-      this.$el.find('#loyalty-result').html(resultTemplate(this.loyalty || {}));
+      this.$el.find('#loyalty-result').html(resultTemplate(this.loyalty || utils.clone(defaultModel)));
       return this;
     }
 
   , updateModelWithFormData: function(){
       var $el;
+      this.loyalty = this.loyalty || utils.clone(defaultModel);
       for (var key in this.loyalty){
         if (($el = this.$el.find('#loyalty-' + key)).length > 0)
           this.loyalty[key] = $el.val();
       }
+
       return this;
     }
 
