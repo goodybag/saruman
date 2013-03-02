@@ -1,0 +1,44 @@
+<td class="id">
+  {{model.id}}
+</td>
+<td class="email">
+  <input class="edit-mode-value input-medium" value="{{model.email}}" type="email" id="user-{{model.id}}-email">
+  <span class="read-mode-value">{{truncate model.email 23}}</span>
+</td>
+<td class="password">
+  <input class="edit-mode-value input-medium" type="password" id="user-{{model.id}}-password">
+  <span class="read-mode-value">********</span>
+</td>
+<td class="businessId">
+  <select name="businesses" class="businesses-select select-box" id="user-{{model.id}}-businesses">
+  {{#each businesses}}
+    <option value="{{this.id}}"{{#eq this.id ../model.businessId}} selected="true"{{/eq}}>{{this.name}}</option>
+  {{/each}}
+  </select>
+</td>
+<td class="locationId">
+  <select name="locations" class="locations-select select-box" id="user-{{model.id}}-locations">
+  {{#each locations}}
+    <option value="{{this.id}}"{{#eq this.id ../model.locationId}} selected="true"{{/eq}}>{{this.name}}</option>
+  {{/each}}
+  </select>
+</td>
+<td class="actions">
+  <div class="btn-group">
+    <button class="btn btn-small btn-edit btn-edit-save">
+      <i class="icon-edit"></i>
+    </button>
+    <button class="btn btn-small btn-cancel hide">
+      <i class="icon-ban-circle"></i>
+    </button>
+    <button class="btn btn-small btn-copy">
+      <i class="icon-copy"></i>
+    </button>
+    <button class="btn btn-small btn-open-user">
+      <i class="icon-user"></i>
+    </button>
+    <button class="btn btn-small btn-delete btn-danger">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+</td>

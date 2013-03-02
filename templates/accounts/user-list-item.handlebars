@@ -11,11 +11,11 @@
 </td>
 <td class="singly-id">
   <input class="edit-mode-value input-medium" value="{{model.singlyId}}" type="text" id="user-{{model.id}}-singlyId">
-  <span class="read-mode-value">{{model.singlyId}}</span>
+  <span class="read-mode-value">{{truncate model.singlyId 23}}</span>
 </td>
 <td class="singly-access-token">
   <input class="edit-mode-value input-medium" value="{{model.singlyAccessToken}}" type="text" id="user-{{model.id}}-singlyAccessToken">
-  <span class="read-mode-value">{{model.singlyAccessToken}}</span>
+  <span class="read-mode-value">{{truncate model.singlyAccessToken 23}}</span>
 </td>
 <td class="groups">
   <select name="groups" class="groups-select" id="user-{{model.id}}-groups" multiple="true">

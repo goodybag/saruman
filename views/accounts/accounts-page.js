@@ -3,20 +3,22 @@ define(function(require){
     api       = require('../../lib/api')
   , troller   = require('../../lib/troller')
 
-  , Page      = require('../page')
-
   , template  = require('hbt!../../templates/accounts/accounts-page')
 
   , Views = {
       PageManager:  require('../page-manager')
+    , Page:         require('../page')
     }
 
   , Pages = {
       users:        require('./users-page')
+    , consumers:    require('./consumers-page')
+    , cashiers:     require('./cashiers-page')
     }
 
   , pageNames = {
       users:            'Users'
+    , consumers:        'Consumers'
     , cashiers:         'Cashiers'
     , managers:         'Managers'
     , 'tapin-stations': 'TapIn Stations'
@@ -24,7 +26,7 @@ define(function(require){
     }
   ;
 
-  return Page.extend({
+  return Views.Page.extend({
     className: 'page page-accounts'
 
   , initialize: function(options){
@@ -41,11 +43,7 @@ define(function(require){
         })
       };
 
-      this.hasLoadOnced = false;
-
       this.currentPage = options.page || 'users';
-
-      // this.changePage(this.currentPage, { business: this.business, page: 0 });
 
       return this;
     }
@@ -68,13 +66,12 @@ define(function(require){
 
       // Delegate events to current Page
       console.log("rendered", this.currentPage);
-      // this.children.pages.pages[this.children.pages.current].delegateEvents();
+      // if (this.currentPage) this.children.pages.pages[this.currentPage].delegateEvents();
 
       return this;
     }
 
   , changePage: function(page, options){
-    console.log("changing to", page);
       options = options || {};
 
       this.children.pages.changePage(page, options);
@@ -87,8 +84,8 @@ define(function(require){
       // Change page name
       var current = this.children.pages.pages[this.currentPage];
 
-      if (current.name)
-        this.$el.find('.page-name > .name').css('display', 'inline').html(current.name);
+      if (pageNames[this.currentPage])
+        this.$el.find('.page-name > .name').css('display', 'inline').html(pageNames[current]);
       else
         this.$el.find('.page-name > .name').css('display', 'none');
 

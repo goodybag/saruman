@@ -12,6 +12,7 @@
       "domReady": "2.0.x",
       "async": "0.2.x",
       "select2": "3.2.x",
+      "boostrap-dropdown": "0.2.x",
       "hbt": "0.0.x"
     }
   },

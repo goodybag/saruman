@@ -1,3 +1,7 @@
+/**
+ * Sorry, this CSS is a hack :(
+ */
+
 body {
   padding-top: 50px;
 }
@@ -121,4 +125,26 @@ input.edit-mode-value {
 table .read-mode-value {
   display: inline-block;
   word-wrap: break-word;
+}
+
+.page-actions {
+  position: relative;
+  min-height: 60px;
+}
+
+.page-actions .search-wrapper {
+  position: absolute;
+  top: 0; right: 0;
+}
+
+table input.avatarUrl {
+  display: none;
+}
+table img.avatarUrl {
+  width: 50px;
+  cursor: pointer;
+}
+
+table .select-box {
+  width: 100%;
 }
