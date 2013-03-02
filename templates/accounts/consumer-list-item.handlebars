@@ -1,0 +1,42 @@
+<td class="id">
+  {{model.id}}
+</td>
+<td class="firstName">
+  <input class="edit-mode-value input-medium" value="{{model.firstName}}" type="text" id="user-{{model.id}}-firstName">
+  <span class="read-mode-value">{{model.firstName}}</span>
+</td>
+<td class="lastName">
+  <input class="edit-mode-value input-medium" value="{{model.lastName}}" type="text" id="user-{{model.id}}-lastName">
+  <span class="read-mode-value">{{model.lastName}}</span>
+</td>
+<td class="screenName">
+  <input class="edit-mode-value input-medium" value="{{model.screenName}}" type="text" id="user-{{model.id}}-screenName">
+  <span class="read-mode-value">{{model.screenName}}</span>
+</td>
+<td class="cardId">
+  <input class="edit-mode-value input-medium" value="{{model.cardId}}" type="text" id="user-{{model.id}}-cardId">
+  <span class="read-mode-value">{{model.cardId}}</span>
+</td>
+<td class="avatarUrl">
+  <input class="avatarUrl" value="{{model.avatarUrl}}" type="text" id="user-{{model.id}}-avatarUrl">
+  <img class="avatarUrl" src="{{model.avatarUrl}}">
+</td>
+<td class="actions">
+  <div class="btn-group">
+    <button class="btn btn-small btn-edit btn-edit-save">
+      <i class="icon-edit"></i>
+    </button>
+    <button class="btn btn-small btn-cancel hide">
+      <i class="icon-ban-circle"></i>
+    </button>
+    <button class="btn btn-small btn-copy">
+      <i class="icon-copy"></i>
+    </button>
+    <button class="btn btn-small btn-open-user">
+      <i class="icon-user"></i>
+    </button>
+    <button class="btn btn-small btn-delete btn-danger">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+</td>

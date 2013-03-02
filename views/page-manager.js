@@ -41,7 +41,8 @@ define(function(require){
         this.pages[page].hide(options);
 
         // Set initial display to none so we can switch them out
-        this.pages[page].render();
+        if (options && options.renderFn) options.renderFn();
+        else this.pages[page].render();
         this.pages[page].delegateEvents();
         this.$el.append(this.pages[page].$el);
       }

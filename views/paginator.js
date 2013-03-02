@@ -38,8 +38,8 @@ define(function(require){
         pages:            pages
       , previous:         prev + 1
       , next:             next + 1
-      , cantGoBack:       page === prev
-      , cantGoForward:    page === next
+      , cantGoBack:       page <= prev
+      , cantGoForward:    page >= next
       }));
 
       this.delegateEvents();

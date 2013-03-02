@@ -32,9 +32,13 @@ define(function(require){
           callback = options;
           options = {};
         }
+
         user.isLoggedIn(function(error, loggedIn){
-          if (error) return console.log(error), callback(error);
-          if (!loggedIn) return app.changePage("login");
+          if (error) return console.log(error), callback && callback(error);
+          if (!loggedIn){
+            app.appView.changePage("login");
+            return utils.history.navigate('/login');
+          }
 
           if (page === "login") page = "dashboard";
 
@@ -49,7 +53,6 @@ define(function(require){
 
     , logout: function(){
         user.logout();
-        app.changePage('login');
       }
     }
   ;

@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="page-header">
+      <h1><a href="#/accounts">Accounts</a><span class="page-name">{{#if page}} <i class="icon-double-angle-right"></i> <span class="name">{{page}}</span>{{/if}}</span></h1>
+
+      <ul class="nav nav-tabs pull-right accounts-nav">
+      {{#ifAdmin}}
+        <li class="groups">
+          <a href="/accounts/groups" class="dropdown-toggle">Groups</a>
+        </li>
+      {{/ifAdmin}}
+
+        <li class="users dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <i class="icon-caret-down"></i></a>
+          <ul class="dropdown-menu">
+
+          {{#ifAdmin}}
+            <li class="users">
+              <a href="/#/accounts/users/page/1">Base Record</a>
+            </li>
+          {{/ifAdmin}}
+
+            <li class="cashiers">
+              <a href="/#/accounts/cashiers/page/1">Cashiers</a>
+            </li>
+
+          {{#ifAdmin}}
+            <li class="consumers">
+              <a href="/#/accounts/consumers/page/1">Consumers</a>
+            </li>
+          {{/ifAdmin}}
+
+            <li class="managers">
+              <a href="/#/accounts/managers/page/1">Managers</a>
+            </li>
+
+          {{#ifAdmin}}
+            <li class="sales">
+              <a href="/#/accounts/sales/page/1">Sales</a>
+            </li>
+          {{/ifAdmin}}
+
+            <li class="tapin-stations">
+              <a href="/#/accounts/tapin-stations/page/1">Tapin Stations</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <div id="accounts-pages">
+
+      </div>
+    </div>
+  </div>
+</div>

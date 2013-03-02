@@ -13,6 +13,7 @@ define(function(require){
     , dashboard:            require('./page-dashboard')
     , businesses:           require('./page-businesses')
     , business:             require('./page-business-details')
+    , accounts:             require('./accounts/accounts-page')
     }
   ;
 
