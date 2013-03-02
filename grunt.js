@@ -63,9 +63,9 @@ module.exports = function(grunt) {
     },
 
     s3: {
-      key: 'AKIAI5ASK2M6JIZDPIYA',
+      key:    'AKIAI5ASK2M6JIZDPIYA',
       secret: '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',
-      bucket: 'saruman.goodybag.com',
+      bucket: 'merlin.staging.goodybag.com',
       access: 'public-read',
 
       upload: [

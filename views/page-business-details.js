@@ -60,7 +60,8 @@ define(function(require){
       if (options.page && this.hasLoadedOnce) this.changePage(options.page);
 
       // Get new business
-      if ((this.business && this.business.id != options.id) || !this.hasLoadedOnce) this.fetchBusiness();
+      // if ((this.business && this.business.id != options.id) || !this.hasLoadedOnce) this.fetchBusiness();
+      this.fetchBusiness();
     }
 
   , fetchBusiness: function(){
