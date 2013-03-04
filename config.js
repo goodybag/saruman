@@ -45,6 +45,16 @@ define(function(require){
         , lon:      0
         }
 
+      , business: {
+          name:         'New Business'
+        , street1:      '123 Foobar St'
+        , city:         'Austin'
+        , state:        'TX'
+        , zip:          78701
+        , isVerified:   true
+        , isGB:         true
+        }
+
       , avatarUrl: 'http://placekitten.com/250/250'
       }
 

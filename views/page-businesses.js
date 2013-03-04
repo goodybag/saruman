@@ -4,6 +4,7 @@ define(function(require){
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
   , utils             = require('../lib/utils')
+  , config            = require('../config')
   , channels          = require('../lib/channels')
   , Paginator         = require('../lib/paginator')
   , troller           = require('../lib/troller')
@@ -18,6 +19,10 @@ define(function(require){
 
   return Page.extend({
     className: 'page page-businesses'
+
+  , events: {
+      'click .btn-new-business':      'onNewBusinessClick'
+    }
 
   , initialize: function(options){
       this.template = template;
@@ -123,6 +128,14 @@ define(function(require){
       this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
 
       return this;
+    }
+
+  , onNewBusinessClick: function(e){
+      api.businesses.create(config.defaults.business, function(error, result){
+        if (error) return alert(error.message);
+
+        utils.history.navigate('/businesses/' + result.id, { trigger: true });
+      });
     }
   });
 });
