@@ -14,6 +14,7 @@ define(function(require){
       users:        require('./users-page')
     , consumers:    require('./consumers-page')
     , cashiers:     require('./cashiers-page')
+    , managers:     require('./managers-page')
     }
 
   , pageNames = {
