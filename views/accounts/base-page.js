@@ -71,10 +71,10 @@ define(function(require){
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
-      , options = {
+      , options = utils.extend({
           limit : paging.limit
         , offset: paging.offset
-        }
+        }, this.getAdditionalFetchUserParams())
       , filter  = this.$search.val()
       ;
 
@@ -147,9 +147,8 @@ define(function(require){
       return this;
     }
 
-  , getAdditionalViewOptions: function(){
-      return {};
-    }
+  , getAdditionalViewOptions: function(){ return {}; }
+  , getAdditionalFetchUserParams: function(){ return {}; }
 
   , onItemCopy: function(item){
       var this_ = this;

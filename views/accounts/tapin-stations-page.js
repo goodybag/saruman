@@ -28,6 +28,8 @@ define(function(require){
 
       options = options || {};
 
+      this.businessId   = options.businessId;
+
       this.template     = template;
       this.ItemModel    = Models.ItemModel;
       this.ItemView     = Views.ItemView;
@@ -66,6 +68,10 @@ define(function(require){
       };
     }
 
+  , getAdditionalFetchUserParams: function(){
+      return this.businessId ? { businessId: this.businessId } : {};
+    }
+
   , onItemCopy: function(item){
       var this_ = this;
 
@@ -92,10 +98,10 @@ define(function(require){
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
-      , options = {
+      , options = utils.extend({
           limit : paging.limit
         , offset: paging.offset
-        }
+        }, this.getAdditionalFetchUserParams())
       , filter  = this.$search.val()
       ;
 

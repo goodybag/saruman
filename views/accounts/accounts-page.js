@@ -75,7 +75,6 @@ define(function(require){
 
   , changePage: function(page, options){
       options = options || {};
-
       this.children.pages.changePage(page, options);
       this.currentPage = page;
 
