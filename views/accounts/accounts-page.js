@@ -11,10 +11,11 @@ define(function(require){
     }
 
   , Pages = {
-      users:        require('./users-page')
-    , consumers:    require('./consumers-page')
-    , cashiers:     require('./cashiers-page')
-    , managers:     require('./managers-page')
+      users:                require('./users-page')
+    , consumers:            require('./consumers-page')
+    , cashiers:             require('./cashiers-page')
+    , managers:             require('./managers-page')
+    , 'tapin-stations':     require('./tapin-stations-page')
     }
 
   , pageNames = {
