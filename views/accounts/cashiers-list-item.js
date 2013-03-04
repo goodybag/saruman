@@ -13,7 +13,9 @@ define(function(require){
   return BaseListItem.extend({
     type: 'cashiers'
 
-  , 'change .businesses-select':       'onBusinessChange'
+  , events: {
+      'change .businesses-select':       'onBusinessChange'
+    }
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
@@ -28,13 +30,21 @@ define(function(require){
 
       this.template = template;
 
+      this.on('render', this.onRender, this);
+
+      for (var key in BaseListItem.prototype.events){
+        if (!(key in this.events)) this.events[key] = BaseListItem.prototype.events[key];
+      }
+
+      this.delegateEvents();
+
       return this;
     }
 
   , onBusinessChange: function(e){
-console.log('lkja');
-      // this.model.set('businessId', parseInt(e.target.value));
-      // this.render();
+      this.model.set('businessId', parseInt(e.target.value));
+      this.render();
+      this.enterEditMode();
     }
 
   , getAdditionalSelect2Properties: function(){
@@ -49,11 +59,11 @@ console.log('lkja');
      */
   , getAdditionalRenderProperties: function(){
       var
-        businessId = this.model.get('id') === 'New' && !this.model.get('businessId')
-                   ? this.businesses[0].id
-                   : this.model.get('businessId')
+        businessId = this.model.get('businessId')
 
-      , locations  = this.businessIds[businessId].locations
+      , business = this.businessIds[businessId] || {}
+
+      , locations  = business.locations || []
       , locationName
       ;
 
@@ -62,8 +72,8 @@ console.log('lkja');
 
       return {
         businesses:   this.businesses
-      , businessName: this.businessIds[businessId].name
-      , locations:    this.businessIds[businessId].locations
+      , businessName: business.name
+      , locations:    locations
       }
     }
   });

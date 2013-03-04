@@ -16,11 +16,13 @@ define(function(require){
 
     , defaults: {
         id: 'New'
+      , locationId: null
+      , businessId: null
       }
 
     , initialize: function(attributes){
-        if (this.attributes.userId){
-          this.attributes.id = this.attributes.userId;
+        if (attributes && attributes.userId){
+          this.attributes.id = attributes.userId;
           delete this.attributes.userId;
         }
 
@@ -36,7 +38,7 @@ define(function(require){
 
     , makeNewUser: function(){
         this.set('email', 'cashier-' + utils.guid() + '@generated.goodybag.com');
-        this.set('password', utils.guid());
+        this.set('password', utils.guid().replace(/\-/g, ''));
         this.set('id', 'New');
         return this;
       }
@@ -66,8 +68,30 @@ define(function(require){
         // attr.userId = attr.id;
         delete attr.id;
 
+        // Sanitize what we're sending to the server
+        if (attr.locationId == null) delete attr.locationId;
+        if (attr.businessId == null) delete attr.businessId;
+
         if (this.attributes.id && this.attributes.id !== 'New'){
-          api.cashiers.update(this.attributes.id, attr, callback);
+          var
+            password = attr.password
+
+          , updates = {
+              regular: function(done){
+                if (password) delete attr.password;
+
+                api.cashiers.update(this_.attributes.id, attr, done);
+              }
+            }
+          ;
+
+          if (password){
+            updates.password = function(done){
+              api.users.update(this_.attributes.id, { password: password }, done);
+            };
+          }
+
+          utils.parallel(updates, callback);
         } else {
           api.cashiers.create(attr, function(error, result){
             if (error) return callback && callback(error);
