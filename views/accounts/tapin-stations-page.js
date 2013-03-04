@@ -66,6 +66,28 @@ define(function(require){
       };
     }
 
+  , onItemCopy: function(item){
+      var this_ = this;
+
+      item = item.clone();
+      item.makeNewUser();
+
+      return this_.$usersList[0].insertBefore(
+        new this_.ItemView(
+          utils.extend({
+            model: item
+          , isNew: true
+          }, this_.getAdditionalViewOptions())
+        ).render()
+          .enterEditMode()
+          .on('destroy', function(item){ this_.onItemDestroy(item) })
+          .on('copy', function(item){ this_.onItemCopy(item) })
+          .$el[0]
+
+      , this_.$usersList[0].childNodes[0]
+      );
+    }
+
   , fetchUsers: function(){
       var
         this_   = this
