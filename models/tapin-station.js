@@ -12,12 +12,16 @@ define(function(require){
       , 'userId'
       , 'locationId'
       , 'businessId'
+      , 'loyaltyEnabled'
+      , 'galleryEnabled'
       ]
 
     , defaults: {
-        id: 'New'
-      , locationId: null
-      , businessId: null
+        id:             'New'
+      , locationId:     null
+      , businessId:     null
+      , loyaltyEnabled: true
+      , galleryEnabled: true
       }
 
     , initialize: function(attributes){
@@ -37,14 +41,15 @@ define(function(require){
       }
 
     , makeNewUser: function(){
-        this.set('email', 'cashier-' + utils.guid() + '@generated.goodybag.com');
+        this.set('email', 'tapin-station-' + utils.guid() + '@generated.goodybag.com');
         this.set('password', utils.guid().replace(/\-/g, ''));
         this.set('id', 'New');
         return this;
       }
 
     , generateEmailFromId: function(){
-        this.set('email', 'cashier-' + this.attributes.id + '@generated.goodybag.com')
+        this.set('email', 'tapin-station-' + this.attributes.id + '@generated.goodybag.com')
+        this.set('password', utils.md5('chipotle-' + this.attributes.id));
       }
 
     , set: function(key, value){
@@ -65,7 +70,6 @@ define(function(require){
         if (data) this.set(data);
 
         var attr = utils.clone(this.attributes), this_ = this;
-        // attr.userId = attr.id;
         delete attr.id;
 
         // Sanitize what we're sending to the server
@@ -80,7 +84,7 @@ define(function(require){
               regular: function(done){
                 if (password) delete attr.password;
 
-                api.cashiers.update(this_.attributes.id, attr, done);
+                api.tapinStations.update(this_.attributes.id, attr, done);
               }
             }
           ;
@@ -93,7 +97,7 @@ define(function(require){
 
           utils.parallel(updates, callback);
         } else {
-          api.cashiers.create(attr, function(error, result){
+          api.tapinStations.create(attr, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);
@@ -106,7 +110,7 @@ define(function(require){
       }
 
     , delete: function(){
-        api.cashiers.delete(this.attributes.id);
+        api.tapinStations.delete(this.attributes.id);
       }
     })
   ;
