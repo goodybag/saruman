@@ -53,6 +53,7 @@ define(function(require){
         , zip:          78701
         , isVerified:   true
         , isGB:         true
+        , logoUrl:      'http://placekitten.com/520/520'
         }
 
       , avatarUrl: 'http://placekitten.com/250/250'
