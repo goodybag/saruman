@@ -3,6 +3,7 @@ define(function(require){
     Page              = require('./page')
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
+  , utils             = require('../lib/utils')
   , channels          = require('../lib/channels')
 
   , template          = require('hbt!./../templates/page-business-details-main')
@@ -12,7 +13,8 @@ define(function(require){
     className: 'page page-business-details'
 
   , events: {
-      'submit #business-details-form': 'onSubmit'
+      'submit #business-details-form':  'onSubmit'
+    , 'click .delete-btn':              'onDelete'
     }
 
   , initialize: function(options){
@@ -48,6 +50,18 @@ define(function(require){
         }
 
         this_.parentView.render();
+      });
+    }
+
+  , onDelete: function(e){
+      e.preventDefault();
+
+      if (!confirm("Are you absolutely 100% completely positive that you want to impose your executive kill decision on this business??!")) return;
+
+      api.businesses.delete(this.business.id, function(error){
+        if (error) return alert(error.message);
+
+        utils.history.navigate('/businesses/page/1', { trigger: true });
       });
     }
   });
