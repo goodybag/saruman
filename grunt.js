@@ -39,6 +39,7 @@ module.exports = function(grunt) {
             'css/bootstrap.css',
             'css/bootstrap-responsive.css',
             'css/font-awesome.css',
+            'css/select2.css',
             'css/app.css'
           ]
         }
