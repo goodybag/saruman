@@ -15,6 +15,7 @@ define(function(require){
   , events: {
       'submit #business-details-form':  'onSubmit'
     , 'click .delete-btn':              'onDelete'
+    , 'click .business-logo':            'onLogoClick'
     }
 
   , initialize: function(options){
@@ -28,6 +29,19 @@ define(function(require){
   , render: function(){
       this.$el.html(template(this.business || {}));
       return this;
+    }
+
+  , onLogoClick: function(e){
+      var this_ = this;
+      filepicker.pick(
+        { mimetypes:['image/*'] },
+        function(file){
+          this_.business.logoUrl = file.url;
+          api.businesses.update(this_.business.id, { logoUrl: file.url }, utils.noop);
+          e.target.src = file.url;
+        },
+        function(error){ /*alert(error);*/ }
+      );
     }
 
   , onSubmit: function(e){
