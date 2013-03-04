@@ -7,11 +7,11 @@ define(function(require){
 
   , BaseListItem = require('./base-list-item')
 
-  , template  = require('hbt!./../../templates/accounts/cashier-list-item')
+  , template  = require('hbt!./../../templates/accounts/tapin-station-list-item')
   ;
 
   return BaseListItem.extend({
-    type: 'cashiers'
+    type: 'tapin-stations'
 
   , events: {
       'change .businesses-select':       'onBusinessChange'

@@ -37,14 +37,14 @@ define(function(require){
       }
 
     , makeNewUser: function(){
-        this.set('email', 'cashier-' + utils.guid() + '@generated.goodybag.com');
+        this.set('email', 'manager-' + utils.guid() + '@generated.goodybag.com');
         this.set('password', utils.guid().replace(/\-/g, ''));
         this.set('id', 'New');
         return this;
       }
 
     , generateEmailFromId: function(){
-        this.set('email', 'cashier-' + this.attributes.id + '@generated.goodybag.com')
+        this.set('email', 'manager-' + this.attributes.id + '@generated.goodybag.com')
       }
 
     , set: function(key, value){
@@ -80,7 +80,7 @@ define(function(require){
               regular: function(done){
                 if (password) delete attr.password;
 
-                api.cashiers.update(this_.attributes.id, attr, done);
+                api.managers.update(this_.attributes.id, attr, done);
               }
             }
           ;
@@ -93,7 +93,7 @@ define(function(require){
 
           utils.parallel(updates, callback);
         } else {
-          api.cashiers.create(attr, function(error, result){
+          api.managers.create(attr, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);
@@ -106,7 +106,7 @@ define(function(require){
       }
 
     , delete: function(){
-        api.cashiers.delete(this.attributes.id);
+        api.managers.delete(this.attributes.id);
       }
     })
   ;

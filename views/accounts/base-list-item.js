@@ -35,7 +35,6 @@ define(function(require){
     }
 
   , render: function(){
-    console.log(this.model.toJSON());
       this.$el.html(
         this.template(
           utils.extend({
@@ -54,6 +53,8 @@ define(function(require){
       $selects.select2('disable');
 
       this.delegateEvents();
+
+      this.mode = "read";
 
       return this;
     }
@@ -110,7 +111,7 @@ define(function(require){
   , updateModelWithFormData: function(){
       var $el;
       for (var key in this.model.attributes){
-        if (($el = this.$el.find('#user-' + this.model.id + '-' + key)).length > 0)
+        if (($el = this.$el.find('#user-' + this.model.get('id') + '-' + key)).length > 0)
           this.model.set(key, $el.val());
       }
 
