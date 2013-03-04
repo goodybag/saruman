@@ -195,11 +195,15 @@ module.exports = function(grunt) {
 
     if (this.data.verbose) console.log(command);
 
-    childProcess.exec(command, function(error, stdout){
+    childProcess.exec('jam remove bootstrap', function(error, stdout){
       if (error) return console.log(error), done(false);
-      sys.puts(stdout)
-      done(true);
+      childProcess.exec(command, function(error, stdout){
+        if (error) return console.log(error), done(false);
+        sys.puts(stdout)
+        done(true);
+      });
     });
+
   });
 
   grunt.registerMultiTask('makeBuildDir', 'Creates the build dir', function(){
