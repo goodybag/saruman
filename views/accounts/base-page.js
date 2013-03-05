@@ -144,8 +144,12 @@ define(function(require){
 
       this.renderUsers();
 
+      this.trigger('rendered');
+
       return this;
     }
+
+  , getAdditionalSelect2Properties: function(){ return {}; }
 
   , getAdditionalViewOptions: function(){
       return {};
