@@ -144,6 +144,8 @@ define(function(require){
 
       this.renderUsers();
 
+      this.trigger('rendered');
+
       return this;
     }
 

@@ -76,7 +76,7 @@ module.exports = function(grunt) {
         , gzip: true
         }
       , {
-          src: 'build/css/*.css'
+          src: 'build/css/*'
         , dest: 'css/'
         , gzip: false
         }
@@ -128,6 +128,7 @@ module.exports = function(grunt) {
           './img'
         , './font'
         , './menu-categories'
+        , './css'
         ]
       , dest: 'build'
       }
@@ -151,7 +152,7 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'makeBuildDir mincss copyIndex changeConfig copyStuff changeMenuCategoriesUrl jam restoreConfig');
+  grunt.registerTask('default', 'makeBuildDir copyIndex changeConfig copyStuff mincss changeMenuCategoriesUrl jam restoreConfig');
   grunt.registerTask('deploy', 'default s3');
 
   grunt.registerTask('changeMenuCategoriesUrl', 'Changes the menu categories api url', function(){
