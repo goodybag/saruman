@@ -35,7 +35,7 @@ define(function(require){
       options.page      = options.page || 1;
       this.currentPage  = options.page - 1;
 
-      this.paginator    = new Paginator({ page: this.currentPage, limit: 20 });
+      this.paginator    = new Paginator({ page: this.currentPage, limit: 30 });
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
@@ -48,6 +48,9 @@ define(function(require){
         this_.paginator.setPage(page - 1);
       });
 
+      this.on('results.fetched', this.onResults, this);
+      // this.on('render', this.onRender, this);
+
       // We want to know when the page changes so we can update the url
       // And the collection
       this.paginator.on('change:page', function(){
@@ -57,6 +60,42 @@ define(function(require){
 
         this_.fetchUsers();
       });
+    }
+
+  , onResults: function(users, businesses){
+      this.renderSearch();
+    }
+
+  , renderSearch: function(){
+      if (this.hasRenderedSearch) return;
+      this.hasRenderedSearch = true;
+
+      this.$search = this.$el.find('.users-select-search');
+
+      var fragment = document.createDocumentFragment(), this_ = this;
+
+      fragment.appendChild(document.createElement('option'));
+
+      for (var i = 0, l = this.businesses.length, el; i < l; i++){
+        el = document.createElement('option');
+        el.value = this.businesses[i].id;
+        el.innerHTML = this.businesses[i].name;
+        fragment.appendChild(el);
+      }
+
+      this.$search.html("");
+      this.$search.append(fragment);
+
+      this.$search.select2({
+        allowClear: true
+      , placeholder: "Search by Business"
+      }).on('change', function(e){
+        this_.onBusinessSearch(e);
+      });
+    }
+
+  , onBusinessSearch: function(e){
+      this.fetchUsers();
     }
 
   , getAdditionalViewOptions: function(){
@@ -99,7 +138,7 @@ define(function(require){
       , filter  = this.$search.val()
       ;
 
-      if (filter) options.filter = filter;
+      if (filter) options.businessId = parseInt(filter);
 
       utils.parallel({
         users: function(done){
@@ -112,6 +151,7 @@ define(function(require){
           });
         }
       , businesses: function(done){
+          if (this_.businesses) return done(null, this_.businesses);
           var options = { limit: 10000, offset: 0, include: 'locations' };
           api.businesses.list(options, function(error, businesses, meta){
             if (error) return done(error);
@@ -133,6 +173,8 @@ define(function(require){
           }
 
           this_.renderUsers();
+
+          this_.trigger('results.fetched', this_.users, this_.businesses);
         }
       );
 
