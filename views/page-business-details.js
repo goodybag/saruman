@@ -20,6 +20,7 @@ define(function(require){
     , locations:        require('./page-business-details-locations')
     , location:         require('./page-business-details-location-edit')
     , 'menu-details':   require('./page-business-details-menu')
+    , 'tapin-stations': require('./accounts/tapin-stations-by-business-page')
     }
   ;
 

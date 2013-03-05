@@ -45,6 +45,10 @@ define(function(require){
       return this;
     }
 
+  , onShow: function(){
+      this.fetchUsers();
+    }
+
   , fetchUsers: function(){
       var
         this_   = this
@@ -69,18 +73,28 @@ define(function(require){
             return done(null, users);
           });
         }
-      , businesses: function(done){
-          api.businesses.get(this.businessId, function(error, business){
-            if (error) return done(error);
+      , business: function(done){
+          if (this_.business && this_.business.id === this_.businessId)
+            return done(null, this_.business);
 
-            return done(null, business);
+          api.businesses.get(this_.businessId, function(error, business){
+            return done(error, business);
           });
+        }
+      , locations: function(done){
+          if (this_.business && this_.business.id === this_.businessId && this_.business.locations)
+            return done(null, this_.business.locations);
+
+          api.businesses.locations.list(this_.businessId, function(error, locations){
+            return done(error, locations);
+          })
         }
       }, function(error, results){
           if (error) return alert(error);
 
-          this_.users     = results.users;
-          this_.business  = results.business;
+          this_.users               = results.users;
+          this_.business            = results.business;
+          this_.business.locations  = results.locations;
 
           this_.renderUsers();
         }
@@ -180,6 +194,7 @@ define(function(require){
               utils.extend({
                 model: item
               , isNew: true
+              , business: this_.business
               }, this_.getAdditionalViewOptions())
             ).render()
               .enterEditMode()

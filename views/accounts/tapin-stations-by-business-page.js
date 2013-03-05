@@ -10,7 +10,7 @@ define(function(require){
 
   , Views = {
       Paginator       : require('../paginator')
-    , ItemView        : require('./tapin-stations-by-business-list-item')
+    , ItemView        : require('./tapin-station-by-business-list-item')
     }
 
   , Models = {
@@ -33,6 +33,11 @@ define(function(require){
       this.template   = template;
       this.ItemModel  = Models.ItemModel;
       this.ItemView   = Views.ItemView;
+
+      options.page      = options.page || 1;
+      this.currentPage  = options.page - 1;
+
+      this.paginator    = new Paginator({ page: this.currentPage, limit: 30 });
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })

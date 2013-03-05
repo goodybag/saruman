@@ -7,24 +7,19 @@ define(function(require){
 
   , BaseListItem = require('./base-list-item-by-business')
 
-  , template  = require('hbt!./../../templates/accounts/tapin-station-list-item-by-business')
+  , template  = require('hbt!./../../templates/accounts/tapin-station-by-business-list-item')
   ;
 
   return BaseListItem.extend({
     type: 'tapin-stations'
-
-  , events: {
-      'change .businesses-select':       'onBusinessChange'
-    }
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
       options = options || {};
 
-      this.isNew        = !!options.isNew;
-      this.businesses   = options.businesses;
-      this.businessIds  = options.businessIds;
+      this.isNew      = !!options.isNew;
+      this.business   = options.business;
 
       this.mode = 'read';
 
@@ -58,22 +53,9 @@ define(function(require){
      * will be mixed into the object that gets passed into the template
      */
   , getAdditionalRenderProperties: function(){
-      var
-        businessId = this.model.get('businessId')
-
-      , business = this.businessIds[businessId] || {}
-
-      , locations  = business.locations || []
-      , locationName
-      ;
-
-      if (this.model.get('id') === 'New')
-        this.model.set('businessId', businessId);
-
       return {
-        businesses:   this.businesses
-      , businessName: business.name
-      , locations:    locations
+        businessName: this.business.name
+      , locations:    this.business.locations
       }
     }
   });

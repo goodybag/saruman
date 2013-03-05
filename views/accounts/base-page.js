@@ -216,25 +216,7 @@ define(function(require){
     }
 
   , onUsersSearchKeyUp: function(e){
-      var
-        this_ = this
-      , paging = this.paginator.getCurrent()
-      , options = {
-          filter: this.$search.val()
-        , limit:  paging.limit
-        , offset: paging.offset
-        }
-      ;
-
-      troller.consumers.setPage(1);
-
-      api[this.type].list(options, function(error, users, meta){
-        if (error) return alert(error);
-
-        this_.users = users;
-        this_.paginator.setTotal(meta.total);
-        this_.renderUsers();
-      });
+      this.fetchUsers();
     }
   });
 });
