@@ -1,0 +1,35 @@
+<td class="id">
+  {{model.id}}
+</td>
+<td class="locationId">
+  <select name="locations" data-placeholder="Select a Location" class="locations-select select-box" id="user-{{model.id}}-locationId">
+    <option></option>
+  {{#each locations}}
+    <option value="{{this.id}}"{{#eq this.id ../model.locationId}} selected="true"{{/eq}}>{{this.name}}</option>
+  {{/each}}
+  </select>
+</td>
+<td class="galleryEnabled">
+  <input type="checkbox" class="type" name="galleryEnabled" checked="{{#if model.galleryEnabled}}true{{else}}false{{/if}}">
+  <!-- <i class="icon-check{{#if model.galleryEnabled}} {{else}}-empty{{/if}}"></i> -->
+</td>
+<td class="loyaltyEnabled">
+  <input type="checkbox" class="type" name="loyaltyEnabled" checked="{{#if model.loyaltyEnabled}}true{{else}}false{{/if}}">
+  <!-- <i class="icon-check{{#if model.loyaltyEnabled}} {{else}}-empty{{/if}}"></i> -->
+</td>
+<td class="actions">
+  <div class="btn-group">
+    <button class="btn btn-small btn-edit btn-edit-save">
+      <i class="icon-edit"></i>
+    </button>
+    <button class="btn btn-small btn-cancel hide">
+      <i class="icon-ban-circle"></i>
+    </button>
+    <button class="btn btn-small btn-copy">
+      <i class="icon-copy"></i>
+    </button>
+    <button class="btn btn-small btn-delete btn-danger">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+</td>
