@@ -12,6 +12,7 @@ define(function(require){
       , 'userId'
       , 'locationId'
       , 'businessId'
+      , 'cardId'
       ]
 
     , defaults: {

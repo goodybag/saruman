@@ -6,29 +6,29 @@ define(function(require){
   , Paginator         = require('../../lib/paginator')
   , troller           = require('../../lib/troller')
 
-  , template          = require('hbt!./../../templates/accounts/tapin-stations-by-business-page')
+  , template          = require('hbt!./../../templates/accounts/cashiers-by-business-page')
 
   , Views = {
       Paginator       : require('../paginator')
-    , ItemView        : require('./tapin-station-by-business-list-item')
+    , ItemView        : require('./cashiers-by-business-list-item')
     }
 
   , Models = {
-      ItemModel       : require('../../models/tapin-station')
+      ItemModel       : require('../../models/cashier')
     }
   ;
 
   return BasePage.extend({
     className: 'page page-users'
 
-  , type: 'tapin-stations'
+  , type: 'cashiers'
 
   , initialize: function(options){
       options = options || {};
 
-      this.type       = 'tapin-stations';
-      this.businessId = options.businessId;
-      this.business   = options.business;
+      this.type           = 'cashiers';
+      this.businessId     = options.businessId;
+      this.business       = options.business;
       this.trollerPrefix  = options.trollerPrefix;
 
       this.template   = template;

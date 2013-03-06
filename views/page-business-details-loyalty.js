@@ -52,7 +52,7 @@ define(function(require){
       var this_ = this;
 
       api.businesses.loyalty.get(this.business ? this.business.id : this.businessId, function(error, loyalty){
-        this.isFetchingLoyalty = false;
+        this_.isFetchingLoyalty = false;
         if (error) console.error(error);
         this_.loyalty = loyalty;
         this_.render();
