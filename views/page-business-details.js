@@ -21,6 +21,8 @@ define(function(require){
     , location:         require('./page-business-details-location-edit')
     , 'menu-details':   require('./page-business-details-menu')
     , 'tapin-stations': require('./accounts/tapin-stations-by-business-page')
+    , cashiers:         require('./accounts/cashiers-by-business-page')
+    // , managers:         require('./accounts/managers-by-business-page')
     }
   ;
 
@@ -34,6 +36,8 @@ define(function(require){
         console.log("change to page", page, options);
         this_.changePage(page, options);
       });
+
+      this.trollerPrefix = 'business';
 
       this.business = {
         id: options.id
@@ -118,6 +122,9 @@ define(function(require){
       options = options || {};
       options.business = this.business;
       options.businessId = this.business.id;
+
+      options.trollerPrefix = options.trollerPrefix ? (options.trollerPrefix + '.') : '';
+      options.trollerPrefix += this.trollerPrefix;
 
       this.children.pages.changePage(page, options);
       this.currentPage = page;

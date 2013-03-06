@@ -45,7 +45,8 @@ define(function(require){
       return this;
     }
 
-  , onShow: function(){
+  , onShow: function(options){
+      if (options.businessId) this.businessId = options.businessId;
       this.fetchUsers();
     }
 
@@ -82,6 +83,7 @@ define(function(require){
           });
         }
       , locations: function(done){
+        console.log(this_.business.id, this_.businessId)
           if (this_.business && this_.business.id === this_.businessId && this_.business.locations)
             return done(null, this_.business.locations);
 
@@ -118,8 +120,9 @@ define(function(require){
         fragment.appendChild(
           new this.ItemView(
             utils.extend({
-              model:    new this.ItemModel(users[i])
-            , business: this.business
+              model:          new this.ItemModel(users[i])
+            , business:       this.business
+            , trollerPrefix:  this.trollerPrefix
             }, this.getAdditionalViewOptions())
           ).render()
           .on('destroy', function(item){ this_.onItemDestroy(item) })
