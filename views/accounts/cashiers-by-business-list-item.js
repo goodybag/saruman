@@ -7,11 +7,11 @@ define(function(require){
 
   , BaseListItem = require('./base-list-item-by-business')
 
-  , template  = require('hbt!./../../templates/accounts/tapin-station-by-business-list-item')
+  , template  = require('hbt!./../../templates/accounts/cashiers-by-business-list-item')
   ;
 
   return BaseListItem.extend({
-    type: 'tapin-stations'
+    type: 'cashiers'
 
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
