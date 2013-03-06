@@ -3,6 +3,7 @@ define(function(require){
     Backbone  = require('backbone')
   , $         = require('jquery')
   , api       = require('../lib/api')
+  , utils     = require('../lib/utils')
   , troller   = require('../lib/troller')
 
   , Page      = require('./page')
@@ -22,7 +23,7 @@ define(function(require){
     , 'menu-details':   require('./page-business-details-menu')
     , 'tapin-stations': require('./accounts/tapin-stations-by-business-page')
     , cashiers:         require('./accounts/cashiers-by-business-page')
-    // , managers:         require('./accounts/managers-by-business-page')
+    , managers:         require('./accounts/managers-by-business-page')
     }
   ;
 
@@ -70,29 +71,47 @@ define(function(require){
     }
 
   , fetchBusiness: function(){
+      if (this.isFetching) return this;
+      this.isFetching = true;
+
       var this_ = this;
-      api.businesses.get(this.business.id, function(error, business){
-        if (error) return console.error(error);
 
-        this_.hasLoadedOnce = true;
-
-        // Mix into object so it reflects across all objects
-        for (var key in business){
-          this_.business[key] = business[key];
+      utils.parallel({
+        business: function(done){
+          api.businesses.get(this_.business.id, function(error, business){
+            return done(error, business);
+          });
         }
+      , locations: function(done){
+          api.businesses.locations.list(this_.business.id, function(error, locations){
+            return done(error, locations);
+          });
+        }
+      }, function(error, result){
+          this_.isFetching = false;
+          if (error) return console.error(error);
 
-        // Delete isGb and isVerified to fix some patching bugs
-        delete this_.business.isGB;
-        delete this_.business.isVerified;
+          this_.hasLoadedOnce = true;
 
-        // Alert the current view that the business has changed
-        console.log(this_.children.pages.current)
-        if (this_.children.pages.current.onBusinessChange)
-          this_.children.pages.current.onBusinessChange();
+          // Mix into object so it reflects across all objects
+          for (var key in result.business){
+            this_.business[key] = result.business[key];
+          }
 
-        // Re-render the current page view with new business
-        this_.render();
-        this_.delegateEvents();
+          this_.business.locations = result.locations;
+
+          // Delete isGb and isVerified to fix some patching bugs
+          delete this_.business.isGB;
+          delete this_.business.isVerified;
+
+          // Alert the current view that the business has changed
+          console.log(this_.children.pages.current)
+          if (this_.children.pages.current.onBusinessChange)
+            this_.children.pages.current.onBusinessChange();
+
+          // Re-render the current page view with new business
+          this_.render();
+          this_.delegateEvents();
       });
     }
 
@@ -118,13 +137,14 @@ define(function(require){
     }
 
   , changePage: function(page, options){
-    console.log("changing to", page);
-      options = options || {};
-      options.business = this.business;
-      options.businessId = this.business.id;
+
+      options             = options             || {};
+      options.business    = options.business    || this.business;
+      options.businessId  = options.businessId  || this.business.id;
 
       options.trollerPrefix = options.trollerPrefix ? (options.trollerPrefix + '.') : '';
       options.trollerPrefix += this.trollerPrefix;
+      console.log("changing to", page, options);
 
       this.children.pages.changePage(page, options);
       this.currentPage = page;

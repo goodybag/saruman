@@ -46,7 +46,7 @@ define(function(require){
       };
 
       var this_ = this;
-console.log(this.trollerPrefix);
+
       troller.add(this.trollerPrefix + '.' + this.type + '.setPage', function(page){
         this_.paginator.setPage(page - 1);
       });

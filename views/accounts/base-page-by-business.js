@@ -163,6 +163,7 @@ define(function(require){
           utils.extend({
             model: item
           , isNew: true
+          , business: this.business
           }, this_.getAdditionalViewOptions())
         ).render()
           .enterEditMode()

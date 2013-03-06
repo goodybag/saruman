@@ -54,8 +54,7 @@ define(function(require){
      */
   , getAdditionalRenderProperties: function(){
       return {
-        businessName: this.business.name
-      , locations:    this.business.locations
+        locations:    this.business.locations
       }
     }
   });
