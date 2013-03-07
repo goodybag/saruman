@@ -177,3 +177,13 @@ table img.avatarUrl {
 table .select-box {
   width: 100%;
 }
+
+.barrel-roll {
+  -webkit-transform-origin-y: -100px;
+  -webkit-animation: barrel-roll 2s ease-out;
+}
+
+@-webkit-keyframes barrel-roll {
+  from { -webkit-transform: rotate(0); }
+  to   { -webkit-transform: rotate(360deg); }
+}

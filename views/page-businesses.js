@@ -161,6 +161,12 @@ define(function(require){
       });
     }
 
+  , barrelRoll: function(){
+      this.$el.addClass('barrel-roll');
+      var this_ = this;
+      setTimeout(function(){ this_.$el.removeClass('barrel-roll'); }, 5000); // Rate limit
+    }
+
   , onSearchKeyup: function(e){
       if (e.target.value)
         this.filter.filter = e.target.value;
@@ -168,6 +174,8 @@ define(function(require){
 
       this.paginator.setPage(0);
       this.fetchBusinesses();
+
+      if (e.target.value === "do a barrel roll") this.barrelRoll();
     }
   });
 });
