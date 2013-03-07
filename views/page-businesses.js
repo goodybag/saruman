@@ -166,6 +166,7 @@ define(function(require){
         this.filter.filter = e.target.value;
       else delete this.filter.filter;
 
+      this.paginator.setPage(0);
       this.fetchBusinesses();
     }
   });
