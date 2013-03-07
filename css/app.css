@@ -48,6 +48,7 @@ body {
   margin: 0;
   margin-left: 12px;
   padding: 0;
+  vertical-align: middle;
 }
 
 .page-business-details-locations > .header {
