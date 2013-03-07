@@ -23,8 +23,9 @@ define(function(require){
   , name: 'Loyalty'
 
   , events: {
-      'submit #loyalty-form':  'onSubmit'
+      'submit #loyalty-form':           'onSubmit'
     , 'keyup .show-in-result':          'onShowInResultKeyup'
+    , 'click .photo-url':               'onLogoClick'
     }
 
   , initialize: function(options){
@@ -103,6 +104,19 @@ define(function(require){
         troller.business.changePage('main');
         utils.history.navigate('/businesses/' + this_.business.id);
       });
+    }
+
+  , onLogoClick: function(e){
+      var this_ = this;
+      filepicker.pick(
+        { mimetypes:['image/*'] },
+        function(file){
+          this_.business.photoUrl = file.url;
+          api.businesses.loyalty.update(this_.business.id, { photoUrl: file.url }, utils.noop);
+          e.target.src = file.url;
+        },
+        function(error){ /*alert(error);*/ }
+      );
     }
   });
 });

@@ -15,7 +15,7 @@ define(function(require){
   , events: {
       'submit #business-details-form':  'onSubmit'
     , 'click .delete-btn':              'onDelete'
-    , 'click .business-logo':            'onLogoClick'
+    , 'click .business-logo':           'onLogoClick'
     }
 
   , initialize: function(options){
