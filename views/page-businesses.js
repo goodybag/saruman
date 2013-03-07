@@ -22,6 +22,7 @@ define(function(require){
 
   , events: {
       'click .btn-new-business':      'onNewBusinessClick'
+    , 'keyup .business-search':       'onSearchKeyup'
     }
 
   , initialize: function(options){
@@ -158,6 +159,14 @@ define(function(require){
 
         utils.history.navigate('/businesses/' + result.id, { trigger: true });
       });
+    }
+
+  , onSearchKeyup: function(e){
+      if (e.target.value)
+        this.filter.filter = e.target.value;
+      else delete this.filter.filter;
+
+      this.fetchBusinesses();
     }
   });
 });

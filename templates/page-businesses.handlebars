@@ -3,10 +3,8 @@
     <h1>Businesses</h1>
 
     <ul class="actions">
-      <li class="new-business">
-        <button class="btn btn-primary btn-new-business">
-          New Business
-        </button>
+      <li class="search-wrapper">
+        <input class="span2 business-search" placeholder="Search Businesses" type="text">
       </li>
     </ul>
   </div>
@@ -33,7 +31,9 @@
           <tr>
             <th>id</th>
             <th>Name</th>
-            <th class="actions"></th>
+            <th class="actions">
+              <button class="btn btn-primary btn-new-business">New Business</button>
+            </th>
           </tr>
         </thead>
         <tbody id="businesses-list"></tbody>
