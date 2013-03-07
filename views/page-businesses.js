@@ -40,16 +40,6 @@ define(function(require){
 
       var this_ = this;
 
-      troller.add('businesses.setPage', function(page){
-        this_.paginator.setPage(page - 1);
-      });
-
-      troller.add('businesses.filter', function(options){
-        this_.filter = options;
-        console.log(this_.filter);
-        this_.setActiveNav();
-      });
-
       // We want to know when the page changes so we can update the url
       // And the collection
       this.paginator.on('change:page', function(){
@@ -64,8 +54,8 @@ define(function(require){
   , setActiveNav: function(){
       var className = "all";
 
-      if (this.isVerified === true) className = "verified";
-      if (this.isVerified === false) className = "unverified";
+      if (this.filter && this.filter.isVerified === true) className = "verified";
+      if (this.filter && this.filter.isVerified === false) className = "unverified";
 
       this.$el.find('#businesses-nav li').removeClass('active');
       this.$el.find('#businesses-nav .' + className).addClass('active');
@@ -75,15 +65,19 @@ define(function(require){
 
   , onShow: function(options){
       if (options) this.filter = options.filter;
+
       if (options.page){
         this.paginator.setPage(options.page - 1);
         this.currentPage = this.paginator.getPage();
+
       }
+      this.setActiveNav();
+
       this.fetchBusinesses();
     }
 
   , fetchBusinesses: function(){
-      var this_ = this, options = this.paginator.getCurrent();
+      var this_ = this, options = utils.clone(this.paginator.getCurrent());
 
       options = utils.extend(options, this.filter);
 
@@ -104,7 +98,7 @@ define(function(require){
       }
 
       this.$el.find('#businesses-list').html(fragment.innerHTML);
-     $('.is-verified', this.$el.find('#businesses-list')).click(function(){
+      $('.is-verified', this.$el.find('#businesses-list')).click(function(){
         if ($(this).hasClass('icon-check')) {
           api.businesses.update(+$(this).attr('data-id'), {isVerified: false}, function(){});
           $(this).removeClass('icon-check').addClass('icon-check-empty');
