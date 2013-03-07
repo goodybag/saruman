@@ -6,6 +6,10 @@ body {
   padding-top: 50px;
 }
 
+.pagination ul > li > a, .pagination ul > li > span {
+  padding: 0 11px;
+}
+
 .table .actions {
   text-align: right;
   padding-right: 10px;
