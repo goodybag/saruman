@@ -31,6 +31,8 @@ define(function(require){
 
       this.paginator = new Paginator({ page: options.page - 1, limit: 100 });
 
+      this.filter = options.filter || {};
+
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
@@ -40,6 +42,12 @@ define(function(require){
 
       troller.add('businesses.setPage', function(page){
         this_.paginator.setPage(page - 1);
+      });
+
+      troller.add('businesses.filter', function(options){
+        this_.filter = options;
+        console.log(this_.filter);
+        this_.setActiveNav();
       });
 
       // We want to know when the page changes so we can update the url
@@ -53,13 +61,33 @@ define(function(require){
       });
     }
 
-  , onShow: function(){
+  , setActiveNav: function(){
+      var className = "all";
+
+      if (this.isVerified === true) className = "verified";
+      if (this.isVerified === false) className = "unverified";
+
+      this.$el.find('#businesses-nav li').removeClass('active');
+      this.$el.find('#businesses-nav .' + className).addClass('active');
+
+      return this;
+    }
+
+  , onShow: function(options){
+      if (options) this.filter = options.filter;
+      if (options.page){
+        this.paginator.setPage(options.page - 1);
+        this.currentPage = this.paginator.getPage();
+      }
       this.fetchBusinesses();
     }
 
   , fetchBusinesses: function(){
-      var this_ = this;
-      api.businesses.list(this.paginator.getCurrent(), function(error, businesses, meta){
+      var this_ = this, options = this.paginator.getCurrent();
+
+      options = utils.extend(options, this.filter);
+
+      api.businesses.list(options, function(error, businesses, meta){
         if (error) return console.error(error);
 
         this_.paginator.setTotal(meta.total);
