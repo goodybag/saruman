@@ -208,6 +208,7 @@ define(function(require){
 
           , this_.$usersList[0].childNodes[0]
           );
+
         });
       });
     }
