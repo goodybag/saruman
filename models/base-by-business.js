@@ -49,7 +49,7 @@ define(function(require){
       }
 
     , generateEmailFromId: function(){
-        this.set('email', this.type + this.attributes.id + '@generated.goodybag.com')
+        this.set('email', this.type + '-' + this.attributes.id + '@generated.goodybag.com')
         this.set('password', utils.md5('chipotle-' + this.attributes.id));
       }
 
