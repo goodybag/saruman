@@ -22,7 +22,7 @@ define(function(require){
       , businessId: null
       }
 
-    , type: 'manager'
+    , type: 'cashier'
     })
   ;
 
