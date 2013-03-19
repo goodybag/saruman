@@ -27,6 +27,8 @@ define(function(require){
       , this_     = this
       ;
 
+      this.$el.find('#input-password').val('');
+
       user.auth(email, password, function(error){
         if (error)
           return this_.$el.find('.errors').html('<p class="text-error">Invalid Email/Password</p>');
