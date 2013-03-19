@@ -44,6 +44,7 @@ define(function(require){
     }
 
   , changePage: function(page, options){
+    console.log('app.changePage', page);
       this.children.pages.changePage(page, options);
       return this;
     }

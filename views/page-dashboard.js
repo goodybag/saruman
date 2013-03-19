@@ -9,7 +9,7 @@ define(function(require){
 
   , events: { 'click h1': 'test'}
 
-  , test: function(){ alert('aldksfj')}
+  , test: function(){ alert('ohai')}
 
   , initialize: function(){
       this.template = template;

@@ -51,8 +51,8 @@ define(function(require){
 
     , router: new AppRouter()
 
-    , logout: function(){
-        user.logout();
+    , logout: function(callback){
+        user.logout(callback);
       }
     }
   ;
