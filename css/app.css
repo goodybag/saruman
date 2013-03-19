@@ -26,6 +26,10 @@ body {
   text-decoration: none;
 }
 
+.table .actions a.icon-heart.active {
+  color: #FF0085;
+}
+
 .page-header {
   position: relative;
 }

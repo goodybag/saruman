@@ -7,7 +7,8 @@
     <a href="#/businesses/{{id}}">{{name}}</a>
   </td>
   <td class="actions">
-    <a href="#/businesses/{{id}}" class="icon-edit"></a>
-    <a href="#" data-id="{{id}}" class="is-verified icon-check{{#if isVerified}} {{else}}-empty{{/if}}" style='color:{{#if isVerified}}green{{else}}red{{/if}};'></a>
+    <a href="#/businesses/{{id}}" class="icon-edit" title="Edit this business"></a>
+    <a href="#" data-id="{{id}}" class="is-verified icon-check{{#if isVerified}} {{else}}-empty{{/if}}" style='color:{{#if isVerified}}green{{else}}red{{/if}};' title="This business is verified"></a>
+    <a href="#/businesses/{{id}}" class="is-goodybag-toggle icon-heart{{#if isGB}} active{{/if}}" data-id="{{id}}" title="Make this business a Goodybag business"></a>
   </td>
 </tr>
