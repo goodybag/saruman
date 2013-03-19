@@ -23,6 +23,7 @@ define(function(require){
   , events: {
       'click .btn-new-business':      'onNewBusinessClick'
     , 'keyup .business-search':       'onSearchKeyup'
+    , 'click .is-goodybag-toggle':    'onIsGoodybagToggle'
     }
 
   , initialize: function(options){
@@ -151,6 +152,19 @@ define(function(require){
       this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
 
       return this;
+    }
+
+  , onIsGoodybagToggle: function(e){
+      e.preventDefault();
+
+      var $el = utils.dom(e.target), $update = {};
+
+      $el[(($update.isGB = !$el.hasClass('active')) ? 'add' : 'remove') + 'Class']('active');
+
+      api.businesses.update($el.data('id'), $update, function(error){
+        if (error && error.message) return alert(error.message);
+        if (error && !error.message) return alert('Something went wrong :(');
+      });
     }
 
   , onNewBusinessClick: function(e){
