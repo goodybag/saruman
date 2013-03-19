@@ -40,6 +40,16 @@ define(function(require){
             return utils.history.navigate('/login');
           }
 
+          // Not admin or sales, logout
+          if (user.attributes.groups.indexOf('admin') === -1
+          && user.attributes.groups.indexOf('sales') === -1
+          && page !== 'login'){
+            alert("You shall NOT PASS!");
+            return app.logout(function(){
+              app.changePage('login')
+            });
+          }
+
           if (page === "login") page = "dashboard";
 
           // Make sure to apply view arguments
