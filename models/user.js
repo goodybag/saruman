@@ -1,7 +1,8 @@
 define(function(require){
   var
-    utils = require('../lib/utils')
-  , api   = require('../lib/api')
+    utils   = require('../lib/utils')
+  , api     = require('../lib/api')
+  , troller = require('../lib/troller')
   ;
 
   return new (utils.Model.extend({
@@ -36,6 +37,22 @@ define(function(require){
 
           callback();
         });
+      });
+    }
+
+  , oauth: function(code, callback){
+      var this_ = this;
+
+      api.session.oauth(code, function(error, result){
+        // Maybe leave it to the callback to tell app about error
+        if (error) return troller.app.error(error), callback(error);
+
+        this_.set('loggedIn', true);
+        this_.set(result);
+
+        this_.trigger('auth');
+
+        callback(null, result);
       });
     }
 
