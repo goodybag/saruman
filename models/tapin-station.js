@@ -15,14 +15,16 @@ define(function(require){
       , 'businessId'
       , 'loyaltyEnabled'
       , 'galleryEnabled'
+      , 'numUnconfirmedPunchesAllowed'
       ]
 
     , defaults: {
-        id:             'New'
-      , locationId:     null
-      , businessId:     null
-      , loyaltyEnabled: true
-      , galleryEnabled: true
+        id:                           'New'
+      , locationId:                   null
+      , businessId:                   null
+      , loyaltyEnabled:               true
+      , galleryEnabled:               true
+      , numUnconfirmedPunchesAllowed: 0
       }
 
     , type: 'tapin-station'

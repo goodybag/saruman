@@ -17,6 +17,10 @@
   <input type="checkbox" class="type" name="loyaltyEnabled" checked="{{#if model.loyaltyEnabled}}true{{else}}false{{/if}}">
   <!-- <i class="icon-check{{#if model.loyaltyEnabled}} {{else}}-empty{{/if}}"></i> -->
 </td>
+<td class="numUnconfirmedPunchesAllowed ">
+  <input class="edit-mode-value input-medium" value="{{model.numUnconfirmedPunchesAllowed}}" type="text" id="user-{{model.id}}-numUnconfirmedPunchesAllowed">
+  <span class="read-mode-value">{{model.numUnconfirmedPunchesAllowed}}</span>
+</td>
 <td class="actions">
   <div class="btn-group">
     <button class="btn btn-small btn-edit btn-edit-save">
