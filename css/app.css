@@ -60,6 +60,18 @@ body {
   vertical-align: middle;
 }
 
+.page-header .actions > li input {
+  margin-bottom: 0;
+}
+
+.page-header .actions > li .btn-group {
+  display: inline-block;
+}
+
+.page-header .actions .filters .btn-group {
+  margin-left: 6px;
+}
+
 .page-business-details-locations > .header {
   margin-bottom: 32px;
 }

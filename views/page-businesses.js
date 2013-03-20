@@ -24,6 +24,7 @@ define(function(require){
       'click .btn-new-business':      'onNewBusinessClick'
     , 'keyup .business-search':       'onSearchKeyup'
     , 'click .is-goodybag-toggle':    'onIsGoodybagToggle'
+    , 'click .filters button':        'onFilterClick'
     }
 
   , initialize: function(options){
@@ -94,6 +95,7 @@ define(function(require){
 
   , renderBusinesses: function(){
       var fragment = document.createDocumentFragment();
+      fragment.innerHTML = "";
       for (var i = 0, len = this.businesses.length; i < len; i++){
         var html = businessItemTmpl(this.businesses[i]);
         fragment.innerHTML += html;
@@ -152,6 +154,28 @@ define(function(require){
       this.$el.find('#business-paginator-bottom').append(this.children.paginatorBottom.$el);
 
       return this;
+    }
+
+  , onFilterClick: function(e){
+      var
+        $btn    = utils.dom(e.target)
+      , filter  = $btn.data('filter-name')
+      , value   = $btn.data('filter-value');
+      ;
+
+      if ($btn.hasClass('active')){
+        delete this.filter[filter];
+        $btn.removeClass('active');
+      } else {
+        this.filter[filter] = value;
+        $btn.addClass('active');
+      }
+
+      if (filter === 'isVerified'){
+        this.$el.find('.filters .btn-' + (value ? 'un-' : '') + 'verified').removeClass('active');
+      }
+
+      this.fetchBusinesses();
     }
 
   , onIsGoodybagToggle: function(e){
