@@ -5,17 +5,30 @@ define(function(require){
   , template  = require('hbt!./../templates/page-login')
   , user      = require('../models/user')
   , troller   = require('../lib/troller')
+  , api       = require('../lib/api')
   ;
 
   return Page.extend({
     className: 'page page-login'
 
   , events: {
-      'submit #login-form': 'onLoginSubmit'
+      'submit #login-form':   'onLoginSubmit'
+    , 'click .fb-login-btn':  'onFacebookLoginClick'
     }
 
   , initialize: function(){
       this.template = template;
+    }
+
+  , onFacebookLoginClick: function(e){
+      e.preventDefault();
+
+      api.session.getOauthUrl(window.location.origin + '/%23/oauth/', 'facebook', function(error, data){
+        if (error) return troller.app.error(error.message);
+
+        // Pass control to singly
+        window.location.href = data.url;
+      });
     }
 
   , onLoginSubmit: function(e){

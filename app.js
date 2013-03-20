@@ -64,13 +64,18 @@ define(function(require){
     , logout: function(callback){
         user.logout(callback);
       }
+
+    , error: function(error){
+        if (error.message) return alert(error.message);
+        alert(error);
+      }
     }
   ;
 
   troller.add('app.init',       app.init);
   troller.add('app.changePage', app.changePage);
   troller.add('app.logout',     app.logout);
-
+  troller.add('app.error',      app.error);
 
   return app;
 });
