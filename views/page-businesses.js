@@ -94,7 +94,6 @@ define(function(require){
     }
 
   , renderBusinesses: function(){
-    console.log(this.businesses);
       var fragment = document.createDocumentFragment();
       fragment.innerHTML = "";
       for (var i = 0, len = this.businesses.length; i < len; i++){
