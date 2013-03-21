@@ -14,25 +14,6 @@ define(function(require){
 
       options = options || {};
 
-
-      this.template = options.template;
-      this.isNew    = !!options.isNew;
-      this.business = options.business;
-
-      this.mode = 'read';
-
-      for (var key in BaseListItem.prototype.events){
-        if (!(key in this.events)) this.events[key] = BaseListItem.prototype.events[key];
-      }
-
-      return this;
-    }
-
-  , initialize: function(options){
-      this.keyupSaveTimeout = 3000;
-
-      options = options || {};
-
       this.isNew    = !!options.isNew;
       this.business = options.business;
 

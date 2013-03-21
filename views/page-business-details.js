@@ -1,8 +1,6 @@
 define(function(require){
   var
-    Backbone  = require('backbone')
-  , $         = require('jquery')
-  , api       = require('../lib/api')
+    api       = require('../lib/api')
   , utils     = require('../lib/utils')
   , troller   = require('../lib/troller')
 
@@ -21,6 +19,7 @@ define(function(require){
     , locations:        require('./page-business-details-locations')
     , location:         require('./page-business-details-location-edit')
     , 'menu-details':   require('./page-business-details-menu')
+    , 'menu-items':     require('./page-business-details-items')
     , 'tapin-stations': require('./accounts/tapin-stations-by-business-page')
     , cashiers:         require('./accounts/cashiers-by-business-page')
     , managers:         require('./accounts/managers-by-business-page')
