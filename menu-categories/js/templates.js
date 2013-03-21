@@ -112,11 +112,12 @@ function program1(depth0,data) {
   return buffer;}
 function program2(depth0,data) {
   
-  var stack1, foundHelper;
+  var buffer = "", stack1, foundHelper;
   foundHelper = helpers.photoUrl;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.photoUrl; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  return escapeExpression(stack1);}
+  buffer += escapeExpression(stack1) + "/convert?w=100&h=100";
+  return buffer;}
 
 function program4(depth0,data) {
   
