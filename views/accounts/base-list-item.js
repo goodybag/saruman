@@ -78,6 +78,8 @@ define(function(require){
       , opacity: 1
       });
 
+      this.$el.find('input[type="checkbox"]').removeAttr('disabled');
+
       this.$el.find('select').select2('enable');
 
       this.mode = "edit";
@@ -101,6 +103,8 @@ define(function(require){
       , opacity: 1
       });
 
+      this.$el.find('input[type="checkbox"]').attr('disabled', true);
+
       this.$el.find('select').select2('disable');
 
       this.mode = "read";
@@ -111,8 +115,11 @@ define(function(require){
   , updateModelWithFormData: function(){
       var $el;
       for (var key in this.model.attributes){
-        if (($el = this.$el.find('#user-' + this.model.get('id') + '-' + key)).length > 0)
-          this.model.set(key, $el.val());
+        if (($el = this.$el.find('#user-' + this.model.get('id') + '-' + key)).length > 0){
+          if ($el[0].tagName === "INPUT" && ($el[0].type === "checkbox" || $el[0].type === "radio"))
+            this.model.set(key, $el[0].checked == true);
+          else this.model.set(key, $el.val());
+        }
       }
 
       return this;
