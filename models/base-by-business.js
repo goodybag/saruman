@@ -58,7 +58,7 @@ define(function(require){
           for (var k in key)
             if (this.acceptable.indexOf(k) === -1) delete key[k];
         } else if (this.acceptable.indexOf(key) === -1) return this;
-
+console.log('set', key, value);
         if (this.attributes[key] != value && key != 'id' && typeof key !== "object"){
           this._changed.push(value);
           this.changed_[key] = value;

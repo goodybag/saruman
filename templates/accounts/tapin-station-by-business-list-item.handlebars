@@ -10,11 +10,11 @@
   </select>
 </td>
 <td class="galleryEnabled">
-  <input type="checkbox" class="type" name="galleryEnabled" checked="{{#if model.galleryEnabled}}true{{else}}false{{/if}}">
+  <input type="checkbox" class="type" name="galleryEnabled"{{#if model.galleryEnabled}} checked="true"{{else}} {{/if}} id="user-{{model.id}}-galleryEnabled" disabled="true">
   <!-- <i class="icon-check{{#if model.galleryEnabled}} {{else}}-empty{{/if}}"></i> -->
 </td>
 <td class="loyaltyEnabled">
-  <input type="checkbox" class="type" name="loyaltyEnabled" checked="{{#if model.loyaltyEnabled}}true{{else}}false{{/if}}">
+  <input type="checkbox" class="type" name="loyaltyEnabled"{{#if model.loyaltyEnabled}} checked="true"{{else}} {{/if}} id="user-{{model.id}}-loyaltyEnabled" disabled="true">
   <!-- <i class="icon-check{{#if model.loyaltyEnabled}} {{else}}-empty{{/if}}"></i> -->
 </td>
 <td class="numUnconfirmedPunchesAllowed ">
