@@ -37,20 +37,14 @@ define(function(require){
     , defaults: {
         location: {
           name:     'Location 1'
-        , street1:  '123 Foobar St'
         , city:     'Austin'
         , state:    'TX'
-        , zip:      78701
-        , lat:      0
-        , lon:      0
         }
 
       , business: {
           name:         'New Business'
-        , street1:      '123 Foobar St'
         , city:         'Austin'
         , state:        'TX'
-        , zip:          78701
         , isVerified:   true
         , isGB:         true
         , logoUrl:      'http://placekitten.com/520/520'
