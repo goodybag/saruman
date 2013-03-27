@@ -310,11 +310,12 @@
       }
 
       function updateCategory(id, data, callback){
+        data = JSON.stringify(data);
         $.ajax({
           url: base+'/productCategories/' + id
         , type: 'PUT'
         , data: data
-        , dataType: 'json'
+        , headers: {"Content-Type": "application/json"}
         , xhrFields: {
             withCredentials: true
           }
@@ -532,11 +533,12 @@
       }
 
       function updateItem(id, data, callback){
+        data = JSON.stringify(data);
         $.ajax({
           url: base+'/products/' + id
         , type: 'PUT'
         , data: data
-        , dataType: 'json'
+        , headers: {"Content-Type": "application/json"}
         , xhrFields: {
             withCredentials: true
           }
