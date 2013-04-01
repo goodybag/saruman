@@ -58,7 +58,7 @@ define(function(require){
       var className = "all";
 
       if (this.filter && this.filter.isVerified === true) className = "verified";
-      if (this.filter && this.filter.isVerified === false) className = "unverified";
+      else if (this.filter && this.filter.isVerified === false) className = "unverified";
 
       this.$el.find('#businesses-nav li').removeClass('active');
       this.$el.find('#businesses-nav .' + className).addClass('active');
@@ -83,6 +83,9 @@ define(function(require){
       var this_ = this, options = utils.clone(this.paginator.getCurrent());
 
       options = utils.extend(options, this.filter);
+
+      if (options.isVerified == null || options.isVerified == undefined)
+        options.isVerified = [true, false];
 
       api.businesses.list(options, function(error, businesses, meta){
         if (error) return console.error(error);
