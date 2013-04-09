@@ -204,6 +204,17 @@ table .select-box {
   -webkit-animation: barrel-roll 2s ease-out;
 }
 
+/* Input elements */
+.location-edit .hours-heading ~ * .span1 {
+  min-width: 84px;
+}
+
+/* Headings */
+.location-edit .hours-heading + * > .span1 {
+  min-width: 92px;
+  text-align: center;
+}
+
 @-webkit-keyframes barrel-roll {
   from { -webkit-transform: rotate(0); }
   to   { -webkit-transform: rotate(360deg); }
