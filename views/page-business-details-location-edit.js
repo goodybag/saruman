@@ -163,7 +163,7 @@ define(function(require){
       , name:             this.$el.find('#location-name-input').val()
       , street1:          this.$el.find('#location-street1-input').val()
       , street2:          this.$el.find('#location-street2-input').val()
-      , state:            this.$el.find('#location-state-input').val()
+      , state:            'TX'
       , city:             this.$el.find('#location-city-input').val()
       , zip:              this.$el.find('#location-zip-input').val()
       , lat:              this.$el.find('#location-lat-input').val()
