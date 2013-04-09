@@ -168,6 +168,7 @@ define(function(require){
       , zip:              this.$el.find('#location-zip-input').val()
       , lat:              this.$el.find('#location-lat-input').val()
       , lon:              this.$el.find('#location-lon-input').val()
+      , phone:            this.$el.find('#location-phone-input').val()
       , startSunday:      fixTime(this.$el.find('#location-start-sunday-input').val())
       , endSunday:        fixTime(this.$el.find('#location-end-sunday-input').val())
       , startMonday:      fixTime(this.$el.find('#location-start-monday-input').val())
