@@ -25,6 +25,29 @@
     .product-img {
       cursor: pointer;
     }
+    .item-row-photo {
+      position: relative;
+    }
+    .clear-img-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: rgba(255, 255, 255, 0.6);
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      text-align: center;
+      line-height: 13px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+      color: #8D6565;
+    }
+    .clear-img-btn:hover {
+      color: #BB5858;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.7);
+    }
   </style>
 
 </head>
@@ -124,6 +147,8 @@
       return amount+"";
     });
 
+    var defaultProductPhoto = 'http://cdn.filepicker.io/api/file/MhFglMNdTGm7qkF2LMdK/convert?w=78';
+
     $.getJSON = function(url, successCallback){
       $.ajax({
         type: 'GET'
@@ -159,6 +184,21 @@
             console.log(error);
           }
         )
+      };
+
+      var productImgClearClickHandler = function(e){
+        var
+          $target = $(e.target)
+        , pid = $target.data('id')
+        , img = document.getElementById('product-' + pid + '-img')
+        ;
+
+        img.src = defaultProductPhoto;
+
+        updateItem(pid, { photoUrl: "" }, function(result){
+          result = result || {};
+          if (result.error) alert(result.error.message);
+        });
       };
 
       // Get the business Id from the url query params
@@ -220,6 +260,7 @@
             console.log($html);
             makeItemEditable($html);
             $html.find('.product-img').click(productImgClickHandler);
+            $html.find('.clear-img-btn').click(productImgClearClickHandler);
             $(".menu-items-table").append($html);
           });
         });
@@ -248,6 +289,7 @@
           $(".menu-items-table").append($html);
 
           $('.product-img').click(productImgClickHandler);
+          $('.clear-img-btn').click(productImgClearClickHandler);
         });
       });
 

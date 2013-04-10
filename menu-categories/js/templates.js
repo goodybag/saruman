@@ -95,7 +95,11 @@ function program1(depth0,data) {
   foundHelper = helpers.tags;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.tags; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
-  buffer += escapeExpression(stack1) + "</a></td>\n  <td><img data-id=\"";
+  buffer += escapeExpression(stack1) + "</a></td>\n  <td class=\"item-row-photo\">\n    <span class=\"clear-img-btn\" data-id=\"";
+  foundHelper = helpers.id;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1) + "\">x</span>\n    <img data-id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
@@ -104,7 +108,11 @@ function program1(depth0,data) {
   stack2 = {};
   stack1 = helpers['if'].call(depth0, stack1, {hash:stack2,inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" class=\"product-img\"></td>\n  <td>\n    <button class=\"delete-item-button btn btn-small btn-danger\" data-id=\"";
+  buffer += "\" class=\"product-img\" id=\"product-";
+  foundHelper = helpers.id;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
+  else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
+  buffer += escapeExpression(stack1) + "-img\">\n  </td>\n  <td>\n    <button class=\"delete-item-button btn btn-small btn-danger\" data-id=\"";
   foundHelper = helpers.id;
   if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{},data:data}); }
   else { stack1 = depth0.id; stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1; }
@@ -122,7 +130,7 @@ function program2(depth0,data) {
 function program4(depth0,data) {
   
   
-  return "http://placekitten.com/300/300";}
+  return "http://cdn.filepicker.io/api/file/MhFglMNdTGm7qkF2LMdK/convert?w=78";}
 
   stack1 = depth0.data;
   stack2 = {};
