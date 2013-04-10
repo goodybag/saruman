@@ -32,6 +32,23 @@ define(function(require){
       , 'Vietnamese'
       ]
 
+    , changeMessages: [
+        'Changes Saved!'
+      , 'Roger!'
+      , 'Changes Submitted!'
+      , 'Success!'
+      , 'Changes Saved!'
+      , 'Success!'
+      , 'Changes Submitted!'
+      , 'Changes Saved!'
+      , 'Those were some delicious changes!'
+      , 'Changes Saved!'
+      , 'Success!'
+      , 'Changes Saved!'
+      , 'Hey, Slow down with those edits!'
+      , 'Changes Saved!'
+      ]
+
     , groups: ['admin', 'sales', 'cashier', 'manager', 'consumer', 'tapin-station']
 
     , defaults: {

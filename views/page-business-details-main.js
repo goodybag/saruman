@@ -4,7 +4,7 @@ define(function(require){
   , pubsub            = require('../lib/pubsub')
   , api               = require('../lib/api')
   , utils             = require('../lib/utils')
-  , channels          = require('../lib/channels')
+  , troller           = require('../lib/troller')
 
   , template          = require('hbt!./../templates/page-business-details-main')
   ;
@@ -45,6 +45,8 @@ define(function(require){
     }
 
   , onSubmit: function(e){
+      troller.spinner.spin();
+
       e.preventDefault();
 
       var data = {
@@ -64,6 +66,9 @@ define(function(require){
         }
 
         this_.parentView.render();
+
+        troller.spinner.stop();
+        this_.doSuccessThing(this_.$el.find('.btn-save-changes'));
       });
     }
 

@@ -74,12 +74,15 @@ define(function(require){
         if (typeof el == 'string')
           el = utils.dom(el)[0];
 
-        if (!el) el = app.appView.el;
+        if (!el) el = utils.dom('#main-loader')[0];
+
+        if (el.id == 'main-loader') utils.dom(el).css('display', 'block');
 
         app.spinner.spin(el);
       }
 
     , stopSpinning: function(){
+        utils.dom('#main-loader').css('display', 'none');
         app.spinner.stop();
       }
     }
@@ -89,7 +92,8 @@ define(function(require){
   troller.add('app.changePage', app.changePage);
   troller.add('app.logout',     app.logout);
   troller.add('app.error',      app.error);
-  troller.add('spin',           app.spin)
+  troller.add('spinner.spin',   app.spin)
+  troller.add('spinner.stop',   app.stopSpinning)
 
   return app;
 });

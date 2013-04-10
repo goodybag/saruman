@@ -72,6 +72,9 @@ define(function(require){
 
   , fetchBusiness: function(){
       if (this.isFetching) return this;
+
+      troller.spinner.spin();
+
       this.isFetching = true;
 
       var this_ = this;
@@ -112,6 +115,7 @@ define(function(require){
           // Re-render the current page view with new business
           this_.render();
           this_.delegateEvents();
+          troller.spinner.stop();
       });
     }
 
