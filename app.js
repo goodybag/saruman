@@ -1,12 +1,10 @@
 define(function(require){
   var
-    domready  = require('domReady')
-  , $         = require('jquery')
-  , pubsub    = require('lib/pubsub')
+    pubsub    = require('lib/pubsub')
   , channels  = require('lib/channels')
   , utils     = require('lib/utils')
+  , config    = require('./config')
   , troller   = require('lib/troller')
-
   , user      = require('models/user')
   , AppView   = require('views/app')
   , AppRouter = require('lib/router')
@@ -17,10 +15,10 @@ define(function(require){
     // Limited interface to application to work with through repl
   , app = {
       init: function(){
-        domready(function(){
+        utils.domready(function(){
           app.appView = new AppView();
 
-          $(document.body).append(app.appView.$el);
+          utils.dom(document.body).append(app.appView.$el);
 
           utils.history = Backbone.history;
           utils.history.start();
@@ -69,6 +67,21 @@ define(function(require){
         if (error.message) return alert(error.message);
         alert(error);
       }
+
+    , spinner: new utils.Spinner(config.spinner)
+
+    , spin: function(el){
+        if (typeof el == 'string')
+          el = utils.dom(el)[0];
+
+        if (!el) el = app.appView.el;
+
+        app.spinner.spin(el);
+      }
+
+    , stopSpinning: function(){
+        app.spinner.stop();
+      }
     }
   ;
 
@@ -76,6 +89,7 @@ define(function(require){
   troller.add('app.changePage', app.changePage);
   troller.add('app.logout',     app.logout);
   troller.add('app.error',      app.error);
+  troller.add('spin',           app.spin)
 
   return app;
 });
