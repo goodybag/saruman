@@ -100,7 +100,7 @@ define(function(require){
       };
 
       api.businesses.update(this.business.id, data, function(error){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
 
         utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
         troller.business.changePage('locations', { pageNum: 1 });

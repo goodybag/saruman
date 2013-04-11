@@ -32,6 +32,9 @@ define(function(require){
 
   , render: function(){
       this.$el.html("");
+
+      this.$el.append('<div id="main-loader"></div>');
+
       for (var key in this.children){
         this.children[key].render();
         this.$el.append(this.children[key].$el);

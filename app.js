@@ -1,12 +1,10 @@
 define(function(require){
   var
-    domready  = require('domReady')
-  , $         = require('jquery')
-  , pubsub    = require('lib/pubsub')
+    pubsub    = require('lib/pubsub')
   , channels  = require('lib/channels')
   , utils     = require('lib/utils')
+  , config    = require('./config')
   , troller   = require('lib/troller')
-
   , user      = require('models/user')
   , AppView   = require('views/app')
   , AppRouter = require('lib/router')
@@ -17,10 +15,10 @@ define(function(require){
     // Limited interface to application to work with through repl
   , app = {
       init: function(){
-        domready(function(){
+        utils.domready(function(){
           app.appView = new AppView();
 
-          $(document.body).append(app.appView.$el);
+          utils.dom(document.body).append(app.appView.$el);
 
           utils.history = Backbone.history;
           utils.history.start();
@@ -65,9 +63,60 @@ define(function(require){
         user.logout(callback);
       }
 
-    , error: function(error){
-        if (error.message) return alert(error.message);
-        alert(error);
+    , error: function(error, $el, action){
+        if (typeof $el == 'function'){
+          action = $el;
+          $el = null;
+        }
+
+        if (!action) action = alert;
+
+        if (error){
+          var msg, detailsAdded = false;
+
+          if (typeof error == "object")
+            msg = error.message || (window.JSON ? window.JSON.stringify(error) : error);
+          else
+            msg = error;
+
+          if (error.details){
+            msg += "\n";
+            for (var key in error.details){
+              if ($el) $el.find('.field-' + key).addClass('error');
+              if (error.details[key]){
+                msg += "\n" + app.getKeyNiceName(key) + ": " + error.details[key] + ", ";
+                detailsAdded = true;
+              }
+            }
+            if (detailsAdded) msg = msg.substring(0, msg.length -2);
+          }
+
+          action(msg, error);
+
+          return msg;
+        }
+      }
+
+    , getKeyNiceName: function(key){
+        return config.niceNames[key] || key;
+      }
+
+    , spinner: new utils.Spinner(config.spinner)
+
+    , spin: function(el){
+        if (typeof el == 'string')
+          el = utils.dom(el)[0];
+
+        if (!el) el = utils.dom('#main-loader')[0];
+
+        if (el.id == 'main-loader') utils.dom(el).css('display', 'block');
+
+        app.spinner.spin(el);
+      }
+
+    , stopSpinning: function(){
+        utils.dom('#main-loader').css('display', 'none');
+        app.spinner.stop();
       }
     }
   ;
@@ -76,6 +125,8 @@ define(function(require){
   troller.add('app.changePage', app.changePage);
   troller.add('app.logout',     app.logout);
   troller.add('app.error',      app.error);
+  troller.add('spinner.spin',   app.spin)
+  troller.add('spinner.stop',   app.stopSpinning)
 
   return app;
 });

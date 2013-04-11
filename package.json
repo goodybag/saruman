@@ -13,7 +13,8 @@
       "async": "0.2.x",
       "select2": "3.2.x",
       "bootstrap-dropdown": "0.2.x",
-      "hbt": "0.0.x"
+      "hbt": "0.0.x",
+      "spin-js": "1.2.5-jam.1"
     }
   },
   "devDependencies": {

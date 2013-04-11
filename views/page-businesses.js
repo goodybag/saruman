@@ -80,6 +80,8 @@ define(function(require){
     }
 
   , fetchBusinesses: function(){
+      troller.spinner.spin();
+
       var this_ = this, options = utils.clone(this.paginator.getCurrent());
 
       options = utils.extend(options, this.filter);
@@ -88,11 +90,12 @@ define(function(require){
         options.isVerified = [true, false];
 
       api.businesses.list(options, function(error, businesses, meta){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
 
         this_.paginator.setTotal(meta.total);
         this_.businesses = businesses;
         this_.renderBusinesses();
+        troller.spinner.stop();
       });
     }
 
@@ -148,8 +151,6 @@ define(function(require){
       this.$el.html(template());
 
       // Insert paginators
-      console.log(this.paginator);
-
       if (this.paginator.maxPages <= 1) return this;
       this.children.paginatorTop.render()
       this.children.paginatorBottom.render()
@@ -177,6 +178,8 @@ define(function(require){
       if (filter === 'isVerified'){
         this.$el.find('.filters .btn-' + (value ? 'un-' : '') + 'verified').removeClass('active');
       }
+
+      this.paginator.setPage(0);
 
       this.fetchBusinesses();
     }
