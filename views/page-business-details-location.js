@@ -40,7 +40,7 @@ define(function(require){
   , onClickDelete: function(e){
       var this_ = this;
       api.locations.del(this.location.id, function(error){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
       });
       this.undelegateEvents();
       this.$el.animate({ opacity: 0, height: '1px' }, function(){

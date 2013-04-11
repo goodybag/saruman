@@ -51,6 +51,8 @@ define(function(require){
     }
 
   , fetchUsers: function(){
+      troller.spinner.spin();
+
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
@@ -92,13 +94,15 @@ define(function(require){
           })
         }
       }, function(error, results){
-          if (error) return alert(error);
+          if (error) return alert(error), troller.spinner.stop();
 
           this_.users               = results.users;
           this_.business            = results.business;
           this_.business.locations  = results.locations;
 
           this_.renderUsers();
+
+          troller.spinner.stop();
         }
       );
 
@@ -176,6 +180,8 @@ define(function(require){
     }
 
   , onNewUserBtnClick: function(e){
+      troller.spinner.spin();
+
       var
         this_ = this
       , item  = new this.ItemModel().makeNewUser()
@@ -189,7 +195,7 @@ define(function(require){
         item.generateEmailFromId();
 
         item.save(function(error){
-          if (error) return alert(error.message);
+          if (error) return alert(error.message), troller.spinner.stop();
 
           this_.users.push(item.toJSON());
 
@@ -208,6 +214,8 @@ define(function(require){
 
           , this_.$usersList[0].childNodes[0]
           );
+
+          troller.spinner.stop();
         });
       });
     }
