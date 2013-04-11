@@ -90,7 +90,7 @@ define(function(require){
         options.isVerified = [true, false];
 
       api.businesses.list(options, function(error, businesses, meta){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
 
         this_.paginator.setTotal(meta.total);
         this_.businesses = businesses;

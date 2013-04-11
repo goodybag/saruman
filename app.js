@@ -63,9 +63,42 @@ define(function(require){
         user.logout(callback);
       }
 
-    , error: function(error){
-        if (error.message) return alert(error.message);
-        alert(error);
+    , error: function(error, $el, action){
+        if (typeof $el == 'function'){
+          action = $el;
+          $el = null;
+        }
+
+        if (!action) action = alert;
+
+        if (error){
+          var msg, detailsAdded = false;
+
+          if (typeof error == "object")
+            msg = error.message || (window.JSON ? window.JSON.stringify(error) : error);
+          else
+            msg = error;
+
+          if (error.details){
+            msg += "\n";
+            for (var key in error.details){
+              if ($el) $el.find('.field-' + key).addClass('error');
+              if (error.details[key]){
+                msg += "\n" + app.getKeyNiceName(key) + ": " + error.details[key] + ", ";
+                detailsAdded = true;
+              }
+            }
+            if (detailsAdded) msg = msg.substring(0, msg.length -2);
+          }
+
+          action(msg, error);
+
+          return msg;
+        }
+      }
+
+    , getKeyNiceName: function(key){
+        return config.niceNames[key] || key;
       }
 
     , spinner: new utils.Spinner(config.spinner)

@@ -92,7 +92,7 @@ define(function(require){
         }
       }, function(error, result){
           this_.isFetching = false;
-          if (error) return console.error(error);
+          if (error) return troller.app.error(error);
 
           this_.hasLoadedOnce = true;
 

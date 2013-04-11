@@ -66,7 +66,7 @@ define(function(require){
   , fetchLocations: function(){
       var this_ = this;
       api.businesses.locations.list(this.business.id, this.paginator.getCurrent(), function(error, locations, meta){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
 
         this_.paginator.setTotal(meta.total);
         this_.locations = locations;

@@ -23,8 +23,10 @@ define(function(require){
   , onFacebookLoginClick: function(e){
       e.preventDefault();
 
+      troller.spinner.spin();
+
       api.session.getOauthUrl(window.location.origin + '/%23/oauth/', 'facebook', function(error, data){
-        if (error) return troller.app.error(error.message);
+        if (error) return troller.app.error(error), troller.spinner.stop();
 
         // Pass control to singly
         window.location.href = data.url;
@@ -33,6 +35,8 @@ define(function(require){
 
   , onLoginSubmit: function(e){
       e.preventDefault();
+
+      troller.spinner.spin();
 
       var
         email     = this.$el.find('#input-email').val()
@@ -43,6 +47,8 @@ define(function(require){
       this.$el.find('#input-password').val('');
 
       user.auth(email, password, function(error){
+        troller.spinner.stop();
+
         if (error)
           return this_.$el.find('.errors').html('<p class="text-error">Invalid Email/Password</p>');
 

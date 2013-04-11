@@ -63,7 +63,6 @@ define(function(require){
       if (data.create)   this.create   = data.create;
       if (data.isNew)    this.isNew    = data.isNew;
 
-      console.log(data);
       if (data.locationId){
         this.location = { id: data.locationId };
         this.fetchLocation();
@@ -81,7 +80,7 @@ define(function(require){
       var this_ = this;
 
       api.locations.get(this.location.id, function(error, location){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
 
         this_.location = location;
         this_.render();
@@ -141,6 +140,10 @@ define(function(require){
 
   , onFormSubmit: function(e){
       e.preventDefault();
+
+      troller.spinner.spin();
+
+      this.clearErrors();
 
       var this_ = this;
 
@@ -218,7 +221,9 @@ define(function(require){
 
       if (this.create){
         return api.locations.create(data, function(error){
-          if (error) return console.error(error);
+          troller.spinner.stop();
+
+          if (error) return troller.app.error(error);
 
           utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
           troller.business.changePage('locations', { pageNum: 1 });
@@ -226,10 +231,13 @@ define(function(require){
       }
 
       api.locations.update(this.location.id, data, function(error){
-        if (error) return console.error(error);
+        troller.spinner.stop();
 
-        utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
-        troller.business.changePage('locations', { pageNum: 1 });
+        if (error) return troller.app.error(error, this_.$el.find('#location-details-form'));
+
+        this_.doSuccessThing(
+          this_.$el.find('.btn-primary')
+        );
       });
     }
 

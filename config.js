@@ -32,6 +32,17 @@ define(function(require){
       , 'Vietnamese'
       ]
 
+    , niceNames: {
+        lat:            'Latitude'
+      , lon:            'Longitude'
+      , phone:          'Phone Number'
+      , city:           'City'
+      , zip:            'Zip'
+      , name:           'Name'
+      , street1:        'Street 1'
+      , street2:        'Street 2'
+      }
+
     , changeMessages: [
         'Changes Saved!'
       , 'Roger!'

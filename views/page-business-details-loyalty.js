@@ -54,7 +54,7 @@ define(function(require){
 
       api.businesses.loyalty.get(this.business ? this.business.id : this.businessId, function(error, loyalty){
         this_.isFetchingLoyalty = false;
-        if (error) console.error(error);
+        if (error) troller.app.error(error);
         this_.loyalty = loyalty;
         this_.render();
       });
@@ -90,6 +90,8 @@ define(function(require){
   , onSubmit: function(e){
       e.preventDefault();
 
+      troller.spinner.spin();
+
       this.updateModelWithFormData();
 
       var this_ = this;
@@ -99,10 +101,11 @@ define(function(require){
       delete loyalty.businessId;
 
       api.businesses.loyalty.update(this.business.id, loyalty, function(error){
-        if (error) return console.error(error);
+        troller.spinner.stop();
 
-        troller.business.changePage('main');
-        utils.history.navigate('/businesses/' + this_.business.id);
+        if (error) return troller.app.error(error);
+
+        this_.doSuccessThing(this_.$el.find('.btn-primary'));
       });
     }
 

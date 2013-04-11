@@ -37,5 +37,9 @@ define(function(require){
         }, 3000);
       }
     }
+
+  , clearErrors: function(){
+      this.$el.find('.error').removeClass('error');
+    }
   });
 });

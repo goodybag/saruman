@@ -58,7 +58,7 @@ define(function(require){
       var this_ = this;
 
       api.businesses.update(this.business.id, data, function(error){
-        if (error) return console.error(error);
+        if (error) return troller.app.error(error);
 
         // Copy over business object
         for (var key in data){
