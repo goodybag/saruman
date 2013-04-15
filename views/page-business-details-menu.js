@@ -33,7 +33,7 @@ define(function(require){
 
   , render: function(){
       // Merge in new tags
-      if (!this.tags || this.tags.length === 0 || !this.tags[0].name){
+      if (!this.tags || this.tags.length === 0 || this.tags[0] == null || !this.tags[0].name){
         this.tags = config.cuisineTypes.slice(0);
         if (this.business && this.business.tags){
           for (var i = this.business.tags.length - 1; i >= 0; i--){
