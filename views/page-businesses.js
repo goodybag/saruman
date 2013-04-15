@@ -67,7 +67,7 @@ define(function(require){
     }
 
   , onShow: function(options){
-      if (options) this.filter = options.filter;
+      if (options.filter) this.filter = options.filter;
 
       if (options.page){
         this.paginator.setPage(options.page - 1);
