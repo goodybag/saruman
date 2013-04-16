@@ -1,11 +1,7 @@
 define(function(require){
   var
     utils     = require('../../lib/utils')
-  , config    = require('../../config')
-  , api       = require('../../lib/api')
-  , troller   = require('../../lib/troller')
-
-  , template  = require('hbt!../../templates/accounts/user-list-item')
+  , template  = require('hbt!./list-item')
   ;
 
   return utils.View.extend({
@@ -24,7 +20,7 @@ define(function(require){
 
       options = options || {};
 
-      this.template = template;
+      this.template = options.template || template;
 
       this.isNew = !!options.isNew;
 
@@ -114,9 +110,14 @@ define(function(require){
   , updateModelWithFormData: function(){
       var $el;
       for (var key in this.model.attributes){
-        if (($el = this.$el.find('#user-' + this.model.get('id') + '-' + key)).length > 0){
+        if (($el = this.$el.find('#item-' + this.model.get('id') + '-' + key)).length > 0){
+          // Checkbox or radio
           if ($el[0].tagName === "INPUT" && ($el[0].type === "checkbox" || $el[0].type === "radio"))
             this.model.set(key, $el[0].checked == true);
+          // Textarea
+          else if ($el[0].tagName === "TEXTAREA")
+            this.model.set(key, $el[0].value);
+          // Everything else
           else this.model.set(key, $el.val());
         }
       }
@@ -149,22 +150,7 @@ define(function(require){
       //Remove view from DOM
       this.remove();
 
-      Backbone.View.prototype.remove.call(this);
-
       this.trigger('destroy');
-    }
-
-  , onAvatarClick: function(e){
-      var this_ = this;
-      filepicker.pick(
-        { mimetypes:['image/*'] },
-        function(file) {
-          this_.model.avatarUrl = file.url;
-        },
-        function(error) {
-          console.log(error);
-        }
-      );
     }
 
   , onCopyClick: function(e){
@@ -172,7 +158,7 @@ define(function(require){
     }
 
   , onDeleteClick: function(e){
-      if (!confirm("Are you sure you want to delete " + (this.model.email || "this record") + "?"))
+      if (!confirm("Are you sure you want to delete this record?"))
         return;
 
       this.destroy();

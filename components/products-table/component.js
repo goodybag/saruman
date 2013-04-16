@@ -1,5 +1,5 @@
 /**
- * Table View Component
+ * Products Table Component
  */
 
 define(function(require){

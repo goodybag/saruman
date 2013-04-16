@@ -6,6 +6,7 @@ define(function(require){
   , utils             = require('../lib/utils')
   , troller           = require('../lib/troller')
   , Paginator         = require('../lib/paginator')
+  , Components        = require('../lib/components')
 
   , template          = require('hbt!./../templates/page-menu-items')
 
@@ -31,10 +32,13 @@ define(function(require){
       // Initial set of products
       this.products = [];
 
+      this.dataParams = {};
+
       this.paginator = new Paginator({ page: this.currentPage, limit: 10 });
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
+      , listing:          new Components.ProductsTable.Main({ paginator: this.paginator })
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
@@ -63,49 +67,44 @@ define(function(require){
 
   , fetchProducts: function(){
       var this_ = this;
-      api.businesses.products.list(this.business.id, this.paginator.getCurrent(), function(error, products, meta){
+
+      api.businesses.products.list(this.business.id, this.getDataParams(), function(error, products, meta){
         if (error) return troller.app.error(error);
 
         this_.paginator.setTotal(meta.total);
+
         this_.products = products;
+
+        this_.children.listing.setItems(this_.products);
+
         this_.render();
+
         this_.delegateEvents();
       });
-    }
-
-  , renderProducts: function(){
-      if (!this.products || this.products.length === 0) return this;
-
-      var $list = this.$el.find('#products-list');
-      $list.html("");
-      for (var i = 0, len = this.products.length, view; i < len; i++){
-        view = new Views.Product({
-          product: this.products[i]
-        , parent: this
-        }).render();
-
-        $list.append(view.$el);
-
-        this.delegateEvents();
-        view.delegateEvents();
-      }
-
-      return this;
     }
 
 
   , render: function(){
       this.$el.html(template({ count: this.paginator.total }));
 
-      this.renderProducts();
+      this.children.listing.render();
 
       if (this.paginator.maxPages <= 1) return this;
       this.children.paginatorTop.render();
       this.children.paginatorBottom.render();
+
       this.$el.find('#products-paginator-top').append(this.children.paginatorTop.$el);
       this.$el.find('#products-paginator-bottom').append(this.children.paginatorBottom.$el);
 
       return this;
+    }
+
+  , getDataParams: function(){
+      return utils.extend(
+        this.dataParams
+      , this.paginator.getCurrent()
+      , { filter: this.searchValue }
+      );
     }
 
   , onAddProductClick: function(e){
