@@ -5,7 +5,6 @@ define(function(require){
   , api               = require('../lib/api')
   , utils             = require('../lib/utils')
   , config            = require('../config')
-  , channels          = require('../lib/channels')
   , Paginator         = require('../lib/paginator')
   , troller           = require('../lib/troller')
 

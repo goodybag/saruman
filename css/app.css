@@ -319,3 +319,7 @@ td.photoUrl {
 .photo-editor .menu i {
   line-height: 30px;
 }
+
+.modal .modal-body {
+  max-height: 640px;
+}

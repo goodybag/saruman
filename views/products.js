@@ -76,10 +76,12 @@ define(function(require){
     }
 
   , fetchProducts: function(){
+      troller.spinner.spin();
+
       var this_ = this;
 
       api.businesses.products.list(this.business.id, this.getDataParams(), function(error, products, meta){
-        if (error) return troller.app.error(error);
+        if (error) return troller.app.error(error), troller.spinner.stop();;
 
         this_.paginator.setTotal(meta.total);
 
@@ -90,6 +92,8 @@ define(function(require){
         this_.render();
 
         this_.delegateEvents();
+
+        troller.spinner.stop();
       });
     }
 
@@ -111,8 +115,6 @@ define(function(require){
       this.$el.find('#products-paginator-top').append(this.children.paginatorTop.$el);
       this.$el.find('#products-paginator-bottom').append(this.children.paginatorBottom.$el);
 
-      this.$search = this.$el.find('#products-search');
-
       return this;
     }
 
@@ -133,7 +135,8 @@ define(function(require){
       if (this.searchTimeout) clearTimeout(this.searchTimeout);
 
       this.searchTimeout = setTimeout(function(){
-        this_.searchValue = this_.$search.val();
+        this_.searchValue = e.target.value;
+        this_.fetchProducts();
       }, 400);
     }
 

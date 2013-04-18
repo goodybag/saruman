@@ -1,7 +1,6 @@
 define(function(require){
   var
     pubsub    = require('lib/pubsub')
-  , channels  = require('lib/channels')
   , utils     = require('lib/utils')
   , config    = require('./config')
   , troller   = require('lib/troller')
@@ -118,15 +117,29 @@ define(function(require){
         utils.dom('#main-loader').css('display', 'none');
         app.spinner.stop();
       }
+
+    , openModal: function(content){
+        app.appView.openModal(content);
+      }
+
+    , closeModal: function(){
+        app.appView.closeModal();
+      }
     }
   ;
 
   troller.add('app.init',       app.init);
   troller.add('app.changePage', app.changePage);
   troller.add('app.logout',     app.logout);
+
   troller.add('app.error',      app.error);
+  troller.add('error',          app.error);
+
   troller.add('spinner.spin',   app.spin)
   troller.add('spinner.stop',   app.stopSpinning)
+
+  troller.add('modal.open',     app.openModal);
+  troller.add('modal.close',    app.closeModal);
 
   return app;
 });
