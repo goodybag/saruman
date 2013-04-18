@@ -24,6 +24,7 @@ define(function(require){
     , 'tapin-stations': require('./accounts/tapin-stations-by-business-page')
     , cashiers:         require('./accounts/cashiers-by-business-page')
     , managers:         require('./accounts/managers-by-business-page')
+    , products:         require('./products')
     }
   ;
 

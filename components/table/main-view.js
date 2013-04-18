@@ -10,12 +10,11 @@ define(function(require){
 
   , template  = require('hbt!./table-tmpl')
   , ItemView  = require('./item-view')
-  , ItemModel = require('./item-model')
   ;
 
   return utils.View.extend({
-    tagName: 'table'
-  , className: 'table table-striped'
+    tagName:    'table'
+  , className:  'table table-striped'
 
   , events: {
       'click .btn-new-item':        'onNewItemClick'
@@ -39,8 +38,8 @@ define(function(require){
       // Let user specify item view
       this.ItemView   = options.ItemView || ItemView;
 
-      // Let user specify item model
-      this.ItemModel  = options.ItemModel || ItemModel;
+      // Require that the user specify item model
+      this.ItemModel  = options.ItemModel;
 
       return this;
     }
@@ -61,31 +60,40 @@ define(function(require){
           ).render()
           .on('destroy', function(item){ this_.onItemDestroy(item) })
           .on('copy',    function(item){ this_.onItemCopy(item) })
-          .$el[0]
+          .el
         );
       }
 
-      this.$items = this.$items || this.$el.find('.items-list');
+      this.$el.html(
+        this.template({
+          model:    this.model ? this.model.toJSON() : null
+        , headers:  this.headers
+        })
+      );
+
+      this.$items = this.$el.find('.items-list');
 
       this.$items.html(fragment);
 
       return this;
     }
 
-  , setData: function(data){
+  , setItems: function(data){
       this.data = data;
     }
 
   , addNewItem: function(item){
+      var this_ = this;
+
       if (!item.toJSON) item = new this.ItemModel(item);
       this.data.push(item.toJSON());
 
       return this.$items[0].insertBefore(
-        new this_.ItemView(
+        new this.ItemView(
           utils.extend({
             model: item
           , isNew: true
-          }, this_.getAdditionalViewOptions())
+          }, this.getAdditionalViewOptions())
         ).render()
           .on('destroy', function(item){ this_.onItemDestroy(item) })
           .on('copy', function(item){ this_.onItemCopy(item) })
@@ -115,6 +123,8 @@ define(function(require){
       , this_.$items[0].childNodes[0]
       );
     }
+
+  , getAdditionalViewOptions: function(){ }
 
   , onItemDestroy: function(item){ }
 

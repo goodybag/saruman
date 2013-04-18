@@ -1,36 +1,33 @@
-<td class="id">
-  {{model.id}}
-</td>
 <td class="name">
-  <input class="edit-mode-value input-medium" value="{{model.name}}" type="text" id="item-{{model.id}}-name">
+  <textarea class="edit-mode-value field-name" rows="8" id="item-{{model.id}}-name">{{model.name}}</textarea>
   <span class="read-mode-value">{{model.name}}</span>
 </td>
 <td class="description">
-  <textarea class="edit-mode-value" id="item-{{model.id}}-description">{{model.description}}</textarea>
+  <textarea class="edit-mode-value field-description" rows="8" id="item-{{model.id}}-description">{{model.description}}</textarea>
   <span class="read-mode-value">{{truncate model.description 50}}</span>
 </td>
 <td class="price">
-  $ <input class="edit-mode-value input-small" value="{{model.price}}" type="text" id="item-{{model.id}}-price">
+  <input class="edit-mode-value field-price" value="{{money model.price}}" type="text" id="item-{{model.id}}-price">
   <span class="read-mode-value">${{money model.price}}</span>
 </td>
 <td class="categories">
-  <select name="categories" data-placeholder="Select a Category" class="categories-select select-box" id="item-{{model.id}}-categories">
+  <select name="categories" data-placeholder="Select a Category" class="categories-select select-box field-categories" id="item-{{model.id}}-categories">
     <option></option>
   {{#each categories}}
     <option value="{{this.id}}"{{#in ../model.categories this}} selected="true"{{/in}}>{{this.name}}</option>
   {{/each}}
   </select>
 </td>
-<td class="photoUrl">
-  <img class="photo-editor" src="{{filepicker model.photoUrl}}" />
-</td>
 <td class="tags">
-  <select name="tags" data-placeholder="Select a Category" class="tags-select select-box" id="item-{{model.id}}-tags">
+  <select name="tags" data-placeholder="Select a Category" class="tags-select select-box field-tags" id="item-{{model.id}}-tags">
     <option></option>
   {{#each tags}}
     <option value="{{this.id}}"{{#in ../model.tags this}} selected="true"{{/in}}>{{this.name}}</option>
   {{/each}}
   </select>
+</td>
+<td class="photoUrl">
+  <img class="photo-editor" src="{{filepicker model.photoUrl 100 100}}" />
 </td>
 <td class="actions">
   <div class="btn-group">
@@ -42,9 +39,6 @@
     </button>
     <button class="btn btn-small btn-copy">
       <i class="icon-copy"></i>
-    </button>
-    <button class="btn btn-small btn-open-user">
-      <i class="icon-user"></i>
     </button>
     <button class="btn btn-small btn-delete btn-danger">
       <i class="icon-trash"></i>

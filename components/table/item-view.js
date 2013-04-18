@@ -1,7 +1,7 @@
 define(function(require){
   var
     utils     = require('../../lib/utils')
-  , template  = require('hbt!./list-item')
+  , template  = require('hbt!./list-item-tmpl')
   ;
 
   return utils.View.extend({
@@ -111,12 +111,19 @@ define(function(require){
       var $el;
       for (var key in this.model.attributes){
         if (($el = this.$el.find('#item-' + this.model.get('id') + '-' + key)).length > 0){
+
           // Checkbox or radio
           if ($el[0].tagName === "INPUT" && ($el[0].type === "checkbox" || $el[0].type === "radio"))
             this.model.set(key, $el[0].checked == true);
+
           // Textarea
           else if ($el[0].tagName === "TEXTAREA")
             this.model.set(key, $el[0].value);
+
+          // Price needs to be multiplied by 100
+          else if ($el.hasClass('field-price'))
+            this.model.set(key, $el.val() * 100)
+
           // Everything else
           else this.model.set(key, $el.val());
         }
@@ -183,7 +190,7 @@ define(function(require){
         this.enterReadMode();
         this.updateModelWithFormData();
         this.saveModel(function(error){
-          if (error) alert(error.message);
+          if (error) troller.error(error);
           this_.render();
         });
       }

@@ -138,7 +138,7 @@ table .uneditable-input {
   transition: opacity 0.3s linear;
 }
 
-input.edit-mode-value {
+tr .edit-mode-value {
   display: none;
 }
 
@@ -233,4 +233,22 @@ input.error {
 @-webkit-keyframes barrel-roll {
   from { -webkit-transform: rotate(0); }
   to   { -webkit-transform: rotate(360deg); }
+}
+
+.nav [class^=icon-] {
+  margin-right: 8px;
+  color: #666;
+}
+
+.nav .active [class^=icon-] {
+  margin-right: 18px;
+  color: #333;
+}
+
+td.price input {
+  width: 40px;
+}
+
+td.photoUrl {
+  width: 60px;
 }

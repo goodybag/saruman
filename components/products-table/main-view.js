@@ -9,31 +9,29 @@ define(function(require){
   , api         = require('../../../lib/api')
   , config      = require('../../../config')
 
-  , Components  = require('../../../lib/components')
+  , Table       = require('../table/component').Main
 
-  , template    = require('hbt!./table-tmpl')
   , ItemView    = require('./item-view')
-  , ItemModel   = require('./item-model')
+  , ItemModel   = require('../../models/product')
   ;
 
-  return Components.Table.Main.extend({
+  return Table.extend({
     initialize: function(options){
       options = options || {};
 
-      options.template  = template;
       options.ItemView  = ItemView;
       options.ItemModel = ItemModel;
 
-      options.headers   = {
-        name:             config.niceNames.name
-      , description:      config.niceNames.description
-      , price:            config.niceNames.price
-      , categories:       config.niceNames.categories
-      , tags:             config.niceNames.tags
-      , photoUrl:         config.niceNames.photoUrl
-      };
+      options.headers = [
+        config.niceNames.name
+      , config.niceNames.description
+      , config.niceNames.price
+      , config.niceNames.categories
+      , config.niceNames.tags
+      , config.niceNames.photoUrl
+      ];
 
-      return Components.Table.Main.initialize.call(this, options);
+      return Table.prototype.initialize.call(this, options);
     }
   });
 });
