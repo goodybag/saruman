@@ -1,7 +1,7 @@
 define(function(require){
   var
     utils = require('../../../lib/utils')
-  , template = require('hbt!./main-tmpl')
+  , template = require('hbt!./overlay-tmpl')
   ;
 
   return utils.View.extend({
@@ -14,15 +14,17 @@ define(function(require){
     }
 
   , initialize: function(options){
-
+      return this;
     }
 
   , render: function(){
       this.$el.html(
         template({
-          model: model.toJSON()
+          model: this.model.toJSON()
         })
       );
+
+      return this;
     }
 
   , onPhotoViewClick: function(e){

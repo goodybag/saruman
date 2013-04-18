@@ -5,6 +5,7 @@ define(function(require){
   , api         = require('../../lib/api')
   , troller     = require('../../lib/troller')
   , TableItem   = require('../table/component').Item
+  , PhotoEditor = require('../photo-editor/component').Main
 
   , template    = require('hbt!./list-item-tmpl')
   ;
@@ -22,11 +23,11 @@ define(function(require){
       TableItem.prototype.render.call(this);
 
       // Add in photo editors
-      // this.find('.photo-editor').replaceWith(
-      //   new Components.PhotoEditor.Main({
-      //     model:  this_.model
-      //   }).render().$el;
-      // );
+      this.$el.find('.photo-editor').replaceWith(
+        new PhotoEditor({
+          model:  this.model
+        }).render().$el
+      );
 
       return this;
     }

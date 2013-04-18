@@ -4,7 +4,7 @@
 </td>
 <td class="description">
   <textarea class="edit-mode-value field-description" rows="8" id="item-{{model.id}}-description">{{model.description}}</textarea>
-  <span class="read-mode-value">{{truncate model.description 50}}</span>
+  <span class="read-mode-value">{{truncate model.description 80}}</span>
 </td>
 <td class="price">
   <input class="edit-mode-value field-price" value="{{money model.price}}" type="text" id="item-{{model.id}}-price">
