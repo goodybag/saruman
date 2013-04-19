@@ -47,7 +47,9 @@ define(function(require){
       // Initial set of products
       this.products = [];
 
-      this.dataParams = {};
+      this.dataParams = {
+        include: ['categories', 'tags']
+      };
 
       this.searchValue = null;
 

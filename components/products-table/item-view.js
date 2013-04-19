@@ -29,6 +29,19 @@ define(function(require){
         }).render().$el
       );
 
+      // Categories select
+      this.$el.find('.categories-select').select2({
+        allowClear:   true
+      , disabled:     true
+      }).select2('disable');
+
+      // Tags select
+      this.$el.find('.tags-select').select2({
+        allowClear:   true
+      , disabled:     true
+      // , tags:         this.model.get('tags')
+      }).select2('disable');
+
       return this;
     }
 

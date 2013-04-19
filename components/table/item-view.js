@@ -38,15 +38,6 @@ define(function(require){
         )
       );
 
-      var $selects = this.$el.find('select').select2(
-        utils.extend({
-          allowClear:   true
-        , disabled:     true
-        }, this.getAdditionalSelect2Properties())
-      );
-
-      $selects.select2('disable');
-
       this.delegateEvents();
 
       this.mode = "read";
