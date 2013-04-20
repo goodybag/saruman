@@ -19,12 +19,9 @@
   </select>
 </td>
 <td class="tags">
-  <select name="tags" multiple="true" data-placeholder="Select a Category" class="tags-select select-box field-tags" id="item-{{model.id}}-tags">
-    <option></option>
-  {{#each tags}}
-    <option value="{{this.id}}"{{#in ../model.tags this}} selected="true"{{/in}}>{{this.name}}</option>
-  {{/each}}
-  </select>
+  <input type="hidden" class="tags-select field-tags" id="item-{{model.id}}-tags">
+  <!-- <select name="tags" multiple="true" data-placeholder="Select a Category" class="tags-select select-box field-tags" id="item-{{model.id}}-tags">
+  </select> -->
 </td>
 <td class="photoUrl">
   <img class="photo-editor" src="{{filepicker model.photoUrl 100 100}}" />

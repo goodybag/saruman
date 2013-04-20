@@ -1,6 +1,7 @@
 define(function(require){
   var
     utils     = require('../../lib/utils')
+  , troller   = require('../../lib/troller')
   , template  = require('hbt!./list-item-tmpl')
   ;
 
@@ -15,6 +16,8 @@ define(function(require){
     , 'click .btn-copy':          'onCopyClick'
     }
 
+  , updateBehaviors: {}
+
   , initialize: function(options){
       this.keyupSaveTimeout = 3000;
 
@@ -25,6 +28,12 @@ define(function(require){
       this.isNew = !!options.isNew;
 
       this.mode = 'read';
+
+
+      // Bind update behaviors
+      for (var key in this.updateBehaviors){
+        this.updateBehaviors[key] = utils.bind(this.updateBehaviors[key], this);
+      }
 
       return this;
     }
@@ -66,8 +75,6 @@ define(function(require){
 
       this.$el.find('input[type="checkbox"]').removeAttr('disabled');
 
-      this.$el.find('select').select2('enable');
-
       this.mode = "edit";
 
       return this;
@@ -103,8 +110,12 @@ define(function(require){
       for (var key in this.model.attributes){
         if (($el = this.$el.find('#item-' + this.model.get('id') + '-' + key)).length > 0){
 
+          // Extended behavior
+          if (this.updateBehaviors[key])
+            this.model.set(key, this.updateBehaviors[key]($el));
+
           // Checkbox or radio
-          if ($el[0].tagName === "INPUT" && ($el[0].type === "checkbox" || $el[0].type === "radio"))
+          else if ($el[0].tagName === "INPUT" && ($el[0].type === "checkbox" || $el[0].type === "radio"))
             this.model.set(key, $el[0].checked == true);
 
           // Textarea

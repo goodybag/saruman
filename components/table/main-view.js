@@ -54,7 +54,7 @@ define(function(require){
         fragment.appendChild(
           new this.ItemView(
             utils.extend({
-              model:          new this.ItemModel(this.data[i])
+              model:          new this.ItemModel(this.data[i], this.getAdditionalModelOptions())
             , trollerPrefix:  this.trollerPrefix
             }, this.getAdditionalViewOptions())
           ).render()
@@ -125,6 +125,8 @@ define(function(require){
     }
 
   , getAdditionalViewOptions: function(){ }
+
+  , getAdditionalModelOptions: function(){ }
 
   , onItemDestroy: function(item){ }
 

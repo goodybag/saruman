@@ -82,21 +82,54 @@ define(function(require){
 
       var this_ = this;
 
-      api.businesses.products.list(this.business.id, this.getDataParams(), function(error, products, meta){
-        if (error) return troller.app.error(error), troller.spinner.stop();;
+      utils.parallel({
+        products: function(done){
+          api.businesses.products.list(this_.business.id, this_.getDataParams(), function(error, results, meta){
+            if (!error) this_.paginator.setTotal(meta.total);
+            done(error, results);
+          });
 
-        this_.paginator.setTotal(meta.total);
+        }
 
-        this_.products = products;
+      , categories: function(done){
+          api.businesses.productCategories.list(this_.business.id, { limit: 1000 }, function(error, results){
+            done(error, results);
+          });
+        }
 
-        this_.children.listing.setItems(this_.products);
+      , tags: function(done){
+          api.productTags.list({ businessId: this_.business.id, limit: 1000 }, function(error, results){
+            done(error, results);
+          });
+        }
+      }
+      , function(error, results){
+          if (error) return troller.app.error(error), troller.spinner.stop();
 
-        this_.render();
+          this_.products    = results.products;
+          this_.categories  = results.categories;
 
-        this_.delegateEvents();
+          // We want tags to be indexable
+          this_.tags = {};
 
-        troller.spinner.stop();
-      });
+          for (var i = 0, l = results.tags.length; i < l; ++i){
+            this_.tags[results.tags[i].tag] = results.tags[i];
+          }
+
+          this_.tags._tags = results.tags || [];
+
+          this_.children.listing.setItems(this_.products);
+          this_.children.listing.setCategories(this_.categories);
+          this_.children.listing.setTags(this_.tags);
+
+          this_.render();
+
+          this_.delegateEvents();
+
+          troller.spinner.stop();
+        }
+      );
+
     }
 
 

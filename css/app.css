@@ -142,6 +142,12 @@ tr .edit-mode-value {
   display: none;
 }
 
+textarea.edit-mode-value {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 .accounts-nav {
   margin-top: -28px;
   border: none;
@@ -251,6 +257,10 @@ td.price input {
 
 td.photoUrl {
   width: 60px;
+}
+
+td .tags-select {
+  width: 120px;
 }
 
 .photo-editor {

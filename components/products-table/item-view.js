@@ -16,6 +16,8 @@ define(function(require){
 
       options.template = options.template || template;
 
+      this.categories = options.categories;
+
       return TableItem.prototype.initialize.call(this, options);
     }
 
@@ -39,14 +41,44 @@ define(function(require){
       this.$el.find('.tags-select').select2({
         allowClear:   true
       , disabled:     true
-      // , tags:         this.model.get('tags')
+
+      , tags: this.model.get('tags').map(function(t){
+          return (t && t.tag) ? t.tag : t;
+        })
       }).select2('disable');
 
+console.log(this.model.get('tags').map(function(t){
+          return t.tag ? t.tag : t;
+        }));
       return this;
     }
 
-  , getAdditionalSelect2Properties: function(){ return {}; }
+  , enterEditMode: function(){
+      if (this.mode === "edit") return this;
 
-  , getAdditionalRenderProperties: function(){ return {}; }
+      TableItem.prototype.enterEditMode.call(this);
+
+      this.$el.find('.tags-select, select').select2('enable');
+    }
+
+  , enterReadMode: function(){
+      if (this.mode === "read") return this;
+
+      TableItem.prototype.enterReadMode.call(this);
+
+      this.$el.find('.tags-select, select').select2('disable');
+    }
+
+  , getAdditionalRenderProperties: function(){
+      return {
+        categories: this.categories
+      };
+    }
+
+  , updateBehaviors: {
+      tags: function($el){
+        return $el.val().split(',');
+      }
+    }
   });
 });

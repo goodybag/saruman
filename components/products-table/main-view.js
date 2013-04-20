@@ -33,5 +33,27 @@ define(function(require){
 
       return Table.prototype.initialize.call(this, options);
     }
+
+  , setCategories: function(categories){
+      this.categories = categories;
+      return this;
+    }
+
+  , setTags: function(tags){
+      this.tags = tags;
+      return this;
+    }
+
+  , getAdditionalViewOptions: function(){
+      return {
+        categories: this.categories
+      }
+    }
+
+  , getAdditionalModelOptions: function(){
+      return {
+        allTags: this.tags
+      }
+    }
   });
 });
