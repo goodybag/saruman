@@ -47,6 +47,7 @@ define(function(require){
   , getAdditionalViewOptions: function(){
       return {
         categories: this.categories
+      , allTags:    this.tags
       }
     }
 

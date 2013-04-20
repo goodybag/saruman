@@ -109,14 +109,14 @@ define(function(require){
           this_.products    = results.products;
           this_.categories  = results.categories;
 
-          // We want tags to be indexable
-          this_.tags = {};
+          // We want tags to be indexable by name and id
+          this_.tags = { _tags: [] };
 
           for (var i = 0, l = results.tags.length; i < l; ++i){
             this_.tags[results.tags[i].tag] = results.tags[i];
+            this_.tags[results.tags[i].id] = results.tags[i];
+            this_.tags._tags.push(results.tags[i].tag);
           }
-
-          this_.tags._tags = results.tags || [];
 
           this_.children.listing.setItems(this_.products);
           this_.children.listing.setCategories(this_.categories);

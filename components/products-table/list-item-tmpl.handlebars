@@ -19,9 +19,7 @@
   </select>
 </td>
 <td class="tags">
-  <input type="hidden" class="tags-select field-tags" id="item-{{model.id}}-tags">
-  <!-- <select name="tags" multiple="true" data-placeholder="Select a Category" class="tags-select select-box field-tags" id="item-{{model.id}}-tags">
-  </select> -->
+  <input type="hidden" value="{{_tags}}" class="tags-select field-tags" id="item-{{model.id}}-tags">
 </td>
 <td class="photoUrl">
   <img class="photo-editor" src="{{filepicker model.photoUrl 100 100}}" />

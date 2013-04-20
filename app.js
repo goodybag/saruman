@@ -22,6 +22,15 @@ define(function(require){
           utils.history = Backbone.history;
           utils.history.start();
         });
+
+        window.onerror = function(msg, url, lineNum){
+          troller.error({
+            name: 'UNCAUGHT_EXCEPTION'
+          , message: msg + "\n\n If you're seeing this, this is bad news. Merlin tripped over his large feet. You should refresh the page :("
+          , line: lineNum
+          , url: url
+          });
+        }
       }
 
     , changePage: function(page, options, callback){

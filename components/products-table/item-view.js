@@ -17,6 +17,7 @@ define(function(require){
       options.template = options.template || template;
 
       this.categories = options.categories;
+      this.allTags = options.allTags;
 
       return TableItem.prototype.initialize.call(this, options);
     }
@@ -41,15 +42,9 @@ define(function(require){
       this.$el.find('.tags-select').select2({
         allowClear:   true
       , disabled:     true
-
-      , tags: this.model.get('tags').map(function(t){
-          return (t && t.tag) ? t.tag : t;
-        })
+      , tags:         this.allTags._tags
       }).select2('disable');
 
-console.log(this.model.get('tags').map(function(t){
-          return t.tag ? t.tag : t;
-        }));
       return this;
     }
 
@@ -72,11 +67,15 @@ console.log(this.model.get('tags').map(function(t){
   , getAdditionalRenderProperties: function(){
       return {
         categories: this.categories
+      , _tags: this.model.get('tags').map(
+          function(tag){ return tag.tag }
+        ).join(',')
       };
     }
 
   , updateBehaviors: {
       tags: function($el){
+        console.log("updating model with", $el.val().split(','));
         return $el.val().split(',');
       }
     }
