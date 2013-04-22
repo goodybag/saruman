@@ -30,14 +30,18 @@ define(function(require){
         id:                           'New'
       , name:                         'New Product'
       , price:                        0
+      , tags:                         []
+      , categories:                   []
       }
 
     , resource: 'products'
 
     , initialize: function(attributes, options){
+      console.log(options);
         Base.prototype.initialize.call(this, attributes, options);
 
         this.allTags = options.allTags;
+        this.allCategories = options.allCategories;
       }
 
       // Override save function to ensure tags get saved first :(
@@ -53,7 +57,6 @@ define(function(require){
           return Base.prototype.save.call(this, callback);
 
         var toBeCreated = {}, this_ = this, deficit = 0;
-
 
         for (var i = 0, tags = this.attributes.tags, l = tags.length; i < l; ++i){
           // Correct format
@@ -105,7 +108,7 @@ define(function(require){
             this_.allTags._tags.push( this_.allTags[key].tag );
 
             // Also push to local models tags for saving in api
-            this_.get('tags').push( this_.allTags[key].id );
+            this_.push('tags', this_.allTags[key].id);
 
             // ALSO, we need to trigger a tags created event later
             // So save the ones that were created
@@ -119,11 +122,16 @@ define(function(require){
           Base.prototype.save.call(this_, function(error, result){
             // Once the product has saved, we need to revert our product model
             // Back to something where we can use
-            this_.set('tags', this_.get('tags').map(function(tag){
+            this_.attributes.tags = this_.get('tags').map(function(tag){
               if (typeof tag == 'number') return this_.allTags[tag];
               if (typeof tag == 'string') return this_.allTags[tag];
               return tag;
-            }));
+            });
+
+            this_.attributes.categories = this_.get('categories').map(function(cat){
+              if (typeof cat == 'number') return this_.allCategories._categories[cat];
+              return cat;
+            });
 
             if (error) return callback ? callback(error) : troller.error(error);
 

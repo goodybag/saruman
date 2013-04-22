@@ -53,6 +53,14 @@ define(function(require){
         utils.Model.prototype.set.apply(this, arguments);
       }
 
+    , push: function(key){
+        var args = Array.prototype.slice.call(arguments, 1);
+        Array.prototype.push.apply(this.attributes[key], args);
+        this._changed.push(this.attributes[key]);
+        this.changed_[key] = this.attributes[key];
+        return this;
+      }
+
     , getChanged: function(){
         return this.changed_;
       }

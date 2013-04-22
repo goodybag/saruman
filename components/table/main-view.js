@@ -85,7 +85,9 @@ define(function(require){
   , addNewItem: function(item){
       var this_ = this;
 
-      if (!item.toJSON) item = new this.ItemModel(item);
+      if (!item) item = new this.ItemModel({}, this.getAdditionalModelOptions());
+      if (!item.toJSON) item = new this.ItemModel(item, this.getAdditionalModelOptions());
+
       this.data.push(item.toJSON());
 
       return this.$items[0].insertBefore(
@@ -124,9 +126,9 @@ define(function(require){
       );
     }
 
-  , getAdditionalViewOptions: function(){ }
+  , getAdditionalViewOptions: function(){ return {}; }
 
-  , getAdditionalModelOptions: function(){ }
+  , getAdditionalModelOptions: function(){ return {}; }
 
   , onItemDestroy: function(item){ }
 
@@ -167,7 +169,7 @@ define(function(require){
 
    , onNewItemClick: function(e){
        e.preventDefault();
-       this.addNewItem(new this.ItemModel());
+       this.addNewItem();
      }
   });
 });
