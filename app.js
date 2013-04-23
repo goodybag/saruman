@@ -1,7 +1,6 @@
 define(function(require){
   var
     pubsub    = require('lib/pubsub')
-  , channels  = require('lib/channels')
   , utils     = require('lib/utils')
   , config    = require('./config')
   , troller   = require('lib/troller')
@@ -23,6 +22,15 @@ define(function(require){
           utils.history = Backbone.history;
           utils.history.start();
         });
+
+        window.onerror = function(msg, url, lineNum){
+          troller.error({
+            name: 'UNCAUGHT_EXCEPTION'
+          , message: msg + "\n\n If you're seeing this, this is bad news. Merlin tripped over his large feet. You should refresh the page :("
+          , line: lineNum
+          , url: url
+          });
+        }
       }
 
     , changePage: function(page, options, callback){
@@ -81,14 +89,18 @@ define(function(require){
 
           if (error.details){
             msg += "\n";
-            for (var key in error.details){
-              if ($el) $el.find('.field-' + key).addClass('error');
-              if (error.details[key]){
-                msg += "\n" + app.getKeyNiceName(key) + ": " + error.details[key] + ", ";
-                detailsAdded = true;
+            if (typeof error.details == 'string')
+              msg += error.details
+            else {
+              for (var key in error.details){
+                if ($el) $el.find('.field-' + key).addClass('error');
+                if (error.details[key]){
+                  msg += "\n" + app.getKeyNiceName(key) + ": " + error.details[key] + ", ";
+                  detailsAdded = true;
+                }
               }
+              if (detailsAdded) msg = msg.substring(0, msg.length -2);
             }
-            if (detailsAdded) msg = msg.substring(0, msg.length -2);
           }
 
           action(msg, error);
@@ -118,15 +130,29 @@ define(function(require){
         utils.dom('#main-loader').css('display', 'none');
         app.spinner.stop();
       }
+
+    , openModal: function(content){
+        app.appView.openModal(content);
+      }
+
+    , closeModal: function(){
+        app.appView.closeModal();
+      }
     }
   ;
 
   troller.add('app.init',       app.init);
   troller.add('app.changePage', app.changePage);
   troller.add('app.logout',     app.logout);
+
   troller.add('app.error',      app.error);
+  troller.add('error',          app.error);
+
   troller.add('spinner.spin',   app.spin)
   troller.add('spinner.stop',   app.stopSpinning)
+
+  troller.add('modal.open',     app.openModal);
+  troller.add('modal.close',    app.closeModal);
 
   return app;
 });

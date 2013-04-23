@@ -1,7 +1,7 @@
 define(function(require){
   var
-    utils     = require('../lib/utils')
-  , $         = require('jquery')
+    utils       = require('../lib/utils')
+  , Components  = require('../lib/components')
 
   , Views = {
       Nav:          require('./nav')
@@ -23,10 +23,19 @@ define(function(require){
   , children: {
       nav:    new Views.Nav()
     , pages:  new Views.PageManager({ Pages: Pages })
+    , modal:  new Components.Modal.Main()
     }
 
   , initialize: function(){
+      // render order
+      this.children_ = [
+        this.children.nav
+      , this.children.pages
+      , this.children.modal
+      ];
+
       this.render();
+
       return this;
     }
 
@@ -34,15 +43,25 @@ define(function(require){
       this.$el.html("");
 
       this.$el.append('<div id="main-loader"></div>');
-
-      for (var key in this.children){
-        this.children[key].render();
-        this.$el.append(this.children[key].$el);
+      for (var i = 0, l = this.children_.length; i < l; ++i){
+        this.children_[i].render();
+        this.$el.append(this.children_[i].$el);
       }
 
       if (this.children.pages.current)
         this.children.pages.pages[this.children.pages.current].delegateEvents();
 
+      return this;
+    }
+
+  , openModal: function(content){
+      if (content) this.children.modal.setContent(content);
+      this.children.modal.open();
+      return this;
+    }
+
+  , closeModal: function(content){
+      this.children.modal.close();
       return this;
     }
 
