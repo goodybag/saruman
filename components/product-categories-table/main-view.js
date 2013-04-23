@@ -4,10 +4,10 @@
 
 define(function(require){
   var
-    utils       = require('../../../lib/utils')
-  , troller     = require('../../../lib/troller')
-  , api         = require('../../../lib/api')
-  , config      = require('../../../config')
+    utils       = require('../../lib/utils')
+  , troller     = require('../../lib/troller')
+  , api         = require('../../lib/api')
+  , config      = require('../../config')
 
   , Table       = require('../table/component').Main
 

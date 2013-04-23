@@ -4,9 +4,9 @@
 
 define(function(require){
   var
-    utils     = require('../../../lib/utils')
-  , troller   = require('../../../lib/troller')
-  , api       = require('../../../lib/api')
+    utils     = require('../../lib/utils')
+  , troller   = require('../../lib/troller')
+  , api       = require('../../lib/api')
 
   , template  = require('hbt!./table-tmpl')
   , ItemView  = require('./item-view')
@@ -119,12 +119,15 @@ define(function(require){
     }
 
   , onItemCopy: function(item){
-      var this_ = this;
+      var this_ = this, attr = utils.clone(item.attributes);
 
-      item = item.clone();
+      delete attr.id;
+
+      item = new this.ItemModel(item.attributes, this.getAdditionalModelOptions());
+      item.makeNew();
 
       return this.$items[0].insertBefore(
-        new this_.ItemView(
+        new this.ItemView(
           utils.extend({
             model: item
           , isNew: true

@@ -54,6 +54,8 @@ define(function(require){
       TableItem.prototype.enterEditMode.call(this);
 
       this.$el.find('.tags-select, .categories-select').select2('enable');
+
+      return this;
     }
 
   , enterReadMode: function(){
@@ -62,6 +64,8 @@ define(function(require){
       TableItem.prototype.enterReadMode.call(this);
 
       this.$el.find('.tags-select, .categories-select').select2('disable');
+
+      return this;
     }
 
   , getAdditionalRenderProperties: function(){

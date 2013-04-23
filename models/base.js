@@ -28,7 +28,9 @@ define(function(require){
         utils.Model.prototype.constructor.apply(this, arguments);
       }
 
-    , initialize: function(attributes){
+    , initialize: function(attributes, options){
+        options = options || {};
+
         if (attributes && attributes.userId){
           this.attributes.id = attributes.userId;
           delete this.attributes.userId;
@@ -38,6 +40,8 @@ define(function(require){
           if (this.acceptable.indexOf(key) === -1)
             delete this.attributes[key];
         }
+
+        if (options.isNew == true) this.set('id', 'New');
 
         return this;
       }
