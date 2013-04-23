@@ -12,7 +12,6 @@ define(function(require){
 
   , Views = {
       Paginator       : require('./paginator')
-    , Location        : require('./page-business-details-location')
     }
   ;
 
@@ -56,7 +55,17 @@ define(function(require){
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
-      , listing:          new Components.ProductsTable.Main({ paginator: this.paginator })
+      , listing: new Components.ProductsTable.Main({
+          paginator: this.paginator
+        , events: {
+            onNewItemClick: function(e){
+              e.preventDefault();
+              this.addNewItem({
+                businessId: this_.businessId
+              }).enterEditMode();
+            }
+          }
+        })
       };
 
       // When the paginator changes page

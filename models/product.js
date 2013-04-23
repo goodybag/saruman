@@ -37,7 +37,6 @@ define(function(require){
     , resource: 'products'
 
     , initialize: function(attributes, options){
-      console.log(options);
         Base.prototype.initialize.call(this, attributes, options);
 
         this.allTags = options.allTags;

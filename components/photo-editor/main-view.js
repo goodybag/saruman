@@ -31,7 +31,15 @@ define(function(require){
 
   , onPhotoViewClick: function(e){
       e.preventDefault();
-      troller.modal.open( viewTmpl({ model: this.model.toJSON() }) );
+      troller.spinner.spin();
+
+      var $el = utils.dom( viewTmpl({ model: this.model.toJSON() }) );
+
+      $el.find('img').on('load', function(e){
+        troller.spinner.stop();
+      });
+
+      troller.modal.open($el);
     }
 
   , onPhotoClearClick: function(e){

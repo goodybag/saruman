@@ -13,6 +13,14 @@ define(function(require){
         id:             'New'
       }
 
+    , types: {}
+
+    , typeCasters: {
+        'int':    function(value){ return parseInt(value); }
+      , 'float':  function(value){ return parseFloat(value); }
+      , 'string': function(value){ return "" + value + ""; }
+      }
+
     , constructor: function(){
         this.changed_ = {};
         this._changed = [];
@@ -45,6 +53,9 @@ define(function(require){
             if (this.acceptable.indexOf(k) === -1) delete key[k];
         } else if (this.acceptable.indexOf(key) === -1) return this;
 
+        if (this.types[key] && this.typeCasters[this.types[key]])
+          value = this.typeCasters[this.types[key]](value);
+
         if (this.attributes[key] != value && key != 'id' && typeof key !== "object"){
           this._changed.push(value);
           this.changed_[key] = value;
@@ -66,6 +77,8 @@ define(function(require){
       }
 
     , save: function(data, callback){
+        var this_ = this;
+
         if (typeof data === "function"){
           callback = data;
           data = null;
@@ -73,12 +86,17 @@ define(function(require){
 
         if (data) this.set(data);
 
-        var attr = utils.clone(this.getChanged()), this_ = this;
-
         if (this.attributes.id && this.attributes.id !== 'New'){
+          var attr = utils.clone(this.getChanged());
+
+          delete attr.id;
+
           api[this.resource].update(this.attributes.id, attr, callback);
         } else {
-          api[this.resource].create(attr, function(error, result){
+
+          delete this.attributes.id;
+
+          api[this.resource].create(this.attributes, function(error, result){
             if (error) return callback && callback(error);
 
             this_.set('id', result.id);

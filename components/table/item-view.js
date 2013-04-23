@@ -98,8 +98,6 @@ define(function(require){
 
       this.$el.find('input[type="checkbox"]').attr('disabled', true);
 
-      this.$el.find('select').select2('disable');
-
       this.mode = "read";
 
       return this;

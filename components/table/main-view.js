@@ -41,6 +41,16 @@ define(function(require){
       // Require that the user specify item model
       this.ItemModel  = options.ItemModel;
 
+      if (options.events){
+        for (var key in options.events){
+          switch (key) {
+            case 'onNewItemClick':
+              this.events['click .btn-new-item'] = utils.bind(options.events[key], this);
+              break;
+          }
+        }
+      }
+
       return this;
     }
 
@@ -83,26 +93,29 @@ define(function(require){
     }
 
   , addNewItem: function(item){
-      var this_ = this;
+      var this_ = this, itemView;
 
       if (!item) item = new this.ItemModel({}, this.getAdditionalModelOptions());
       if (!item.toJSON) item = new this.ItemModel(item, this.getAdditionalModelOptions());
 
       this.data.push(item.toJSON());
 
-      return this.$items[0].insertBefore(
-        new this.ItemView(
-          utils.extend({
-            model: item
-          , isNew: true
-          }, this.getAdditionalViewOptions())
-        ).render()
+      itemView = new this.ItemView(
+        utils.extend({
+          model: item
+        , isNew: true
+        }, this.getAdditionalViewOptions())
+      )
+
+      this.$items[0].insertBefore(
+        itemView.render()
           .on('destroy', function(item){ this_.onItemDestroy(item) })
           .on('copy', function(item){ this_.onItemCopy(item) })
           .$el[0]
-
       , this_.$items[0].childNodes[0]
       );
+
+      return itemView;
     }
 
   , onItemCopy: function(item){

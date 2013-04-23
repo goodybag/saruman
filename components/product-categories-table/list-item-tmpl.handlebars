@@ -1,3 +1,7 @@
+<td class="order">
+  <input class="edit-mode-value field-order input-small" value="{{model.order}}" type="number" id="item-{{model.id}}-order">
+  <span class="read-mode-value">{{model.order}}</span>
+</td>
 <td class="name">
   <textarea class="edit-mode-value field-name" rows="8" id="item-{{model.id}}-name">{{model.name}}</textarea>
   <span class="read-mode-value">{{model.name}}</span>
@@ -5,24 +9,6 @@
 <td class="description">
   <textarea class="edit-mode-value field-description" rows="8" id="item-{{model.id}}-description">{{model.description}}</textarea>
   <span class="read-mode-value">{{truncate model.description 80}}</span>
-</td>
-<td class="price">
-  <input class="edit-mode-value field-price" value="{{money model.price}}" type="text" id="item-{{model.id}}-price">
-  <span class="read-mode-value">${{money model.price}}</span>
-</td>
-<td class="categories">
-  <select name="categories" data-placeholder="Select a Category" multiple="true" class="categories-select select-box field-categories" id="item-{{model.id}}-categories">
-    <option></option>
-  {{#each categories}}
-    <option value="{{this.id}}"{{#in ../model.categories this}} data-blaaaaaahhhhh="blah" selected="true"{{/in}}>{{this.name}}</option>
-  {{/each}}
-  </select>
-</td>
-<td class="tags">
-  <input type="hidden" value="{{_tags}}" data-placeholder="Select Tags" class="tags-select field-tags" id="item-{{model.id}}-tags">
-</td>
-<td class="photoUrl">
-  <img class="photo-editor" src="{{filepicker model.photoUrl 100 100}}" />
 </td>
 <td class="actions">
   <div class="btn-group">

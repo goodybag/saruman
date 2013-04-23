@@ -16,15 +16,16 @@ define(function(require){
     }
 
   , Pages = {
-      main:             require('./page-business-details-main')
-    , loyalty:          require('./page-business-details-loyalty')
-    , locations:        require('./page-business-details-locations')
-    , location:         require('./page-business-details-location-edit')
-    , 'menu-details':   require('./page-business-details-menu')
-    , 'tapin-stations': require('./accounts/tapin-stations-by-business-page')
-    , cashiers:         require('./accounts/cashiers-by-business-page')
-    , managers:         require('./accounts/managers-by-business-page')
-    , products:         require('./products')
+      main:                     require('./page-business-details-main')
+    , loyalty:                  require('./page-business-details-loyalty')
+    , locations:                require('./page-business-details-locations')
+    , location:                 require('./page-business-details-location-edit')
+    , 'menu-details':           require('./page-business-details-menu')
+    , 'tapin-stations':         require('./accounts/tapin-stations-by-business-page')
+    , cashiers:                 require('./accounts/cashiers-by-business-page')
+    , managers:                 require('./accounts/managers-by-business-page')
+    , products:                 require('./products')
+    , 'product-categories':     require('./page-product-categories')
     }
   ;
 

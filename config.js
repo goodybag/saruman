@@ -46,6 +46,7 @@ define(function(require){
       , tags:           'Tags'
       , photoUrl:       'Photo'
       , price:          'Price'
+      , order:          'Order'
       }
 
     , changeMessages: [

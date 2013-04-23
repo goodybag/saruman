@@ -12,7 +12,7 @@ define(function(require){
   , Table       = require('../table/component').Main
 
   , ItemView    = require('./item-view')
-  , ItemModel   = require('../../models/product')
+  , ItemModel   = require('../../models/product-category')
   ;
 
   return Table.extend({
@@ -23,39 +23,20 @@ define(function(require){
       options.ItemModel = ItemModel;
 
       options.headers = [
-        config.niceNames.name
+        config.niceNames.order
+      , config.niceNames.name
       , config.niceNames.description
-      , config.niceNames.price
-      , config.niceNames.categories
-      , config.niceNames.tags
-      , config.niceNames.photoUrl
       ];
 
       return Table.prototype.initialize.call(this, options);
     }
 
-  , setCategories: function(categories){
-      this.categories = categories;
-      return this;
-    }
-
-  , setTags: function(tags){
-      this.tags = tags;
-      return this;
-    }
-
   , getAdditionalViewOptions: function(){
-      return {
-        categories: this.categories
-      , allTags:    this.tags
-      }
+      return {};
     }
 
   , getAdditionalModelOptions: function(){
-      return {
-        allTags: this.tags
-      , allCategories: this.categories
-      }
+      return {};
     }
   });
 });

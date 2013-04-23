@@ -89,14 +89,18 @@ define(function(require){
 
           if (error.details){
             msg += "\n";
-            for (var key in error.details){
-              if ($el) $el.find('.field-' + key).addClass('error');
-              if (error.details[key]){
-                msg += "\n" + app.getKeyNiceName(key) + ": " + error.details[key] + ", ";
-                detailsAdded = true;
+            if (typeof error.details == 'string')
+              msg += error.details
+            else {
+              for (var key in error.details){
+                if ($el) $el.find('.field-' + key).addClass('error');
+                if (error.details[key]){
+                  msg += "\n" + app.getKeyNiceName(key) + ": " + error.details[key] + ", ";
+                  detailsAdded = true;
+                }
               }
+              if (detailsAdded) msg = msg.substring(0, msg.length -2);
             }
-            if (detailsAdded) msg = msg.substring(0, msg.length -2);
           }
 
           action(msg, error);

@@ -12,7 +12,6 @@ define(function(require){
 
   , Views = {
       Paginator       : require('./paginator')
-    , Location        : require('./page-business-details-location')
     }
   ;
 
@@ -32,7 +31,7 @@ define(function(require){
 
       options = options || {};
 
-      this.type           = 'products';
+      this.type           = 'product-categories';
       this.businessId     = options.businessId;
       this.business       = options.business;
       this.trollerPrefix  = options.trollerPrefix;
@@ -45,25 +44,33 @@ define(function(require){
       this.paginator      = new Paginator({ page: this.currentPage, limit: 30 });
 
       // Initial set of products
-      this.products = [];
+      this.productCategories = [];
 
-      this.dataParams = {
-        include: ['categories', 'tags']
-      };
+      this.dataParams = {};
 
       this.searchValue = null;
 
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
-      , listing:          new Components.ProductsTable.Main({ paginator: this.paginator })
+      , listing: new Components.ProductCategoriesTable.Main({
+          paginator: this.paginator
+        , events: {
+            onNewItemClick: function(e){
+              e.preventDefault();
+              this.addNewItem({
+                businessId: this_.businessId
+              }).enterEditMode();
+            }
+          }
+        })
       };
 
       // When the paginator changes page
       this.paginator.on('change:page', function(){
         if (this_.currentPage === this_.paginator.getPage()) return;
         this_.currentPage = this_.paginator.getPage();
-        utils.history.navigate('/accounts/' + this_.type + '/page/' + (this_.currentPage + 1));
+        utils.history.navigate('/products/categories/page/' + (this_.currentPage + 1));
 
         this_.fetchProductCategories();
       });
@@ -77,13 +84,24 @@ define(function(require){
       this.fetchProductCategories();
     }
 
-  , fetchProductCategories: function(){
+  , fetchProductCategories: function(callback){
       troller.spinner.spin();
 
       var this_ = this;
 
       api.businesses.productCategories.list(this_.business.id, this_.getDataParams(), function(error, results){
-        done(error, results);
+        if (error) return callback ? callback(error) : troller.error(error);
+
+        this_.productCategories = results;
+        this_.children.listing.setItems(this_.productCategories);
+
+        this_.render();
+
+        this_.delegateEvents();
+
+        troller.spinner.stop();
+
+        if (callback) callback(null, results);
       });
     }
 
@@ -92,7 +110,7 @@ define(function(require){
       this.$el.html(template({ count: this.paginator.total }));
 
       this.children.listing.setElement(
-        this.$el.find('#products-table')[0]
+        this.$el.find('#product-categories-table')[0]
       );
 
       this.children.listing.render();
@@ -102,8 +120,8 @@ define(function(require){
       this.children.paginatorTop.render();
       this.children.paginatorBottom.render();
 
-      this.$el.find('#products-paginator-top').append(this.children.paginatorTop.$el);
-      this.$el.find('#products-paginator-bottom').append(this.children.paginatorBottom.$el);
+      this.$el.find('#product-categories-paginator-top').append(this.children.paginatorTop.$el);
+      this.$el.find('#product-categories-paginator-bottom').append(this.children.paginatorBottom.$el);
 
       return this;
     }
@@ -117,30 +135,6 @@ define(function(require){
       if (this.searchValue) params.filter = this.searchValue;
 
       return params;
-    }
-
-  , onProductsSearchKeyUp: function(e){
-      var this_ = this;
-
-      if (this.searchTimeout) clearTimeout(this.searchTimeout);
-
-      this.searchTimeout = setTimeout(function(){
-        this_.searchValue = e.target.value;
-        this_.fetchProductCategories();
-      }, 400);
-    }
-
-  , onAddProductClick: function(e){
-      var product = utils.clone(config.defaults.product), this_ = this;
-      product.businessId = this.business.id;
-      api.products.create(product, function(error, result){
-        if (error) return alert(error);
-
-        product.id = result.id;
-
-        troller.business.changePage('product', { productId: result.id, product: product, isNew: true });
-        utils.history.navigate('/businesses/' + this_.business.id + '/products/create');
-      });
     }
   });
 });
