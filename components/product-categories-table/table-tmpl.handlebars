@@ -1,0 +1,15 @@
+<thead>
+  <tr>
+    {{#each headers}}
+      <th class="{{this.key}}">{{this.value}}</th>
+    {{/each}}
+
+    <th class="actions">
+      <button class="btn btn-primary btn-new-item">
+        <i class="icon-plus-sign-alt"></i>
+        New
+      </button>
+    </th>
+  </tr>
+</thead>
+<tbody class="items-list"></tbody>

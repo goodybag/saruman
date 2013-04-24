@@ -41,6 +41,12 @@ define(function(require){
       , name:           'Name'
       , street1:        'Street 1'
       , street2:        'Street 2'
+      , description:    'Description'
+      , categories:     'Categories'
+      , tags:           'Tags'
+      , photoUrl:       'Photo'
+      , price:          'Price'
+      , order:          'Order'
       }
 
     , changeMessages: [
@@ -79,6 +85,8 @@ define(function(require){
         }
 
       , avatarUrl: 'http://placekitten.com/250/250'
+
+      , photoUrl: 'http://cdn.filepicker.io/api/file/TovGkwF7TCeFj3MQowEr'
       }
 
     , spinner: {

@@ -1,0 +1,28 @@
+<td class="order">
+  <input class="edit-mode-value field-order input-small" value="{{model.order}}" type="number" id="item-{{model.id}}-order">
+  <span class="read-mode-value">{{model.order}}</span>
+</td>
+<td class="name">
+  <textarea class="edit-mode-value field-name" rows="8" id="item-{{model.id}}-name">{{model.name}}</textarea>
+  <span class="read-mode-value">{{model.name}}</span>
+</td>
+<td class="description">
+  <textarea class="edit-mode-value field-description" rows="8" id="item-{{model.id}}-description">{{model.description}}</textarea>
+  <span class="read-mode-value">{{truncate model.description 80}}</span>
+</td>
+<td class="actions">
+  <div class="btn-group">
+    <button class="btn btn-small btn-edit btn-edit-save">
+      <i class="icon-edit"></i>
+    </button>
+    <button class="btn btn-small btn-cancel hide">
+      <i class="icon-ban-circle"></i>
+    </button>
+    <button class="btn btn-small btn-copy">
+      <i class="icon-copy"></i>
+    </button>
+    <button class="btn btn-small btn-delete btn-danger">
+      <i class="icon-trash"></i>
+    </button>
+  </div>
+</td>

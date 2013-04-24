@@ -138,8 +138,26 @@ table .uneditable-input {
   transition: opacity 0.3s linear;
 }
 
-input.edit-mode-value {
+tr .edit-mode-value {
   display: none;
+}
+
+.edit-mode-value.input-small {
+  width: 100px;
+}
+
+textarea.edit-mode-value {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+td.name {
+  width: 200px;
+}
+
+td.order {
+  width: 100px;
 }
 
 .accounts-nav {
@@ -220,6 +238,7 @@ table .select-box {
   position: fixed;
   width: 100%;
   height: 100%;
+  z-index: 100000;
 }
 
 input.error {
@@ -233,4 +252,118 @@ input.error {
 @-webkit-keyframes barrel-roll {
   from { -webkit-transform: rotate(0); }
   to   { -webkit-transform: rotate(360deg); }
+}
+
+.nav [class^=icon-] {
+  margin-right: 8px;
+  color: #666;
+}
+
+.nav .active [class^=icon-] {
+  margin-right: 18px;
+  color: #333;
+}
+
+td.price input {
+  width: 40px;
+}
+
+td.photoUrl {
+  width: 60px;
+}
+
+td .tags-select {
+  width: 120px;
+}
+
+td .categories-select {
+  width: 140px;
+}
+
+td textarea:focus {
+  position: absolute;
+  width: 400px;
+  z-index: 100;
+}
+
+.photo-editor {
+  position: relative;
+  border: solid #444 1px;
+  border-radius: 5px;
+}
+
+.photo-editor .menu {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 22px;
+  background-color: rgba(0,0,0, 0.25);
+  color: #FFFFDF;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+
+  -webkit-transtion: opacity ease-in-out 0.2s;
+  -moz-transition: opacity ease-in-out 0.2s;
+  transition: opacity ease-in-out 0.2s;
+}
+
+.photo-editor .menu:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.photo-editor .menu li {
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 50%;
+  height: 50%;
+  border-bottom: solid rgba(0,0,0, 0.3) 1px;
+  /*margin-bottom: 2%;*/
+  background-color: rgba(0,0,0, 0);
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+
+  -webkit-transtion: background-color ease-in-out 0.2s;
+  -moz-transition: background-color ease-in-out 0.2s;
+  transition: background-color ease-in-out 0.2s;
+}
+
+.photo-editor .menu li:hover {
+  background-color: rgba(0,0,0, 0.3);
+}
+
+.photo-editor .menu li:nth-child(odd){
+  border-right: solid rgba(0,0,0, 0.3) 1px;
+  box-shadow: 1px 0 0 rgba(255,255,255, 0.2);
+}
+
+.photo-editor .menu li:nth-child(n+3){
+  /*margin-top: 2%;
+  margin-bottom: 0;*/
+  border-bottom: none;
+}
+
+.photo-editor .menu i {
+  line-height: 30px;
+}
+
+.modal .modal-body {
+  max-height: 640px;
+}
+
+.sidebar-nav-wrapper {
+  margin-left: 0 !important;
+  width: 160px;
+}
+
+@media (min-width: 1200px) {
+  .sidebar-nav-wrapper {
+    width: 200px;
+  }
 }

@@ -74,6 +74,7 @@ define(function(require){
       }
 
       this.render();
+      this.delegateEvents();
     }
 
   , fetchLocation: function(){
