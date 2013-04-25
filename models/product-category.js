@@ -19,6 +19,7 @@ define(function(require){
         id:                           'New'
       , name:                         'New Category'
       , order:                        0
+      , description:                  null
       }
 
     , types: {

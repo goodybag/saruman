@@ -45,6 +45,8 @@ define(function(require){
   , onPhotoClearClick: function(e){
       e.preventDefault();
 
+      if (!troller.confirm('Are you sure you want to clear this photo?')) return;
+
       this.model.set('photoUrl', null);
       this.model.save();
       this.render();
