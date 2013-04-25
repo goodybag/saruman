@@ -71,6 +71,10 @@ define(function(require){
         user.logout(callback);
       }
 
+    , confirm: function(msg){
+        return confirm(msg);
+      }
+
     , error: function(error, $el, action){
         if (typeof $el == 'function'){
           action = $el;
@@ -147,6 +151,7 @@ define(function(require){
 
   troller.add('app.error',      app.error);
   troller.add('error',          app.error);
+  troller.add('confirm',        app.confirm);
 
   troller.add('spinner.spin',   app.spin)
   troller.add('spinner.stop',   app.stopSpinning)
