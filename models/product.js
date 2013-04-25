@@ -32,6 +32,7 @@ define(function(require){
       , price:                        0
       , tags:                         []
       , categories:                   []
+      , description:                  null
       }
 
     , resource: 'products'
