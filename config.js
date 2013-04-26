@@ -82,6 +82,7 @@ define(function(require){
         , isVerified:   true
         , isGB:         true
         , logoUrl:      'http://placekitten.com/520/520'
+        , tags:         ['food']
         }
 
       , avatarUrl: 'http://placekitten.com/250/250'
