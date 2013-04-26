@@ -81,6 +81,8 @@ define(function(require){
     }
 
   , onShow: function(options){
+      this.business = options.business;
+      this.businessId = options.businessId;
       this.currentPage = options.pageNum > 0 ? (options.pageNum - 1) : this.currentPage;
       this.paginator.setPage(this.currentPage);
       this.fetchProducts();
