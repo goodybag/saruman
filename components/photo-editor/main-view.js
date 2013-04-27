@@ -60,7 +60,7 @@ define(function(require){
         { mimetypes:['image/*'] }
       , function(file){
           this_.model.set('photoUrl', file.url);
-          this_.model.save();
+          if (this_.model.get('id') != 'New') this_.model.save();
           this_.render();
         }
       , function(error){ if (error.code != 101) troller.app.error(error); }
