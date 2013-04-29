@@ -76,6 +76,9 @@ define(function(require){
       }
 
     , error: function(error, $el, action){
+        // No XHR errors - they probably just canceled the request
+        // if (error.hasOwnProperty('status') && error.status == 0) return;
+
         if (typeof $el == 'function'){
           action = $el;
           $el = null;
