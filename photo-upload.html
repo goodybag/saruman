@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.css">
+  </head>
+  <body class="container-fluid">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <th>Products</th>
+      </thead>
+      <tbody id="products-tbody">
+      </tbody>
+    </table>
+    <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="jquery" src="./jam/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>
+    <script type="text/javascript">filepicker.setKey('AF52P8LtHSd6VMD07XdOQz');</script>
+    <script>
+      <!-- TODO: break out into separate file-->
+      attachClickHandlers = function() {
+        $('.product-row').click(function() {
+          var productId = $(this).attr('data-productId');
+          filepicker.pick(function(fpFile) {
+            console.log('put url:', fpFile.url, 'to product:', productId);
+            $.ajax({
+              type:'PUT',
+              url:'http://magic.staging.goodybag.com/v1/products/' + productId,
+              contentType:'application/json',
+              data:JSON.stringify({photoUrl: fpFile.url})
+            });
+          });
+        });
+      };
+    </script>
+    <script>
+      templates = {row: function(obj){
+        return '<tr class="product-row" data-productId="' + obj.id + '">\n'
+        +'  <td><img src="'+ obj.photoUrl +'/convert?fit=clip&w=50&h=50" width="50" height="50"></td>\n'
+        +'  <td><p>'+ obj.name +'</p><p>'+obj.businessName+'</p></td>\n'
+        +'</tr>';
+      }};
+    </script>
+    <script>
+      function getProducts(coords) {
+        var params = {};
+        if (coords != null) {
+          params.lat = coords.latitude;
+          params.lon = coords.longitude;
+          params.sort = 'distance';
+        }
+        $.get('http://magic.staging.goodybag.com/v1/products', params, function(data, status, xhr) {
+          data.data.map(function(e, i, arr){$('#products-tbody').append(templates.row(e));});
+          attachClickHandlers();
+        });
+      }
+      if (navigator.geolocation)
+        navigator.geolocation.getCurrentPosition(function(location){
+          getProducts(location.coords);
+        });
+      else
+        getProducts();
+    </script>
+  </body>
+</head>
