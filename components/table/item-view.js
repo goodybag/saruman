@@ -122,7 +122,7 @@ define(function(require){
 
           // Price needs to be multiplied by 100
           else if ($el.hasClass('field-price'))
-            this.model.set(key, $el.val() * 100)
+            this.model.set(key, Math.round($el.val() * 100))
 
           // Everything else
           else this.model.set(key, $el.val());
