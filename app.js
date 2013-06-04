@@ -9,6 +9,7 @@ define(function(require){
   , AppRouter = require('lib/router')
   , api       = require('lib/api')
   , helpers   = require('lib/hbt-helpers')
+  , jQuery    = require('jquery')
 
 
     // Limited interface to application to work with through repl
@@ -47,10 +48,8 @@ define(function(require){
           }
 
           // Not admin or sales, logout
-          if (user.attributes.groups.indexOf('admin') === -1
-          && user.attributes.groups.indexOf('sales') === -1
-          && page !== 'login'){
-            alert("You shall NOT PASS!");
+          if (!user.canLogIn() && page !== 'login'){
+            alert("You do not have correct permissions to log in.");
             return app.logout(function(){
               app.changePage('login')
             });
