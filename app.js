@@ -9,11 +9,15 @@ define(function(require){
   , AppRouter = require('lib/router')
   , api       = require('lib/api')
   , helpers   = require('lib/hbt-helpers')
-  , jQuery    = require('jquery')
+  , jQuery    = require('jquery');
+
+  if(utils.context.isBizPanel()) {
+    AppView = require('views/bizpanel/app');
+  }
 
 
     // Limited interface to application to work with through repl
-  , app = {
+  var app = {
       init: function(){
         utils.domready(function(){
           app.appView = new AppView();
@@ -35,6 +39,7 @@ define(function(require){
       }
 
     , changePage: function(page, options, callback){
+        console.log('app.changePage', page)
         if (typeof options === "function"){
           callback = options;
           options = {};
@@ -55,6 +60,9 @@ define(function(require){
             });
           }
 
+          //if user is logged in already
+          //redirect them to the dashboard instead of
+          //showing them the login page
           if (page === "login") page = "dashboard";
 
           // Make sure to apply view arguments
