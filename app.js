@@ -8,8 +8,7 @@ define(function(require){
   , AppView   = require('views/app')
   , AppRouter = require('lib/router')
   , api       = require('lib/api')
-  , helpers   = require('lib/hbt-helpers')
-  , jQuery    = require('jquery');
+  , helpers   = require('lib/hbt-helpers');
 
   if(utils.context.isBizPanel()) {
     AppView = require('views/bizpanel/app');
