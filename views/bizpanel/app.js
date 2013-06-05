@@ -2,7 +2,6 @@ define(function(require) {
   var login = require('../page-login');
   var bus = require('../../lib/pubsub');
   var utils = require('../../lib/utils');
-  var index = require('./index');
   var user = require('../../models/user')
   var api = require('../../lib/api');
 
@@ -12,8 +11,10 @@ define(function(require) {
   };
 
   var MsgView = utils.View.extend({
+    data: {},
     constructor: function() {
-      utils.View.prototype.constructor.apply(this, arguments);
+      MsgView.__super__.constructor.apply(this, arguments);
+      //utils.View.prototype.constructor.apply(this, arguments);
       this._subscribe();
     },
     _subscribe: function() {
@@ -25,44 +26,62 @@ define(function(require) {
       }
     },
     render: function(data) {
-      this.$el.html(this.template(data || {}));
+      var view = _.extend((this.data||{}), data||{});
+      this.$el.html(this.template(view));
     }
   });
 
   var Section = MsgView.extend({
+    _queueRender: true,
     hide: function() {
+      this.visible = false;
       this.$el.hide();
     },
+    render: function() {
+      if(!this.visible) return this._queueRender = true;
+      this._queueRender = false;
+      console.log('rendering ' + this.text);
+      Section.__super__.render.apply(this, arguments);
+    },
     show: function() {
-      if(!this.rendered) {
+      this.visible = true;
+      if(this._queueRender) {
         this.render();
       }
       this.$el.show();
+    },
+    subscribe: {
+      loadManagerEnd: function(manager) {
+        this.data.manager = manager;
+        this.data.business = manager.business;
+        this.data.location = manager.location;
+        this.render();
+      }
     }
   });
 
-  var index = new (Section.extend({
-    template: require('hbt!../../templates/bizpanel/index'),
-    url: '#panel/index',
-    text: 'Business Info'
+  var dashboard = new (Section.extend({
+    template: require('hbt!../../templates/bizpanel/dashboard'),
+    url: '#panel/dashboard',
+    text: 'Dashboard'
   }));
 
   var menu = new (Section.extend({
     template: require('hbt!../../templates/bizpanel/menu'),
     url: '#panel/menu',
-    text: 'Edit Menu'
+    text: 'Menu Items'
   }));
 
   var tablet = new (Section.extend({
       template: require('hbt!../../templates/bizpanel/tablet'),
       url: '#panel/tablet',
-      text: 'Manage Tablet'
+      text: 'Tablet Gallery'
   }));
 
   var messages = new (Section.extend({
     template: require('hbt!../../templates/bizpanel/messages'),
     url: '#panel/messages',
-    text: 'Customer Messaging'
+    text: 'Messaging'
   }));
 
   var contact = new (Section.extend({
@@ -73,7 +92,7 @@ define(function(require) {
 
 
   var sections = {
-    index: index,
+    dashboard: dashboard,
     menu: menu,
     tablet: tablet,
     messages: messages,
@@ -81,7 +100,7 @@ define(function(require) {
   };
 
   var getNavViewData = function(name) {
-    section = section || 'index';
+    section = section || 'dashboard';
     var data = [];
     for(var key in sections) {
       var section = sections[key];
