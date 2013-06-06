@@ -6,15 +6,17 @@
     </center>
     <div class="row-fluid">
       <div class="span6">
-        <button class="btn btn-block">Request your acct. Manager</button>
+        <button class="btn btn-block msg" data-msg-name="requestManager">Request your acct. Manager</button>
+        <span id="request-manager-status" data-progress-text="Sending request" data-end-text="Request sent!" class="message hide"></span>
       </div>
       <div class="span6">
-        <button class="btn btn-block">Request Keytags</button>
+        <button class="btn btn-block msg" data-msg-name="requestKeytags">Request Keytags</button>
+        <span id="request-keytags-status" data-progress-text="Sending request" data-end-text="Request sent!" class="message hide">Sending keytag request</span>
       </div>
     </div>
   </div>
   <div class="span6">
-    <img src="http://austinot.com/wp-content/uploads/2013/01/Goodybag-Team-Austin-TX-1024x682.jpg" />
+    <img src="http://austinot.com/wp-content/uploads/2013/01/Goodybag-Team-Austin-TX-1024x682.jpg" class="img-rounded" style="height: 200px;"/>
   </div>
 </div>
 <div class="row-fluid">
@@ -41,7 +43,7 @@
           <label for="contact-subject">Subject</label>
         </div>
         <div class="span10">
-          <input type="text" id="contact-subject" name="subject" />
+          <input type="text" id="contact-subject" name="subject" placeholder="I need some help" />
         </div>
       </div>
       <div class="row">
@@ -49,22 +51,27 @@
           <label for="contact-message">Message</label>
         </div>
         <div class="span10">
-          <textarea id="contact-message" name="message"></textarea>
+          <textarea id="contact-message" name="message" rows="7" placeholder="My tablet is not attracting as many customers as I would like, and I was wondering if you could give me some advice on things I could do to improve that."></textarea>
         </div>
       </div>
       <div class="row">
-        <div class="span2"></div>
-        <div class="span10">
+        <div class="span10 offset2">
           <label class="checkbox">
             <input type="checkbox" id="contact-copy" name="copySender" />Send me a copy
           </label>
         </div>
       </div>
+      <div class="row hidden">
+        <div class="span10 offset2">
+          <div class="alert">
+            <strong>Uh oh!</strong> We cannot send a message unless you provide us with all the information above.  Please make sure you have included your name, email address, a subject, and a message.  Thanks!
+          </div>
+        </div>
+      </div>
       <div class="row">
-        <div class="span2"></div>
-        <div class="span10">
+        <div class="span10 offset2">
           <button class="btn msg" data-msg-name="sendContactMessage">Send</button>
-          <span class="message hide">Sending...</span>
+          <span class="message hide" data-progress-text="Sending" data-end-text="Thanks! Your message has been sent.">Sending...</span>
         </div>
       </div>
     </form>

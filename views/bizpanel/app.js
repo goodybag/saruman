@@ -109,15 +109,21 @@ define(function(require) {
     showSendingNotification: function() {
       this.getSendingButton().hide();
       this.toggleFormControls(false);
-      this.getSendingTextEl().text('Sending...').show();
+      this.setProgress(this.getSendingTextEl());
     },
     showSentNotification: function() {
-      this.getSendingTextEl().text('Thanks! Your message has been sent.');
+      this.setEnd(this.getSendingTextEl(), this.render.bind(this));
+    },
+    setProgress: function(el) {
+      el = $(el);
+      el.text(el.data('progressText')).show();
+    },
+    setEnd: function(el, cb) {
+      el = $(el);
+      el.text(el.data('endText'));
       setTimeout(function() {
-        this.getSendingTextEl().fadeOut(function() {
-          this.render();
-        }.bind(this));
-      }.bind(this), 1000);
+        el.fadeOut(cb || utils.noop);
+      }, 1000);
     },
     subscribe: {
       //when the button is clicked - this could be moved to an event listener
@@ -131,9 +137,35 @@ define(function(require) {
         });
         form.copySender = !!form.copySender;
         console.log(form);
-        //validate form
-        console.log('TODO', 'validate');
+        //cheaply validate form
+        if(!(form.name && form.from && form.subject && form.message)) {
+          return this.getContactForm().find('.alert').closest('.row').removeClass('hidden');
+        } else {
+          this.getContactForm().find('.alert').closest('.row').addClass('hidden');
+        }
         bus.publish('sendContactMessageBegin', form);
+      },
+      //click event
+      requestManager: function() {
+        bus.publish('requestManagerBegin');
+        this.setProgress('#request-manager-status');
+        setTimeout(function() {
+          bus.publish('requestManagerEnd');
+        }, 1000);
+      },
+      requestManagerEnd: function() {
+        this.setEnd('#request-manager-status');
+      },
+      //click event
+      requestKeytags: function() {
+        this.setProgress('#request-keytags-status')
+        bus.publish('requestKeytagsBegin');
+        setTimeout(function() {
+          bus.publish('requestKeytagsEnd');
+        }, 1000);
+      },
+      requestKeytagsEnd: function() {
+        this.setEnd('#request-keytags-status');
       },
       sendContactMessageBegin: function(messgage) {
         console.log('TODO', 'send contact message to server');
