@@ -371,3 +371,8 @@ td textarea:focus {
     width: 200px;
   }
 }
+
+#bizpanel-nav li.active a { 
+  color: white;
+  background-color: #0088cc;
+}
