@@ -35,6 +35,7 @@ define(function(require){
 
           this_.trigger('auth');
 
+          console.log(result);
           callback();
         });
       });
@@ -91,6 +92,26 @@ define(function(require){
       });
 
       return this;
+    }
+
+  , isInGroup: function(name) {
+      return this.get('groups').indexOf(name) > -1;
+    }
+
+  , isAdmin: function() {
+      return this.isInGroup('admin');
+    }
+
+  , isSales: function() {
+      return this.isInGroup('sales');
+    }
+
+  , isManager: function() {
+      return this.isInGroup('manager')
+      
+    }
+  , canLogIn: function() {
+      return this.isAdmin() || this.isSales() || this.isManager();
     }
   }))();
 });

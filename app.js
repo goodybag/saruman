@@ -8,11 +8,15 @@ define(function(require){
   , AppView   = require('views/app')
   , AppRouter = require('lib/router')
   , api       = require('lib/api')
-  , helpers   = require('lib/hbt-helpers')
+  , helpers   = require('lib/hbt-helpers');
+
+  if(utils.context.isBizPanel()) {
+    AppView = require('views/bizpanel/app');
+  }
 
 
     // Limited interface to application to work with through repl
-  , app = {
+  var app = {
       init: function(){
         utils.domready(function(){
           app.appView = new AppView();
@@ -34,6 +38,7 @@ define(function(require){
       }
 
     , changePage: function(page, options, callback){
+        console.log('app.changePage', page)
         if (typeof options === "function"){
           callback = options;
           options = {};
@@ -47,15 +52,16 @@ define(function(require){
           }
 
           // Not admin or sales, logout
-          if (user.attributes.groups.indexOf('admin') === -1
-          && user.attributes.groups.indexOf('sales') === -1
-          && page !== 'login'){
-            alert("You shall NOT PASS!");
+          if (!user.canLogIn() && page !== 'login'){
+            alert("You do not have correct permissions to log in.");
             return app.logout(function(){
               app.changePage('login')
             });
           }
 
+          //if user is logged in already
+          //redirect them to the dashboard instead of
+          //showing them the login page
           if (page === "login") page = "dashboard";
 
           // Make sure to apply view arguments

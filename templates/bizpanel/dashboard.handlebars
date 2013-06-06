@@ -1,0 +1,43 @@
+<div class="row-fluid">
+  <div class="span6">
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="business-url"></label>
+        <div class="controls">
+          <img src="{{business.logoUrl}}" class="business-logo" width="300">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="location-street1">Street Address</label>
+        <div class="controls">
+          <input class="span12" type="text" id="location-street1" value="{{location.street1}}" placeholder="Enter the street address for this business location">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="business-url">Web URL</label>
+        <div class="controls">
+          <input class="span12" type="text" id="business-url" value="{{business.url}}" placeholder="Enter the url for the business">
+        </div>
+      </div>
+      <legend>Hours of Operation</legend>
+    </form>
+  </div>
+  <div class="span6">
+    <div class="row-fluid">
+      <div class="span4">
+        Total Users
+      </div>
+      <div class="span4">
+        Total Product Likes
+      </div>
+      <div class="span4">
+        Total Punches
+      </div>
+    </div>
+
+    <h3 class="well">Loyalty</h3>
+    <p>Reward: {{loyalty.reward}}</p>
+    <p>Punches required to Earn Reward: {{loyalty.punchesRequired}}</p>
+    <p>Punches required to become an Elite customer: {{loyalty.elitePunches}}</p>
+  </div>
+</div>
