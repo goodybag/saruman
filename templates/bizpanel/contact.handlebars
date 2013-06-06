@@ -19,13 +19,13 @@
 </div>
 <div class="row-fluid">
   <div class="span8">
-    <form class="contact">
+    <form id="contact" class="form contact">
       <div class="row">
         <div class="span2">
           <label for="contact-name">Name</label>
         </div>
         <div class="span10">
-          <input type="text" id="contact-name" />
+          <input type="text" name="name" id="contact-name" placeholder="Your Name"/>
         </div>
       </div>
       <div class="row">
@@ -33,7 +33,7 @@
           <label for="contact-email">Email Address</label>
         </div>
         <div class="span10">
-          <input type="email" id="contact-email" />
+          <input type="email" name="from" id="contact-email" value="{{user.email}}" />
         </div>
       </div>
       <div class="row">
@@ -41,7 +41,7 @@
           <label for="contact-subject">Subject</label>
         </div>
         <div class="span10">
-          <input type="text" id="contact-subject" />
+          <input type="text" id="contact-subject" name="subject" />
         </div>
       </div>
       <div class="row">
@@ -49,21 +49,22 @@
           <label for="contact-message">Message</label>
         </div>
         <div class="span10">
-          <textarea id="contact-message"></textarea>
+          <textarea id="contact-message" name="message"></textarea>
         </div>
       </div>
       <div class="row">
         <div class="span2"></div>
         <div class="span10">
           <label class="checkbox">
-            <input type="checkbox" id="contact-copy" />Send me a copy
+            <input type="checkbox" id="contact-copy" name="copySender" />Send me a copy
           </label>
         </div>
       </div>
       <div class="row">
         <div class="span2"></div>
         <div class="span10">
-          <button class="btn">Send</button>
+          <button class="btn msg" data-msg-name="sendContactMessage">Send</button>
+          <span class="message hide">Sending...</span>
         </div>
       </div>
     </form>

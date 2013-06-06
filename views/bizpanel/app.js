@@ -18,12 +18,14 @@ define(function(require) {
       this._subscribe();
     },
     _subscribe: function() {
-      for(var key in this.subscribe) {
+      var self = this;
+      _.each(this.subscribe, function(value, key) {
         var event = function(name, message) {
           this.subscribe[key].call(this, message);
-        }.bind(this);
+        }.bind(self);
+        console.log('subscribing to', key)
         bus.subscribe(key, event);
-      }
+      });
     },
     render: function(data) {
       var view = _.extend((this.data||{}), data||{});
@@ -73,9 +75,9 @@ define(function(require) {
   }));
 
   var tablet = new (Section.extend({
-      template: require('hbt!../../templates/bizpanel/tablet'),
-      url: '#panel/tablet',
-      text: 'Tablet Gallery'
+    template: require('hbt!../../templates/bizpanel/tablet'),
+    url: '#panel/tablet',
+    text: 'Tablet Gallery'
   }));
 
   var messages = new (Section.extend({
@@ -87,7 +89,68 @@ define(function(require) {
   var contact = new (Section.extend({
     template: require('hbt!../../templates/bizpanel/contact'),
     url: '#panel/contact',
-    text: 'Contact Us'
+    text: 'Contact Us',
+    getContactForm: function() {
+      return this.$el.find('form#contact');
+    },
+    getSendingTextEl: function() {
+      return this.getContactForm().find('button').next();
+    },
+    getSendingButton: function() {
+      return this.getContactForm().find('button');
+    },
+    getFormControls: function() {
+      return this.getContactForm().find('input').add('textarea');
+    },
+    //true turns controls ON - false turns them off
+    toggleFormControls: function(on) {
+      return this.getFormControls().attr('readonly', !on);
+    },
+    showSendingNotification: function() {
+      this.getSendingButton().hide();
+      this.toggleFormControls(false);
+      this.getSendingTextEl().text('Sending...').show();
+    },
+    showSentNotification: function() {
+      this.getSendingTextEl().text('Thanks! Your message has been sent.');
+      setTimeout(function() {
+        this.getSendingTextEl().fadeOut(function() {
+          this.render();
+        }.bind(this));
+      }.bind(this), 1000);
+    },
+    subscribe: {
+      //when the button is clicked - this could be moved to an event listener
+      //since it still concerns itself solely with the enclosed view
+      sendContactMessage: function() {
+        //verify the form is valid
+        var values = this.getContactForm().serializeArray();
+        var form = {};
+        _.forEach(values, function(val) {
+          form[val.name] = val.value;
+        });
+        form.copySender = !!form.copySender;
+        console.log(form);
+        //validate form
+        console.log('TODO', 'validate');
+        bus.publish('sendContactMessageBegin', form);
+      },
+      sendContactMessageBegin: function(messgage) {
+        console.log('TODO', 'send contact message to server');
+        this.showSendingNotification();
+        setTimeout(function() {
+          bus.publish('sendContactMessageEnd')
+        }, 1000);
+      },
+      sendContactMessageEnd: function() {
+        this.showSentNotification();
+      },
+      loadManagerEnd: function(manager) {
+        this.data = manager;
+        console.log(this.data);
+        this.render();
+      }
+    }
   }));
 
 
@@ -127,6 +190,12 @@ define(function(require) {
     var layout = $(templates.layout());
     //disable click on msg components
     layout.on('click', '.msg', function() {
+      var el = $(this);
+      var msgName = el.data('msgName');
+      if(msgName) {
+        console.log('publishing', msgName);
+        bus.publish(msgName);
+      }
       return false;
     });
     $(document.body).html(layout);
@@ -176,6 +245,7 @@ define(function(require) {
       api.businesses.get(manager.businessId, function(err, business) {
         api.locations.get(manager.locationId, function(err, location) {
           var manager = {
+            user: user.attributes,
             business: business,
             location: location
           };
