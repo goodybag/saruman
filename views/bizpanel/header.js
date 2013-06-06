@@ -6,8 +6,8 @@ define(function(require) {
       loadManagerBegin: function() {
         this.render();
       },
-      loadManagerEnd: function(manager) {
-        this.render(manager);
+      loadManagerEnd: function(data) {
+        this.render(data);
       }
     }
   });

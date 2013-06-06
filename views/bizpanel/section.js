@@ -22,10 +22,10 @@ define(function(require) {
       this.$el.show();
     },
     subscribe: {
-      loadManagerEnd: function(manager) {
-        this.data.manager = manager;
-        this.data.business = manager.business;
-        this.data.location = manager.location;
+      loadManagerEnd: function(data) {
+        this.data.user = data.user;
+        this.data.business = data.business;
+        this.data.location = data.location;
         this.render();
       }
     }

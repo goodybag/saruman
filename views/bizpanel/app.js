@@ -55,6 +55,9 @@ define(function(require) {
     this.header = new Header();
     $('#bizpanel-header').html(this.header.$el)
     user.on('auth', this._onUserAuth.bind(this, user));
+    bus.subscribe('changeLocation', function() {
+      console.log('change location!');
+    })
   };
 
   var renderContent = function(name, viewData) {
@@ -83,19 +86,30 @@ define(function(require) {
     } 
   };
 
-  //load businesses and locations for manager
+  //load all the initial data for the application
   BizPanelAppView.prototype._onUserAuth = function(user) {
     var self = this;
     bus.publish('loadManagerBegin');
     api.managers.get(user.id, function(err, manager) {
       api.businesses.get(manager.businessId, function(err, business) {
-        api.locations.get(manager.locationId, function(err, location) {
-          var manager = {
+        api.businesses.locations.list(manager.businessId, function(err, locations) {
+          business.locations = locations;
+          var location;
+          for(var i = 0; i < locations.length; i++) {
+            location = locations[i];
+            if(location.id === manager.locationId) {
+              location.active = true;
+              break;
+            }
+          }
+          var data = {
             user: user.attributes,
             business: business,
             location: location
           };
-          bus.publish('loadManagerEnd', manager);
+          data.multipleLocations = (locations.length > 1);
+          self.data = data;
+          bus.publish('loadManagerEnd', data);
         })
       })
     })

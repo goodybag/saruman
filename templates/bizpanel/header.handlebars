@@ -4,7 +4,20 @@
       <div class="navbar-inner">
         <a class="brand msg" href="#">{{business.name}}</a>
         <ul class="nav">
+          {{#if multipleLocations}}
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{location.street1}}<b class="caret"></b></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              {{#each business.locations}}
+              <li class="{{#active}}active{{/active}}">
+                <a tabindex="-1" href="#" class="msg" data-msg-name="changeLocation" data-msg-id="{{id}}">{{street1}}</a>
+              </li>
+              {{/each}}
+            </ul>
+          </li>
+          {{else}}
           <li><a class="msg" href="#">{{location.street1}}</a></li>
+          {{/if}}
         </ul>
         <ul class="nav pull-right">
           <li><a href="#logout">Log Out</a></li>
