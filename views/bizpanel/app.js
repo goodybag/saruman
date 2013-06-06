@@ -40,7 +40,7 @@ define(function(require) {
       var msgName = el.data('msgName');
       if(msgName) {
         console.log('publishing', msgName);
-        bus.publish(msgName);
+        bus.publish(msgName, el.data());
       }
       return false;
     });
@@ -55,9 +55,7 @@ define(function(require) {
     this.header = new Header();
     $('#bizpanel-header').html(this.header.$el)
     user.on('auth', this._onUserAuth.bind(this, user));
-    bus.subscribe('changeLocation', function() {
-      console.log('change location!');
-    })
+    bus.subscribe('changeLocation', this._onChangeLocation.bind(this));
   };
 
   var renderContent = function(name, viewData) {
@@ -95,13 +93,13 @@ define(function(require) {
         api.businesses.locations.list(manager.businessId, function(err, locations) {
           business.locations = locations;
           var location;
-          for(var i = 0; i < locations.length; i++) {
+          for(var i = locations.length-1; i >= 0; i--) {
             location = locations[i];
             if(location.id === manager.locationId) {
-              location.active = true;
               break;
             }
           }
+          location.active = true;
           var data = {
             user: user.attributes,
             business: business,
@@ -113,6 +111,19 @@ define(function(require) {
         })
       })
     })
+  };
+
+  BizPanelAppView.prototype._onChangeLocation = function(name, msg) {
+    console.log(msg.locationId);
+    for(var i = 0; i < this.data.business.locations.length; i++) {
+      var location = this.data.business.locations[i];
+      location.active = false;
+      if(location.id === msg.locationId) {
+        location.active = true;
+        this.data.location = location;
+      }
+    }
+    bus.publish('loadManagerEnd', this.data);
   };
 
   return BizPanelAppView;
