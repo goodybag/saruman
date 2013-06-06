@@ -52,8 +52,9 @@ define(function(require){
         if (error)
           return this_.$el.find('.errors').html('<p class="text-error">Invalid Email/Password</p>');
 
-        troller.app.changePage('businesses', { page: 1 });
-        utils.history.navigate('/businesses/page/1');
+        var home = utils.context.getHome();
+        troller.app.changePage(home.name, home.options);
+        utils.history.navigate(home.url);
       });
     }
   });

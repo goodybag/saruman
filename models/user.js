@@ -35,6 +35,7 @@ define(function(require){
 
           this_.trigger('auth');
 
+          console.log(result);
           callback();
         });
       });
