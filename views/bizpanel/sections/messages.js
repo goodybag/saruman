@@ -4,6 +4,7 @@ define(function(require) {
   var messages = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/messages'),
     url: '#panel/messages',
+    icon: 'user',
     text: 'Messaging'
   }));
 

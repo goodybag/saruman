@@ -1,7 +1,7 @@
-<ul class="nav nav-list">
+<ul class="nav nav-tabs nav-stacked">
   {{#each nav}}
   <li {{#active}}class='active'{{/active}}>
-  <a href="{{url}}">{{text}}</a>
+  <a href="{{url}}"><i class='icon-{{icon}}'></i>{{text}}</a>
   </li>
   {{/each}}
 </ul>

@@ -5,6 +5,7 @@ define(function(require) {
   var contact = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/contact'),
     url: '#panel/contact',
+    icon: 'envelope',
     text: 'Contact Us',
     getContactForm: function() {
       return this.$el.find('form#contact');
