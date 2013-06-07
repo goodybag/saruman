@@ -4,7 +4,6 @@ define(function(require) {
   var utils = require('../../lib/utils');
   var user = require('../../models/user')
   var api = require('../../lib/api');
-  var Section = require('./section');
   var Header = require('./header');
 
   var templates = {
