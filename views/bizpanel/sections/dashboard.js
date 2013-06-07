@@ -8,7 +8,8 @@ define(function(require) {
     text: 'Dashboard',
     render: function(data) {
       this.$el.html(this.template(this.data||{}))
-      this.$el.html(this.editTpl(this.data.location || {}))
+      //this.$el.html(this.editTpl(this.data.location || {}))
+      this.$el.addClass('location-edit')
     }
   }));
   return dashboard;
