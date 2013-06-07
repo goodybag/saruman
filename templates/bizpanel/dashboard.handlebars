@@ -1,24 +1,54 @@
 <div class="row-fluid">
   <div class="span6">
     <form class="form-horizontal">
-      <div class="control-group">
-        <label class="control-label" for="business-url"></label>
-        <div class="controls">
-          <img src="{{business.logoUrl}}" class="business-logo" width="300">
+      <fieldset>
+        <legend>Business Information</legend>
+        <div class="control-group">
+          <label class="control-label" for="business-url">Logo</label>
+          <div class="controls">
+            <img src="{{business.logoUrl}}" class="business-logo" width="100">
+          </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="location-street1">Street Address</label>
-        <div class="controls">
-          <input class="span12" type="text" id="location-street1" value="{{location.street1}}" placeholder="Enter the street address for this business location">
+        <div class="control-group">
+          <label class="control-label" for="business-url">Web URL</label>
+          <div class="controls">
+            <input class="span12" type="text" id="business-url" value="{{business.url}}" placeholder="Enter the url for the business">
+          </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="business-url">Web URL</label>
-        <div class="controls">
-          <input class="span12" type="text" id="business-url" value="{{business.url}}" placeholder="Enter the url for the business">
+      </fieldset>
+      <fieldset>
+        <legend>Location Information</legend>
+        <div class="control-group">
+          <label class="control-label" for="location-street1">Street Address 1</label>
+          <div class="controls">
+            <input class="span12" type="text" id="location-street1" value="{{location.street1}}" placeholder="Enter the street address for this business location">
+          </div>
         </div>
-      </div>
+        <div class="control-group">
+          <label class="control-label" for="location-street2">Street Address 2</label>
+          <div class="controls">
+            <input class="span12" type="text" id="location-street2" value="{{location.street2}}" placeholder="Enter the street address for this business location">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="location-zip">Zip</label>
+          <div class="controls">
+            <input class="span12" type="text" id="location-zip" value="{{location.zip}}" placeholder="Enter the street address for this business location">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="location-city">City</label>
+          <div class="controls">
+            <input class="span12" type="text" id="location-city" value="{{location.city}}" placeholder="Enter the street address for this business location">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="location-state">State</label>
+          <div class="controls">
+            <input class="span12" type="text" id="location-state" value="{{location.state}}" placeholder="Enter the street address for this business location">
+          </div>
+        </div>
+      </fieldset>
       <legend>Hours of Operation</legend>
     </form>
   </div>
