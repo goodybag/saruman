@@ -92,13 +92,6 @@ define(function(require) {
       api.businesses.get(manager.businessId, function(err, business) {
         api.businesses.locations.list(manager.businessId, function(err, locations) {
           business.locations = locations;
-          var location;
-          for(var i = locations.length-1; i >= 0; i--) {
-            location = locations[i];
-            if(location.id === manager.locationId) {
-              break;
-            }
-          }
           location.active = true;
           var data = {
             user: user.attributes,
@@ -107,7 +100,7 @@ define(function(require) {
           };
           data.multipleLocations = (locations.length > 1);
           self.data = data;
-          bus.publish('loadManagerEnd', data);
+          bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
         })
       })
     })
