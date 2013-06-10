@@ -111,11 +111,13 @@ define(function(require){
     }
 
   , dev: {
-      apiUrl: 'http://localhost:3000/'
+      apiUrl: 'http://localhost:3000/',
+      contactEmail: 'brian@goodybag.com'
     }
 
   , prod: {
-      apiUrl: 'http://magic.goodybag.com/'
+      apiUrl: 'http://magic.goodybag.com/',
+      contactEmail: 'jacobparker@goodybag.com'
     }
   };
 

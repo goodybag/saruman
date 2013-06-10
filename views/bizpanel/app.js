@@ -89,17 +89,20 @@ define(function(require) {
     bus.publish('loadManagerBegin');
     api.managers.get(user.id, function(err, manager) {
       api.businesses.get(manager.businessId, function(err, business) {
-        api.businesses.locations.list(manager.businessId, function(err, locations) {
-          business.locations = locations;
-          location.active = true;
-          var data = {
-            user: user.attributes,
-            business: business,
-            location: location
-          };
-          data.multipleLocations = (locations.length > 1);
-          self.data = data;
-          bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
+        api.businesses.loyalty.get(manager.businessId, function(err, loyalty) {
+          business.loyalty = loyalty;
+          api.businesses.locations.list(manager.businessId, function(err, locations) {
+            business.locations = locations;
+            location.active = true;
+            var data = {
+              user: user.attributes,
+              business: business,
+              location: location
+            };
+            data.multipleLocations = (locations.length > 1);
+            self.data = data;
+            bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
+          })
         })
       })
     })

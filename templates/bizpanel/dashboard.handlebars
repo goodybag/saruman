@@ -80,9 +80,12 @@
       </div>
     </div>
 
-    <h3 class="well">Loyalty</h3>
-    <p>Reward: {{loyalty.reward}}</p>
-    <p>Punches required to Earn Reward: {{loyalty.punchesRequired}}</p>
-    <p>Punches required to become an Elite customer: {{loyalty.elitePunches}}</p>
+    {{#business.loyalty}}
+    <h5>Loyalty</h5>
+    <p>Reward: {{reward}}</p>
+    <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
+    <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
+    <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
+    {{/business.loyalty}}
   </div>
 </div>
