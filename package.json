@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "requirejs": "latest",
-    "grunt": "0.3.x",
-    "grunt-s3": "0.0.9",
-    "grunt-contrib-mincss": "0.3.x",
+    "grunt": "0.4.x",
+    "grunt-s3": "0.2.x",
+    "grunt-contrib-cssmin": "0.6.x",
     "jsdom": "0.3.x",
     "wrench": "~1.4.4",
     "grunt-jam": "0.3.x"
