@@ -27,6 +27,7 @@ define(function(require){
     , 'change .hour-action > input':      'onRadioSelect'
     , 'submit #location-details-form':    'onFormSubmit'
     , 'click .form-actions > .cancel':    'onFormCancel'
+    , 'change .field-phone':              'onPhoneChange'
     }
 
   , initialize: function(options){
@@ -108,7 +109,7 @@ define(function(require){
           this.$el.find('#location-' + day + '-closed-input').attr('checked', true);
           this.$el.find('#location-start-' + day + '-input').val("");
           this.$el.find('#location-end-' + day + '-input').val("");
-        }else if (typeof start === "string" && typeof end === "string"){
+        } else if (typeof start === "string" && typeof end === "string"){
           // Set 24-hour
           if (parseInt(end.split(':')[0]) - parseInt(start.split(':')[0]) === 24){
             this.$el.find('#location-' + day + '-all-day-input').attr('checked', true);
@@ -117,6 +118,9 @@ define(function(require){
           }
         }
       }
+
+      this.$phone = this.$el.find('field-phone');
+      this.$phoneDisp = this.$el.find('field-phone-display');
 
       return this;
     }
@@ -258,5 +262,11 @@ define(function(require){
       // Clear days time
       $(e.target).parent().parent().find('input[type="time"]').val("");
     }
+
+  , onPhoneChange: function(e) {
+      var number = this.$phone.val();
+      var a = number.slice(0, 3), b = number.slice(3, 6), c = number.slice(6, 10);
+      this.$phoneDisp.val('(' + a + ') ' + b + '-' + c);
+  }
   });
 });
