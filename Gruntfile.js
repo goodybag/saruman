@@ -9,7 +9,7 @@ var
 /*global module:false*/
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks('grunt-contrib-mincss');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-s3');
   // grunt.loadNpmTasks('grunt-jam');
   // grunt.loadNpmTasks('grunt-escher');
@@ -32,17 +32,16 @@ module.exports = function(grunt) {
       }
     },
 
-    mincss: {
-      compress: {
-        files: {
-          'build/css/app.css': [
-            'css/bootstrap.css',
-            'css/bootstrap-responsive.css',
-            'css/font-awesome.css',
-            'css/select2.css',
-            'css/app.css'
-          ]
-        }
+    cssmin: {
+      minfiy: {
+        src: [
+          'css/bootstrap.css',
+          'css/bootstrap-responsive.css',
+          'css/font-awesome.css',
+          'css/select2.css',
+          'css/app.css'
+        ]
+      , dest: 'build/css/app.css'
       }
     },
 
@@ -64,38 +63,42 @@ module.exports = function(grunt) {
     },
 
     s3: {
-      key:    'AKIAI5ASK2M6JIZDPIYA',
-      secret: '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',
-      bucket: 'merlin.staging.goodybag.com',
-      access: 'public-read',
+      options: {
+        key:    'AKIAI5ASK2M6JIZDPIYA',
+        secret: '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',
+        access: 'public-read'
+      },
+      staging: {
+        bucket: 'merlin.staging.goodybag.com',
 
-      upload: [
-        {
-          src: 'build/index.html'
-        , dest: 'index.html'
-        , gzip: true
-        }
-      , {
-          src: 'build/css/*'
-        , dest: 'css/'
-        , gzip: false
-        }
-      , {
-          src: 'build/app.js'
-        , dest: 'app.js'
-        , gzip: false
-        }
-      , {
-          src: 'build/img/*'
-        , dest: '/img'
-        , gzip: false
-        }
-      , {
-          src: 'build/font/*'
-        , dest: '/font'
-        , gzip: false
-        }
-      ]
+        upload: [
+          {
+            src: 'build/index.html'
+          , dest: 'index.html'
+          , gzip: true
+          }
+        , {
+            src: 'build/css/*'
+          , dest: 'css/'
+          , gzip: false
+          }
+        , {
+            src: 'build/app.js'
+          , dest: 'app.js'
+          , gzip: false
+          }
+        , {
+            src: 'build/img/*'
+          , dest: '/img'
+          , gzip: false
+          }
+        , {
+            src: 'build/font/*'
+          , dest: '/font'
+          , gzip: false
+          }
+        ]
+      }
     },
 
     copyStuff: {
@@ -127,8 +130,17 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'makeBuildDir copyIndex changeConfig copyStuff mincss jam restoreConfig');
-  grunt.registerTask('deploy', 'default s3');
+  grunt.registerTask('default', [
+    'makeBuildDir'
+  , 'copyIndex'
+  , 'changeConfig'
+  , 'copyStuff'
+  , 'cssmin'
+  , 'jam'
+  , 'restoreConfig'
+  ]);
+
+  grunt.registerTask('deploy', ['default', 's3']);
 
   grunt.registerTask('changeMenuCategoriesUrl', 'Changes the menu categories api url', function(){
     var file = fs.readFileSync('./build/menu-categories/index.html', 'utf-8');
