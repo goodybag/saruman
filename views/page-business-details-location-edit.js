@@ -27,7 +27,7 @@ define(function(require){
     , 'change .hour-action > input':      'onRadioSelect'
     , 'submit #location-details-form':    'onFormSubmit'
     , 'click .form-actions > .cancel':    'onFormCancel'
-    , 'change .field-phone':              'onPhoneChange'
+    , 'keyup .field-phone':              'onPhoneChange'
     }
 
   , initialize: function(options){
@@ -119,8 +119,10 @@ define(function(require){
         }
       }
 
-      this.$phone = this.$el.find('field-phone');
-      this.$phoneDisp = this.$el.find('field-phone-display');
+      this.$phone = this.$el.find('.field-phone');
+      this.$phoneDisp = this.$el.find('.field-phone-display');
+
+      this.onPhoneChange();
 
       return this;
     }
@@ -265,6 +267,7 @@ define(function(require){
 
   , onPhoneChange: function(e) {
       var number = this.$phone.val();
+      if (number == null) return;
       var a = number.slice(0, 3), b = number.slice(3, 6), c = number.slice(6, 10);
       this.$phoneDisp.val('(' + a + ') ' + b + '-' + c);
   }
