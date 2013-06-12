@@ -2,8 +2,20 @@
 //a 'section' corresponds to something on the left-hand nav
 define(function(require) {
   var MsgView = require('./msg-view');
+  var bus = require('../../lib/pubsub');
   var Section = MsgView.extend({
     _queueRender: true,
+    constructor: function() {
+      Section.__super__.constructor.apply(this, arguments);
+      var self = this;
+      bus.subscribe('loadManagerEnd', function(name, data) {
+        self.data.user = data.user;
+        self.data.business = data.business;
+        self.data.location = data.location;
+        self.render(data);
+      });
+      this._subscribe();
+    },
     hide: function() {
       this.visible = false;
       this.$el.hide();
@@ -20,14 +32,6 @@ define(function(require) {
         this.render();
       }
       this.$el.show();
-    },
-    subscribe: {
-      loadManagerEnd: function(data) {
-        this.data.user = data.user;
-        this.data.business = data.business;
-        this.data.location = data.location;
-        this.render();
-      }
     }
   });
   return Section;
