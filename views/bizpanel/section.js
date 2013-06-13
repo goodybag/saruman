@@ -23,7 +23,6 @@ define(function(require) {
     render: function() {
       if(!this.visible) return this._queueRender = true;
       this._queueRender = false;
-      console.log('rendering ' + this.text);
       Section.__super__.render.apply(this, arguments);
     },
     show: function() {

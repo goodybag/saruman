@@ -376,3 +376,16 @@ td textarea:focus {
   color: white;
   background-color: #0088cc;
 }
+
+input.time {
+  width: 70px;
+}
+
+table.hours td {
+  padding-right: 20px;;
+  padding-bottom: 10px;
+}
+
+table.hours .day-name {
+  text-align: right;
+}

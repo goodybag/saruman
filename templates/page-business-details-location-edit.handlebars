@@ -38,7 +38,6 @@
       <input class="span2 field-lon" type="text" id="location-lon-input" value="{{lon}}" placeholder="Longitude">
     </div>
   </div>
-  {{/ifAdmin}}
   <legend class="hours-heading">Hours of Operation</legend>
   <div class="row hour-actions-heading">
     <div class="span1 offset2">
@@ -204,4 +203,15 @@
     <button type="submit" class="btn btn-primary save">Save changes</button>
     <button class="btn cancel">Cancel</button>
   </div>
+  {{else}}
+  {{! eventually we can merge this with the other hours-edit section}}
+  {{! but for now, use have an aditional place for the other edit control }}
+  <legend>Operating Hours</legend>
+  <div class="row">
+    <div class="offset1 span6">
+      <div id="hours-edit-container" class="control-group">
+      </div>
+    </div>
+  </div>
+  {{/ifAdmin}}
 </form>

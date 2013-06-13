@@ -1,0 +1,32 @@
+<table class="hours" cellpadding="4px">
+  <thead>
+    <tr>
+      <td></td>
+      <td>Open</td>
+      <td>Close</td>
+      <td>Closed</td>
+      <td>24 Hours</td>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each days}}
+    <tr data-day-name="{{name}}" class="day">
+      <td class="day-name">
+        {{name}}
+      </td>
+      <td>
+        <input class="time start" {{#if disabled}}disabled="disabled"{{/if}} value="{{start}}" />
+      </td>
+      <td>
+        <input class="time end" {{#if disabled}}disabled="disabled"{{/if}} value="{{end}}" />
+      </td>
+      <td style="text-align: center;">
+        <input type="checkbox" class="closed" name="open{{name}}" {{#closed}}checked="checked"{{/closed}}value="closed" />
+      </td>
+      <td style="text-align: center;">
+        <input type="checkbox" class="all-day" name="open{{name}}" {{#allDay}}checked="checked"{{/allDay}} value="all-day" />
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

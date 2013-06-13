@@ -4,6 +4,7 @@ define(function(require) {
   var utils = require('../../lib/utils');
   var user = require('../../models/user')
   var api = require('../../lib/api');
+  var troller = require('../../lib/troller');
   var Header = require('./header');
 
   var controller = (function() {
@@ -38,7 +39,28 @@ define(function(require) {
               bus.publish('loadManagerEnd', self.data);
             });
           });
-        }
+        },
+        saveLocation: function(msg) {
+          bus.publish('saveLocationBegin');
+          troller.spinner.spin();
+          api.locations.update(msg.locationId, msg.data, function(err, result) {
+            if(err) {
+              bus.publish('saveLocationError', err);
+              return troller.spinner.stop();
+            }
+            api.locations.get(msg.locationId, function(err, result) {
+              if(err) {
+                bus.publish('saveLocationError', err);
+                return troller.spinner.stop();
+              }
+              self.data.location = result;
+              troller.spinner.stop();
+              //self.data.location = location;
+              bus.publish('saveLocationEnd', self.data.location);
+              bus.publish('loadManagerEnd', self.data);
+            });
+          });
+        },
       }
     };
 
@@ -148,6 +170,7 @@ define(function(require) {
             };
             data.multipleLocations = (locations.length > 1);
             self.data = data;
+            console.log('loaded', self.data);
             bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
           })
         })
@@ -156,7 +179,6 @@ define(function(require) {
   };
 
   BizPanelAppView.prototype._onChangeLocation = function(name, msg) {
-    console.log(msg.locationId);
     for(var i = 0; i < this.data.business.locations.length; i++) {
       var location = this.data.business.locations[i];
       location.active = false;
@@ -165,7 +187,6 @@ define(function(require) {
         this.data.location = location;
       }
     }
-    console.log('publishing loadManagerEnd')
     bus.publish('loadManagerEnd', this.data);
   };
 

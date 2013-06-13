@@ -1,16 +1,16 @@
 <div class="dashboard row-fluid">
   <div class="span6">
     {{#business}}
-      <h5>Business Information <a href="#">edit</a></h5>
-      <div class="row-fluid">
-        <div class="span3">
-          <img src="{{logoUrl}}" class="img"/>
-        </div>
-        <div class="span9">
-          <h3>{{name}}</h3>
-          <h4>{{url}}</h4>
-        </div>
+    <h5>Business Information <a href="#">edit</a></h5>
+    <div class="row-fluid">
+      <div class="span3">
+        <img src="{{logoUrl}}" class="img"/>
       </div>
+      <div class="span9">
+        <h3>{{name}}</h3>
+        <h4>{{url}}</h4>
+      </div>
+    </div>
     {{/business}}
     <hr />
     {{#location}}
@@ -68,48 +68,62 @@
     {{/location}}
   </div>
   <div class="span6">
-      {{#if multipleLocations}}
-      <h3>Business Wide</h3>
-      {{/if}}
+    {{#if multipleLocations}}
+    <h3>Business Wide</h3>
+    {{/if}}
     <div class="row-fluid">
       <div class="measure span4">
         <h5>Total Users</h5>
         <h3>{{business.measures.totalUsers}}
+        </div>
+        <div class="measure span4">
+          <h5>Total Product Likes</h5>
+          <h3>{{business.measures.totalLikes}}</h3>
+        </div>
+        <div class="measure span4">
+          <h5>Total Punches</h5>
+          <h3>{{business.measures.totalPunches}}</h3>
+        </div>
       </div>
-      <div class="measure span4">
-        <h5>Total Product Likes</h5>
-        <h3>{{business.measures.totalLikes}}</h3>
-      </div>
-      <div class="measure span4">
-        <h5>Total Punches</h5>
-        <h3>{{business.measures.totalPunches}}</h3>
+      {{#if multipleLocations}}
+      <h3>At This Location</h3>
+      <div class="row-fluid">
+        <div class="measure span4">
+          <h5>Total Users</h5>
+          <h3>{{location.measures.totalUsers}}
+          </div>
+          <div class="measure span4">
+            <h5>Total Product Likes</h5>
+            <h3>{{location.measures.totalLikes}}</h3>
+          </div>
+          <div class="measure span4">
+            <h5>Total Punches</h5>
+            <h3>{{location.measures.totalPunches}}</h3>
+          </div>
+        </div>
+
+        {{/if}}
+
+        {{#business.loyalty}}
+        <h5>Loyalty</h5>
+        <p>Reward: {{reward}}</p>
+        <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
+        <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
+        <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
+        {{/business.loyalty}}
       </div>
     </div>
-    {{#if multipleLocations}}
-    <h3>At This Location<h3>
-    <div class="row-fluid">
-      <div class="measure span4">
-        <h5>Total Users</h5>
-        <h3>{{location.measures.totalUsers}}
-      </div>
-      <div class="measure span4">
-        <h5>Total Product Likes</h5>
-        <h3>{{location.measures.totalLikes}}</h3>
-      </div>
-      <div class="measure span4">
-        <h5>Total Punches</h5>
-        <h3>{{location.measures.totalPunches}}</h3>
-      </div>
+  </div>
+  <div id="editLocationModal" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      <h3>Edit Location</h3>
     </div>
-
-    {{/if}}
-
-    {{#business.loyalty}}
-    <h5>Loyalty</h5>
-    <p>Reward: {{reward}}</p>
-    <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
-    <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
-    <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
-    {{/business.loyalty}}
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary msg" data-msg-name="saveLocationEdits">Save Changes</button>
+      <button class="btn" data-dismiss="modal">Close</button>
+    </div>
   </div>
 </div>
