@@ -1,4 +1,4 @@
-<div class="dashboard row-fluid">
+<div id="dashboard-view" class="row-fluid">
   <div class="span6">
     {{#business}}
     <h5>Business Information <a href="#">edit</a></h5>
@@ -114,16 +114,18 @@
       </div>
     </div>
   </div>
-  <div id="editLocationModal" class="modal hide fade" tabindex="-1" role="dialog">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-      <h3>Edit Location</h3>
-    </div>
-    <div class="modal-body">
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary msg" data-msg-name="saveLocationEdits">Save Changes</button>
-      <button class="btn" data-dismiss="modal">Close</button>
+</div>
+<div id="location-edit" class="location-edit hide">
+  <h3>Edit Location</h3>
+  <div id="location-edit-container">
+  </div>
+  <legend>Operating Hours</legend>
+  <div class="row">
+    <div class="offset1 span6">
+      <div id="hours-edit-container" class="control-group">
+      </div>
     </div>
   </div>
+  <button class="btn btn-primary msg" data-msg-name="saveLocationEdits">Save Changes</button>
+  <button class="btn msg" data-msg-name="editLocationCancel">Cancel</button>
 </div>

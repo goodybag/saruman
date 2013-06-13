@@ -19,23 +19,25 @@ define(function(require) {
       data = data || this.data;
       this.$el.html(this.template(this.data||{}))
       this.$el.addClass('location-edit')
-      var modalBody = $('#editLocationModal .modal-body');
-      modalBody.html(this.editTpl(this.data.location || {}))
+      var editHtml = this.editTpl(this.data.location || {});
+      this.$el.find('#location-edit-container').html(editHtml);
       if(data && data.location) {
         this.editor.render(data.location);
-        modalBody.find('#hours-edit-container').append(this.editor.$el);
+        this.$el.find('#hours-edit-container').append(this.editor.$el);
         this.editor.delegateEvents();
       }
     },
     subscribe: {
       editLocation: function() {
-        console.log('showing location edit')
-        $('#editLocationModal').modal()
-          .css({width: '60%', left: '20%', marginLeft: 'auto', marginRight: 'auto'})
-          .find('.modal-body').css({height: '400px'});
+        $('#dashboard-view').hide();
+        $('#location-edit').show();
+      },
+      editLocationCancel: function() {
+        $('#dashboard-view').show();
+        $('#location-edit').hide();
       },
       saveLocationEdits: function() {
-        var el = this.$el.find('#editLocationModal .modal-body form');
+        var el = this.$el.find('#location-edit form');
         //apply new values to location
         var val = function(id) {
           return el.find('#location-' + id + '-input').val();
