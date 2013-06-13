@@ -1,7 +1,7 @@
 <div id="dashboard-view" class="row-fluid">
   <div class="span6">
     {{#business}}
-    <h5>Business Information <a href="#">edit</a></h5>
+    <h5>Business Information <a href="#" class="msg" data-msg-name="editBusiness">edit</a></h5>
     <div class="row-fluid">
       <div class="span3">
         <img src="{{logoUrl}}" class="img"/>
@@ -126,6 +126,16 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-primary msg" data-msg-name="saveLocationEdits">Save Changes</button>
-  <button class="btn msg" data-msg-name="editLocationCancel">Cancel</button>
+  {{! add fake form here so the controls will line up}}
+  <form class="form-horizontal">
+    <div class="form-actions">
+      <button class="btn btn-primary msg" data-msg-name="saveLocationEdits">Save Changes</button>
+      <button class="btn msg" data-msg-name="editLocationCancel">Cancel</button>
+    </div>
+  </form>
+</div>
+<div id="business-edit" class="hide">
+  <h3>Edit Business</h3>
+  <div id="business-edit-container">
+  </div>
 </div>

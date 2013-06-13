@@ -2,6 +2,8 @@ define(function(require) {
   var Section = require('../section');
   var bus = require('../../../lib/pubsub');
   var Editor = require('../../../components/hours-editor/component');
+  var tpl = require()
+  var BusinessEditor = require('../../../views/page-business-details-main');
   var dashboard = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/dashboard'),
     editTpl:require('hbt!../../../templates/page-business-details-location-edit'),
@@ -14,6 +16,7 @@ define(function(require) {
     initialize: function() {
       console.log('init dashboard')
       this.editor = new Editor();
+      this.businessEditor = new BusinessEditor();
     },
     render: function(data) {
       data = data || this.data;
@@ -21,13 +24,26 @@ define(function(require) {
       this.$el.addClass('location-edit')
       var editHtml = this.editTpl(this.data.location || {});
       this.$el.find('#location-edit-container').html(editHtml);
+      this.$el.find('#business-edit-container').html(this.businessEditor.render().$el)
+      this.businessEditor.delegateEvents();
       if(data && data.location) {
         this.editor.render(data.location);
         this.$el.find('#hours-edit-container').append(this.editor.$el);
         this.editor.delegateEvents();
       }
+      if(data && data.business) {
+        this.businessEditor.business = data.business;
+      }
     },
     subscribe: {
+      editBusiness: function() {
+        $('#dashboard-view').hide();
+        $('#business-edit').show();
+      },
+      editBusinessCancel: function() {
+        $('#dashboard-view').show();
+        $('#business-edit').hide();
+      },
       editLocation: function() {
         $('#dashboard-view').hide();
         $('#location-edit').show();

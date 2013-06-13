@@ -2,6 +2,7 @@
 
 </div>
 <form id="business-details-form" class="form-horizontal">
+  {{#ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="business-name">Business Name</label>
     <div class="controls">
@@ -14,6 +15,7 @@
       <input class="span5" type="text" id="business-category-main" value="Restaurant" placeholder="Enter the main business cateogry">
     </div>
   </div>
+  {{/ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="business-url">Web URL</label>
     <div class="controls">
@@ -28,6 +30,10 @@
   </div>
   <div class="form-actions">
     <button type="submit" class="btn btn-primary btn-save-changes">Save changes</button>
+    {{#ifAdmin}}
     <button class="btn btn-danger delete-btn">Delete Business</button>
+    {{else}}
+    <buton class="btn msg" data-msg-name="editBusinessCancel">Cancel</button>
+    {{/ifAdmin}}
   </div>
 </form>
