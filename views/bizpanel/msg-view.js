@@ -9,8 +9,6 @@ define(function(require) {
       MsgView.__super__.constructor.apply(this, arguments);
       //utils.View.prototype.constructor.apply(this, arguments);
       this._subscribe();
-      //not sure why it was being called twice
-      this._subscribe = function() { };
     },
     _subscribe: function() {
       var self = this;
