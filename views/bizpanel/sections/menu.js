@@ -2,6 +2,7 @@ define(function(require) {
   var bus = require('../../../lib/pubsub');
   var Section = require('../section');
   var api = require('../../../lib/api');
+  var loader = require('../../../lib/bizpanel/menu-loader');
   var menu = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/menu'),
     icon: 'food',
@@ -24,16 +25,9 @@ define(function(require) {
       //expectes {businessId,locationId}
       loadMenuBegin: function(msg) {
         console.log('section menu', 'load menu');
-        //load all products for business
-        var params = { include: ['categories', 'inSpotlight', 'tags'] };
-        var self = this;
-        api.businesses.products.list(msg.businessId, params, function(err, res) {
-          self.products = res;
-          self.render({ products: res });
-        });
       },
-      loadMenuSectionsBegin: function(msg) {
-
+      loadMenuEnd: function(menu) {
+        this.render(menu);
       },
       editProduct: function(msg) {
         for(var i = 0; i < this.products.length; i++) {
@@ -42,6 +36,10 @@ define(function(require) {
             console.log(product);
           }
         }
+      },
+      //basically a click handler at this point
+      editCategories: function() {
+        $('#editCategoriesModal').modal();
       }
     }
   }));

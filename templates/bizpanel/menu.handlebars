@@ -1,31 +1,103 @@
-<table>
-  <thead>
-    <tr>
-      <td>Item Name</td>
-      <td>Description</td>
-      <td>Price</td>
-      <td>Category</td>
-      <td>Photo</td>
-      <td width="70px"># of Likes</td>
-      <td width="100px">Tags</td>
-      <td width="90px"></td>
-    </tr>
-  </thead>
-  <tbody>
-    {{#products}}
-    <tr>
-      <td>{{name}}</td>
-      <td>{{description}}</td>
-      <td>{{money price}}</td>
-      <td>{{#categories}}{{name}}{{/categories}}</td>
-      <td><img width="300px" src="{{photoUrl}}" alt="missing photo of {{name}}" /></td>
-      <td>{{likes}}</td>
-      <td>{{#tags}}
-        <span>{{tag}} <i class="icon-folder-close"></i></span>
-        {{/tags}}
-      </td>
-      <td><button class="btn msg" data-msg-name="editProduct" data-id="{{id}}">Edit Item</button></td>
-    </tr>
-    {{/products}}
-  </tbody>
-</table>
+<div class="row-fluid">
+  <div class="span6">
+    {{!-- dummy form so boostrap will style}}
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label">Menu Sections:</label>
+        <div class="controls controls-row">
+          <select>
+            <option>All</option>
+            {{#sections}}
+            <option>{{name}}</option>
+            {{/sections}}
+            <option>Archived</option>
+            <option>Uncategorized</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions" style="border:none; background-color:inherit; padding-top:0">
+        <button class="btn btn-small msg" data-msg-name="editCategories">Edit Menu Sections</button>
+      </div>
+    </form>
+  </div>
+  <div class="span6">
+    <form class="form-search">
+      <div class="input-append">
+        <input type="text" class="span12 search-query" placeholder="Search by Item Name or Section"/>
+        <button type="submit" class="btn msg"><i class="icon-search"></i> Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="span12">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Item Name</td>
+          <td>Description</td>
+          <td>Price</td>
+          <td>Category</td>
+          <td>Photo</td>
+          <td width="70px"># of Likes</td>
+          <td width="100px">Tags</td>
+          <td width="90px"></td>
+        </tr>
+      </thead>
+      <tbody>
+        {{#products}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{description}}</td>
+          <td>{{money price}}</td>
+          <td>{{#categories}}{{name}}{{/categories}}</td>
+          <td><img width="300px" src="{{photoUrl}}" alt="missing photo of {{name}}" /></td>
+          <td>{{likes}}</td>
+          <td>{{#tags}}
+            {{!--nested tables for layout. please forgive me.}}
+            <table>
+              <tr>
+                <td>{{tag}}</td><td><i class="icon-folder-close"></i></td>
+            </tr>
+          </table>
+            {{/tags}}
+          </td>
+          <td><button class="btn btn-small msg" data-msg-name="editProduct" data-id="{{id}}">Edit Item</button></td>
+        </tr>
+        {{/products}}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="editCategoriesModal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Edit Categories</h3>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <td>{{!order number}}</td>
+          <td>Category</td>
+          <td>Description</td>
+          <td>{{!--edit contdols}}</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{#sections}}
+        <tr>
+          <td>{{order}}</td>
+          <td>{{name}}</td>
+          <td>{{description}}</td>
+          <td>controlz</td>
+        </tr>
+        {{/sections}}
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary msg">Save changes</a>
+    <a href="#" class="btn msg" data-dismiss="modal">Cancel</a>
+  </div>
+</div>
