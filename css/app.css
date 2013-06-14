@@ -389,3 +389,7 @@ table.hours td {
 table.hours .day-name {
   text-align: right;
 }
+
+.control-group .business-logo {
+  cursor: pointer;
+}
