@@ -2,6 +2,7 @@ define(function(require) {
   var Section = require('../section');
   var bus = require('../../../lib/pubsub');
   var utils = require('../../../lib/utils');
+  var api = require('../../../lib/api');
   var contact = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/contact'),
     url: '#panel/contact',
@@ -42,6 +43,16 @@ define(function(require) {
         el.fadeOut(cb || utils.noop);
       }, 1000);
     },
+    sendRequestMail: function(requestType, callback) {
+      var subject = 'BizPanel - ' + requestType + ' Request';
+      var body = subject + ' requested by ' + this.data.user.email + ' for business ' + this.data.business.name + ' at location ' + this.data.location.street1;
+      var email = {
+        from: 'brian@goodybag.com',
+        subject: subject,
+        body: body
+      };
+      api.email.send(email, callback);
+    },
     subscribe: {
       //when the button is clicked - this could be moved to an event listener
       //since it still concerns itself solely with the enclosed view
@@ -53,22 +64,31 @@ define(function(require) {
           form[val.name] = val.value;
         });
         form.copySender = !!form.copySender;
-        console.log(form);
         //cheaply validate form
         if(!(form.name && form.from && form.subject && form.message)) {
           return this.getContactForm().find('.alert').closest('.row').removeClass('hidden');
         } else {
           this.getContactForm().find('.alert').closest('.row').addClass('hidden');
         }
-        bus.publish('sendContactMessageBegin', form);
+        var mail = {
+          from: form.from,
+          subject: form.subject,
+          body: form.message
+        };
+        mail.body += '<br /><br />Sent from BizPanel by ' + this.data.user.email + '.<br />  Business: ' + this.data.business.name + ' - ' + this.data.location.street1 + ' ' + this.data.zip;
+        if(form.copySender) {
+          mail.cc = mail.from;
+        }
+        bus.publish('sendContactMessageBegin', mail);
       },
       //click event
       requestManager: function() {
         bus.publish('requestManagerBegin');
         this.setProgress('#request-manager-status');
-        setTimeout(function() {
+        this.sendRequestMail('Account Manager', function(err) {
+          if(err) console.error(err);
           bus.publish('requestManagerEnd');
-        }, 1000);
+        });
       },
       requestManagerEnd: function() {
         this.setEnd('#request-manager-status');
@@ -77,25 +97,32 @@ define(function(require) {
       requestKeytags: function() {
         this.setProgress('#request-keytags-status')
         bus.publish('requestKeytagsBegin');
-        setTimeout(function() {
+        this.sendRequestMail('Keytags', function(err) {
+          if(err) console.error(err);
           bus.publish('requestKeytagsEnd');
-        }, 1000);
+        });
       },
       requestKeytagsEnd: function() {
         this.setEnd('#request-keytags-status');
       },
-      sendContactMessageBegin: function(messgage) {
-        console.log('TODO', 'send contact message to server');
+      sendContactMessageBegin: function(mail) {
         this.showSendingNotification();
-        setTimeout(function() {
+        api.email.send(mail, function(err, res) {
           bus.publish('sendContactMessageEnd')
-        }, 1000);
+          if(err) {
+            bus.publish('sendContactMessageError');
+            console.log(err);
+            //validation failed
+            if(err.code == "0201") {
+            }
+          }
+        });
       },
       sendContactMessageEnd: function() {
         this.showSentNotification();
       },
-      loadManagerEnd: function(manager) {
-        this.data = manager;
+      loadManagerEnd: function(data) {
+        this.data = data;
         console.log(this.data);
         this.render();
       }
