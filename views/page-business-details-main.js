@@ -37,7 +37,6 @@ define(function(require){
         { mimetypes:['image/*'] },
         function(file){
           this_.business.logoUrl = file.url;
-          api.businesses.update(this_.business.id, { logoUrl: file.url }, utils.noop);
           e.target.src = file.url;
         },
         function(error){ /*alert(error);*/ }
@@ -53,6 +52,7 @@ define(function(require){
         name:               this.$el.find('#business-name').val()
       , businessCategory:   this.$el.find('#business-category').val()
       , url:                this.$el.find('#business-url').val()
+      , logoUrl:            this.business.logoUrl
       };
 
       var this_ = this;
@@ -65,7 +65,9 @@ define(function(require){
           this_.business[key] = data[key];
         }
 
-        this_.parentView.render();
+        if(this._parentView) {
+          this_.parentView.render();
+        }
 
         troller.spinner.stop();
         this_.doSuccessThing(this_.$el.find('.btn-save-changes'));

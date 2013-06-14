@@ -52,7 +52,7 @@ define(function(require){
         if (error)
           return this_.$el.find('.errors').html('<p class="text-error">Invalid Email/Password</p>');
 
-        var home = utils.context.getHome();
+        var home = utils.context.getHome(user);
         troller.app.changePage(home.name, home.options);
         utils.history.navigate(home.url);
       });

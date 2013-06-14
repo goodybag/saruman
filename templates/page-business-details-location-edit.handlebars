@@ -2,12 +2,14 @@
 
 </div>
 <form id="location-details-form" class="form-horizontal">
+  {{#ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="location-name-input">Location Name</label>
     <div class="controls">
       <input class="span4 field-name" type="text" id="location-name-input" value="{{name}}" placeholder="Enter the location name">
     </div>
   </div>
+  {{/ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="location-street1-input">Address</label>
     <div class="controls controls-row">
@@ -28,6 +30,7 @@
       <input class="span4 field-phone" type="tel" id="location-phone-input" value="{{phone}}" placeholder="1234567890">
     </div>
   </div>
+  {{#ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="location-lat-input">Latitude &amp; Longitude</label>
     <div class="controls controls-row">
@@ -200,4 +203,5 @@
     <button type="submit" class="btn btn-primary save">Save changes</button>
     <button class="btn cancel">Cancel</button>
   </div>
+  {{/ifAdmin}}
 </form>

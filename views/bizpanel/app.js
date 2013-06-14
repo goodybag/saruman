@@ -4,7 +4,75 @@ define(function(require) {
   var utils = require('../../lib/utils');
   var user = require('../../models/user')
   var api = require('../../lib/api');
+  var troller = require('../../lib/troller');
   var Header = require('./header');
+
+  var controller = (function() {
+    var ctrl = {
+      subscribe: {
+        loadManagerEnd: function(data) {
+          this.data = data;
+          var self = this;
+          if(self.data.business.measures && self.data.location.measures) return;
+          var loadBusinessMeasures = function(cb) {
+            if(self.data.business.measures) return cb();
+            console.log('loading measures for business', self.data.business.id);
+            utils.api.get('v1/businesses/' + data.business.id + '/measures', function(err, res) {
+              if(err) return console.error('unable to load measures for business'), cb(err);
+              self.data.business.measures = res;
+              cb();
+            });
+          };
+          var loadLocationMeasures = function(cb) {
+            if(self.data.location.measures) return console.log('skpping location measures'), cb();
+            console.log('loading location measures', self.data.location.id);
+            utils.api.get('v1/locations/' + self.data.location.id + '/measures', function(err, res) {
+              if(err) return console.error('could not load measures for location'), cb(err);
+              self.data.location.measures = res;
+              return cb();
+            });
+          };
+          loadBusinessMeasures(function(err) {
+            if(err) return;
+            loadLocationMeasures(function(err) {
+              if(err) return;
+              bus.publish('loadManagerEnd', self.data);
+            });
+          });
+        },
+        saveLocation: function(msg) {
+          bus.publish('saveLocationBegin');
+          troller.spinner.spin();
+          api.locations.update(msg.locationId, msg.data, function(err, result) {
+            if(err) {
+              bus.publish('saveLocationError', err);
+              return troller.spinner.stop();
+            }
+            api.locations.get(msg.locationId, function(err, result) {
+              if(err) {
+                bus.publish('saveLocationError', err);
+                return troller.spinner.stop();
+              }
+              self.data.location = result;
+              troller.spinner.stop();
+              //self.data.location = location;
+              bus.publish('saveLocationEnd', self.data.location);
+              bus.publish('loadManagerEnd', self.data);
+            });
+          });
+        },
+      }
+    };
+
+    var self = ctrl;
+    _.each(self.subscribe, function(value, key) {
+      var event = function(name, message) {
+        self.subscribe[key].call(self, message);
+      };
+      console.log('subscribing to', key)
+      bus.subscribe(key, event);
+    });
+  })();
 
   var templates = {
     layout: require('hbt!../../templates/bizpanel/layout'),
@@ -29,6 +97,7 @@ define(function(require) {
     }
     return data;
   };
+
 
   var BizPanelAppView = function() {
     //attach the layout to the body
@@ -89,24 +158,27 @@ define(function(require) {
     bus.publish('loadManagerBegin');
     api.managers.get(user.id, function(err, manager) {
       api.businesses.get(manager.businessId, function(err, business) {
-        api.businesses.locations.list(manager.businessId, function(err, locations) {
-          business.locations = locations;
-          location.active = true;
-          var data = {
-            user: user.attributes,
-            business: business,
-            location: location
-          };
-          data.multipleLocations = (locations.length > 1);
-          self.data = data;
-          bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
+        api.businesses.loyalty.get(manager.businessId, function(err, loyalty) {
+          business.loyalty = loyalty;
+          api.businesses.locations.list(manager.businessId, function(err, locations) {
+            business.locations = locations;
+            location.active = true;
+            var data = {
+              user: user.attributes,
+              business: business,
+              location: location
+            };
+            data.multipleLocations = (locations.length > 1);
+            self.data = data;
+            console.log('loaded', self.data);
+            bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
+          })
         })
       })
     })
   };
 
   BizPanelAppView.prototype._onChangeLocation = function(name, msg) {
-    console.log(msg.locationId);
     for(var i = 0; i < this.data.business.locations.length; i++) {
       var location = this.data.business.locations[i];
       location.active = false;
