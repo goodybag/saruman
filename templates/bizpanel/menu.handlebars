@@ -1,3 +1,31 @@
-{{#location}}
-{{startMonday}}
-{{/location}}
+<table>
+  <thead>
+    <tr>
+      <td>Item Name</td>
+      <td>Description</td>
+      <td>Price</td>
+      <td>Category</td>
+      <td>Photo</td>
+      <td width="70px"># of Likes</td>
+      <td width="100px">Tags</td>
+      <td width="90px"></td>
+    </tr>
+  </thead>
+  <tbody>
+    {{#products}}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{description}}</td>
+      <td>{{money price}}</td>
+      <td>{{#categories}}{{name}}{{/categories}}</td>
+      <td><img width="300px" src="{{photoUrl}}" alt="missing photo of {{name}}" /></td>
+      <td>{{likes}}</td>
+      <td>{{#tags}}
+        <span>{{tag}} <i class="icon-folder-close"></i></span>
+        {{/tags}}
+      </td>
+      <td><button class="btn msg" data-msg-name="editProduct" data-id="{{id}}">Edit Item</button></td>
+    </tr>
+    {{/products}}
+  </tbody>
+</table>

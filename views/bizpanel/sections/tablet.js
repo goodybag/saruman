@@ -32,6 +32,7 @@ define(function(require) {
       },
       //msg expects {busnessId,locationId}
       loadProductsBegin: function(msg) {
+        return;
         console.log('loadProductsBeing', msg);
         var self = this;
         var url = 'v1/locations/' + msg.locationId + '/menu-sections';
