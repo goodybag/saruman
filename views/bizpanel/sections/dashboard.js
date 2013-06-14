@@ -17,6 +17,10 @@ define(function(require) {
       console.log('init dashboard')
       this.editor = new Editor();
       this.businessEditor = new BusinessEditor();
+      var self = this;
+      this.businessEditor.doSuccessThing = function() {
+        self.render();
+      }
     },
     render: function(data) {
       data = data || this.data;
