@@ -3,11 +3,16 @@ define(function(require) {
   var Section = require('../section');
   var api = require('../../../lib/api');
   var loader = require('../../../lib/bizpanel/menu-loader');
+  var MenuSectionEditor = require('../menu-section-editor');
+  var editor = new MenuSectionEditor();
   var menu = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/menu'),
     icon: 'food',
     url: '#panel/menu',
     text: 'Menu Items',
+    getEditCategoriesModal: function() {
+      return $('#editCategoriesModal');
+    },
     subscribe: {
       loadManagerEnd: function(msg) {
         this.user = msg.user;
@@ -27,6 +32,7 @@ define(function(require) {
         console.log('section menu', 'load menu');
       },
       loadMenuEnd: function(menu) {
+        this.getEditCategoriesModal().modal('hide')
         this.render(menu);
       },
       editProduct: function(msg) {
@@ -39,7 +45,7 @@ define(function(require) {
       },
       //basically a click handler at this point
       editCategories: function() {
-        $('#editCategoriesModal').modal();
+        this.getEditCategoriesModal().modal().find('.modal-body').html(editor.$el);
       }
     }
   }));

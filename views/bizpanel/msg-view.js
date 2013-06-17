@@ -2,6 +2,7 @@
 define(function(require) {
   var bus = require('../../lib/pubsub');
   var utils = require('../../lib/utils');
+  var subscribe = require('../../lib/bizpanel/subscribe');
 
   var MsgView = utils.View.extend({
     data: {},
@@ -11,13 +12,7 @@ define(function(require) {
       this._subscribe();
     },
     _subscribe: function() {
-      var self = this;
-      _.each(this.subscribe, function(value, key) {
-        var event = function(name, message) {
-          this.subscribe[key].call(this, message);
-        }.bind(self);
-        bus.subscribe(key, event);
-      });
+      subscribe(this);
     },
     render: function(data) {
       var view = _.extend((this.data||{}), data||{});

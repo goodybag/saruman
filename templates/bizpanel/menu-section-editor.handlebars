@@ -1,0 +1,44 @@
+<table class="table">
+  <thead>
+    <tr>
+      <td>{{!order number}}</td>
+      <td>Category</td>
+      <td>Description</td>
+      <td>{{!--edit contdols}}</td>
+    </tr>
+  </thead>
+  <tbody>
+    {{#sections}}
+    <tr height="70px" data-id="{{id}}">
+      <td>{{order}}</td>
+      <td class="name">
+        <input type="text" class="edit" value="{{name}}" />
+      </td>
+      <td class="description">
+        <textarea class="edit" rows="2">{{description}}</textarea>
+      </td>
+      <td>
+        <div class="btn-group">
+          <button class="btn btn-small msg" data-toggle="tooltip" data-msg-name="moveSectionUp" data-id="{{id}}" title="Move Up">
+            <i class="icon-arrow-up"></i>
+          </button>
+          <button class="btn btn-small msg" data-msg-name="moveSectionDown" data-id="{{id}}">
+            <i class="icon-arrow-down" title="Move Down"></i>
+          </button>
+          <button class="btn btn-small msg">
+            <i class="icon-trash" title="Delete"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    {{/sections}}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><button class="btn btn-primary msg" data-msg-name="addSection"><i class="icon-plus"></i> Add</button></td>
+    </tr>
+  </tfoot>
+</table>

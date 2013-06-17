@@ -8,9 +8,10 @@ define(function(require) {
     url: '#panel/tablet',
     icon: 'desktop',
     text: 'Tablet Gallery',
+    initialize: function() {
+    },
     render: function(data) {
       console.log('section-tablet','render');
-      this.$el.html(this.template(data || this.data || {}) + ' ' + new Date().getTime())
       var self = this;
     },
     subscribe: {
@@ -27,18 +28,10 @@ define(function(require) {
             businessId: data.business.id,
             locationId: data.location.id
           }
-          bus.publish('loadProductsBegin', msg);
         }
       },
-      //msg expects {busnessId,locationId}
-      loadProductsBegin: function(msg) {
-        return;
-        console.log('loadProductsBeing', msg);
-        var self = this;
-        var url = 'v1/locations/' + msg.locationId + '/menu-sections';
-        utils.api.get(url, {}, function(err, res) {
-          console.log(res);
-        })
+      loadMenuEnd: function(menuData) {
+        
       }
     }
   }));
