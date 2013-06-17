@@ -25,7 +25,8 @@
     "grunt-contrib-cssmin": "0.6.x",
     "jsdom": "0.3.x",
     "wrench": "~1.4.4",
-    "grunt-jam": "0.3.x"
+    "grunt-jam": "0.3.x",
+    "request": "~2.21.0"
   },
   "repository": "",
   "author": "John Fawcett",

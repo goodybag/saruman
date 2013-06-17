@@ -4,6 +4,7 @@ var
 , childProcess  = require('child_process')
 , jsdom         = require('jsdom')
 , wrench        = require('wrench')
+, request       = require('request')
 ;
 
 /*global module:false*/
@@ -149,7 +150,10 @@ module.exports = function(grunt) {
   grunt.registerTask('deploy', ['default', 's3', 'play-audio']);
 
   grunt.registerMultiTask('play-audio', 'Plays deployment song', function(){
-    request.post(this.data.url);
+    var done = this.async();
+    request.post(this.data.url, function(error, response){
+      done(!error && response.statusCode == 204);
+    });
   });
 
   grunt.registerTask('changeMenuCategoriesUrl', 'Changes the menu categories api url', function(){
