@@ -126,6 +126,12 @@ module.exports = function(grunt) {
         from: 'prod',
         to:   'dev'
       }
+    },
+
+    'play-audio': {
+      build: {
+        url: 'http://gb-prod-alert.j0.hn/deployments/saruman'
+      }
     }
   });
 
@@ -140,7 +146,11 @@ module.exports = function(grunt) {
   , 'restoreConfig'
   ]);
 
-  grunt.registerTask('deploy', ['default', 's3']);
+  grunt.registerTask('deploy', ['default', 's3', 'play-audio']);
+
+  grunt.registerMultiTask('play-audio', 'Plays deployment song', function(){
+    request.post(this.data.url);
+  });
 
   grunt.registerTask('changeMenuCategoriesUrl', 'Changes the menu categories api url', function(){
     var file = fs.readFileSync('./build/menu-categories/index.html', 'utf-8');
