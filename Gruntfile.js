@@ -146,7 +146,7 @@ module.exports = function(grunt) {
   , 'restoreConfig'
   ]);
 
-  grunt.registerTask('deploy', ['default', 's3']);
+  grunt.registerTask('deploy', ['default', 's3', 'play-audio']);
 
   grunt.registerMultiTask('play-audio', 'Plays deployment song', function(){
     request.post(this.data.url);
