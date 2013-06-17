@@ -372,10 +372,26 @@ td textarea:focus {
   }
 }
 
+#bizpanel-nav li a {
+  height: 30px;
+  padding-top:20px;
+  vertical-align: middle;
+}
+
 #bizpanel-nav li.active a { 
   color: white;
   background-color: #0088cc;
 }
+
+#bizpanel-nav .nav [class^=icon-] {
+  margin-right: 8px;
+  color: #666;
+}
+
+#bizpanel-nav .nav .active [class^=icon-] {
+  color: white;
+}
+
 
 input.time {
   width: 70px;
@@ -392,4 +408,28 @@ table.hours .day-name {
 
 .control-group .business-logo {
   cursor: pointer;
+}
+
+.business-name {
+  vertical-align: middle;
+  font-size: 34px;
+}
+
+form.contact {
+  padding-top: 50px;
+}
+
+form.contact input[type=text], input[type=email], form.contact textarea {
+  width: 60%;
+}
+
+.measure.thumbnail {
+  text-align: center;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.measure .name {
+  border-bottom: 1px solid #EEE;
+  padding-bottom: 5px;
 }

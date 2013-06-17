@@ -20,9 +20,9 @@
   </div>
 </div>
 <div class="row-fluid">
-  <div class="span8">
+  <div class="span12">
     <form id="contact" class="form contact">
-      <div class="row">
+      <div class="row-fluid">
         <div class="span2">
           <label for="contact-name">Name</label>
         </div>
@@ -30,7 +30,7 @@
           <input type="text" name="name" id="contact-name" placeholder="Your Name"/>
         </div>
       </div>
-      <div class="row">
+      <div class="row-fluid">
         <div class="span2">
           <label for="contact-email">Email Address</label>
         </div>
@@ -38,7 +38,7 @@
           <input type="email" name="from" id="contact-email" value="{{user.email}}" />
         </div>
       </div>
-      <div class="row">
+      <div class="row-fluid">
         <div class="span2">
           <label for="contact-subject">Subject</label>
         </div>
@@ -46,7 +46,7 @@
           <input type="text" id="contact-subject" name="subject" placeholder="I need some help" />
         </div>
       </div>
-      <div class="row">
+      <div class="row-fluid">
         <div class="span2">
           <label for="contact-message">Message</label>
         </div>
@@ -54,21 +54,21 @@
           <textarea id="contact-message" name="message" rows="7" placeholder="My tablet is not attracting as many customers as I would like, and I was wondering if you could give me some advice on things I could do to improve that."></textarea>
         </div>
       </div>
-      <div class="row">
+      <div class="row-fluid">
         <div class="span10 offset2">
           <label class="checkbox">
             <input type="checkbox" id="contact-copy" name="copySender" />Send me a copy
           </label>
         </div>
       </div>
-      <div class="row hidden">
+      <div class="row-fluid hidden">
         <div class="span10 offset2">
           <div class="alert">
             <strong>Uh oh!</strong> We cannot send a message unless you provide us with all the information above.  Please make sure you have included your name, email address, a subject, and a message.  Thanks!
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row-fluid">
         <div class="span10 offset2">
           <button class="btn msg" data-msg-name="sendContactMessage">Send</button>
           <span class="message hide" data-progress-text="Sending" data-end-text="Thanks! Your message has been sent.">Sending...</span>
