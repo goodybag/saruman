@@ -103,12 +103,16 @@ define(function(require) {
       var smaller = 1;
       if(sortDirection == 'ASC') {
         bigger = 1;
-        smaller = 1;
+        smaller = -1;
       }
       var sortedProducts = products.sort(function(a, b) {
         var aField = a[sortField];
         var bField = b[sortField];
-        if(aField == bField) return 0;
+        if(aField == bField) {
+          console.log(aField, 'equals', bField, 'sorting by name');
+          //sort by name to maintain sane sort order
+          return a.name > b.name ? bigger : smaller;
+        };
         return aField > bField ? bigger : smaller;
       });
       //save the sort data so it can be rendered
