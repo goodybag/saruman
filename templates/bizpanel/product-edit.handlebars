@@ -1,0 +1,53 @@
+<form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="product-name-input">Item Name</label>
+    <div class="controls">
+      <input type="text" id="product-name-input" value="{{name}}" placeholder="The Texas Burger" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="product-price-input">Price</label>
+    <div class="controls">
+      <input type="text" id="product-price-input" value="{{price}}" placeholder="9.99">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="product-category-input">Category</label>
+    <div class="controls">
+      <input type="text" id="product-category-input" value="{{category}}" placeholder="">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="product-description-input">Description</label>
+    <div class="controls">
+      <textarea rows="4" id="product-description-input" placeholder="This mouthwatering burger is made of 100% grass fed Texas beef and served on a homemade bun!">{{description}}</textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="photo-picker">Photo</label>
+    <div class="controls">
+      <img id="product-image" src="{{defaultBusinessLogo photoUrl}}" class="msg" data-msg-name="pickProductPhoto" width="200">
+      <span class="help-block">Click to change</span>
+      {{#id}}
+      <button class="btn msg">Choose from Library</button>
+      {{/id}}
+    </div>
+  </div>
+  {{#id}}
+  {{else}}
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" id="product-tablet-display-input" value="{{displayOnTablet}}"> Display on Tablet
+      </label>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        <input type="checkbox" id="product-spotlight-display-input" value="{{showInSpotlight}}"> Show in Spotlight
+      </label>
+    </div>
+  </div>
+  {{/id}}
+</form>

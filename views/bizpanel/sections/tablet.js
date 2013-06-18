@@ -3,6 +3,7 @@ define(function(require) {
   var Section = require('../section');
   var api = require('../../../lib/api');
   var utils = require('../../../lib/utils');
+
   var tablet = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/tablet'),
     url: '#panel/tablet',
@@ -31,7 +32,7 @@ define(function(require) {
         }
       },
       loadMenuEnd: function(menuData) {
-        
+
       }
     }
   }));

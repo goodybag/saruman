@@ -111,7 +111,7 @@ define(function(require){
     }
 
   , dev: {
-      apiUrl: 'http://localhost:8986/',
+      apiUrl: 'http://localhost:3000/',
       contactEmail: 'brian@goodybag.com'
     }
 
