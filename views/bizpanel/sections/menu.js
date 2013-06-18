@@ -110,7 +110,7 @@ define(function(require) {
         var bField = b[sortField];
         if(aField == bField) return 0;
         return aField > bField ? bigger : smaller;
-      })
+      });
       //save the sort data so it can be rendered
       this.sortField = sortField;
       this.sortDirection = sortDirection;

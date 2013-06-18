@@ -410,7 +410,7 @@ table.hours .day-name {
   cursor: pointer;
 }
 
-.business-name {
+.business-name, .location-name {
   vertical-align: middle;
   font-size: 34px;
 }
