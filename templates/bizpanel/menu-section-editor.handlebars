@@ -12,10 +12,10 @@
     <tr height="70px" data-id="{{id}}">
       <td>{{order}}</td>
       <td class="name">
-        <input type="text" class="edit" value="{{name}}" />
+        <input type="text" class="section-name" class="edit" value="{{name}}" />
       </td>
       <td class="description">
-        <textarea class="edit" rows="2">{{description}}</textarea>
+        <textarea class="edit" class="section-description" rows="2">{{description}}</textarea>
       </td>
       <td>
         <div class="btn-group">
@@ -25,7 +25,7 @@
           <button class="btn btn-small msg" data-msg-name="moveSectionDown" data-id="{{id}}">
             <i class="icon-arrow-down" title="Move Down"></i>
           </button>
-          <button class="btn btn-small msg">
+          <button class="btn btn-small msg" data-msg-name="deleteSection" data-id="{{id}}">
             <i class="icon-trash" title="Delete"></i>
           </button>
         </div>

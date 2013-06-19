@@ -162,7 +162,7 @@ define(function(require) {
         console.log('section menu', 'load menu');
       },
       loadMenuEnd: function(menu) {
-        this.getEditCategoriesModal().modal('hide')
+        this.getEditCategoriesModal().hide();
         this.menu = menu;
         this.sort(this.sortField, this.sortDirection);
         this.productEditView.setTags(menu.tags);
@@ -199,7 +199,14 @@ define(function(require) {
       },
       //basically a click handler at this point
       editCategories: function() {
-        this.getEditCategoriesModal().modal().find('.modal-body').html(editor.$el);
+        this.$el.find('#menuView').hide();
+        this.getEditCategoriesModal()
+          .show()
+          .find('#editCategoriesContent').html(editor.$el);
+      },
+      cancelMenuSectionEdits: function() {
+        this.getEditCategoriesModal().hide();
+        this.$el.find('#menuView').show();
       }
     }
   }));

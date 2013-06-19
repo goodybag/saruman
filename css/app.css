@@ -433,3 +433,13 @@ form.contact input[type=text], input[type=email], form.contact textarea {
   border-bottom: 1px solid #EEE;
   padding-bottom: 5px;
 }
+
+.menu-products thead .msg {
+  cursor: pointer;
+  color: #0088cc;
+}
+
+.menu-products thead i {
+  cursor: pointer;
+  color: #555;
+}
