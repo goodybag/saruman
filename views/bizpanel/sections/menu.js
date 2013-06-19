@@ -1,4 +1,5 @@
 define(function(require) {
+  var utils = require('../../../lib/utils');
   var bus = require('../../../lib/pubsub');
   var Section = require('../section');
   var api = require('../../../lib/api');
@@ -15,6 +16,19 @@ define(function(require) {
     render: function(product) {
       this.product = product;
       this.$el.html(this.template(this.product || {}));
+      //dispose of old rendered select2
+      if(this.$tagSelect) {
+        this.$tagSelect.select2('destroy');
+      }
+      this.$tagSelect = this.$el.find('#product-tags-input').select2({
+        tags:['true']
+      });
+      if((this.product||0).tags) {
+        var tagNames = this.product.tags.map(function(tag) {
+          return tag.name;
+        });
+        this.$tagSelect.val(tagNames).trigger('change');
+      }
     },
     //returns values from edit form as a 
     //product object ready to be sent to the API
@@ -33,6 +47,7 @@ define(function(require) {
       result.photoUrl = this.$el.find('#product-img').attr('src');
       result.displayOnTablet = get('tablet-display').is(':checked');
       result.showInSpotlight = get('spotlight-display').is(':checked');
+      result.tags = this.$tagSelect.val().split(',');
       return result;
     },
     subscribe: {
@@ -109,7 +124,6 @@ define(function(require) {
         var aField = a[sortField];
         var bField = b[sortField];
         if(aField == bField) {
-          console.log(aField, 'equals', bField, 'sorting by name');
           //sort by name to maintain sane sort order
           return a.name > b.name ? bigger : smaller;
         };
@@ -142,6 +156,7 @@ define(function(require) {
         this.getEditCategoriesModal().modal('hide')
         this.menu = menu;
         this.sort(this.sortField, this.sortDirection);
+        console.log(this.menu.products)
         this.render(menu);
       },
       newProduct: function() {

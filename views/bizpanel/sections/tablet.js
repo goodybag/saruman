@@ -14,6 +14,7 @@ define(function(require) {
     render: function(data) {
       console.log('section-tablet','render');
       var self = this;
+      this.$el.html(this.template(data || {}))
     },
     subscribe: {
       loadManagerEnd: function(data) {

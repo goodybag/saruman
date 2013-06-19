@@ -65,13 +65,10 @@
             <td>{{#categories}}{{name}}{{/categories}}</td>
             <td><img width="300px" src="{{photoUrl}}" alt="missing photo of {{name}}" /></td>
             <td>{{likes}}</td>
-            <td>{{#tags}}
+            <td>
               {{!--nested tables for layout. please forgive me.}}
-              <table>
-                <tr>
-                  <td>{{tag}}</td><td><i class="icon-folder-close"></i></td>
-                </tr>
-              </table>
+              {{#tags}}
+              <div class="product-tag">{{tag.name}}</div>
               {{/tags}}
             </td>
             <td><button class="btn btn-small msg" data-msg-name="editProduct" data-id="{{id}}">Edit Item</button></td>
