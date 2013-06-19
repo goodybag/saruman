@@ -13,6 +13,15 @@ define(function(require) {
   var ProductEditTemplate = require('hbt!../../../templates/bizpanel/product-edit');
   var ProductEditView = MsgView.extend({
     template: ProductEditTemplate,
+    initialize: function() {
+      this.tags = [];
+    },
+    //set list of all tags belonging to this business
+    setTags: function(tags) {
+      this.tags = tags.map(function(tag) {
+        return tag.tag;
+      });
+    },
     render: function(product) {
       this.product = product;
       this.$el.html(this.template(this.product || {}));
@@ -21,7 +30,7 @@ define(function(require) {
         this.$tagSelect.select2('destroy');
       }
       this.$tagSelect = this.$el.find('#product-tags-input').select2({
-        tags:['true']
+        tags: this.tags
       });
       if((this.product||0).tags) {
         var tagNames = this.product.tags.map(function(tag) {
@@ -156,7 +165,7 @@ define(function(require) {
         this.getEditCategoriesModal().modal('hide')
         this.menu = menu;
         this.sort(this.sortField, this.sortDirection);
-        console.log(this.menu.products)
+        this.productEditView.setTags(menu.tags);
         this.render(menu);
       },
       newProduct: function() {
