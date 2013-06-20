@@ -29,12 +29,12 @@ define(function(require) {
     },
     updateProduct: function(e) {
       var $el = $(e.target);
-      var $row = $el.closest('tr');
+      var $row = $el.closest('.menu-section');
       var sectionId = $row.data('id');
       var section = this.getSection(sectionId);
       section.name = $row.find('.section-name').val();
       section.description = $row.find('.section-description').val();
-      console.log(section);
+      console.log(section.name, section.description);
     },
     swapSections: function(section, other) { 
       var otherOrder = other.order;
@@ -57,17 +57,23 @@ define(function(require) {
       }
       throw new Error('Can not find section with id ' + id);
     },
+    //sets old sections & new sections as a clone 
+    //so the edits can be saved or canceled in a batch
+    setSections: function(sections) {
+      this.oldSections = sections;
+      var clones = [];
+      for(var i = 0; i < sections.length; i++) {
+        var newSection = _.clone(sections[i]);
+        clones.push(newSection);
+      }
+      this.sections = clones;
+    },
     subscribe: {
       loadMenuEnd: function(data) {
         //make a clone of the menu sections so they can be modified
         //without changing the original menu item references
-        this.oldSections = data.sections;
-        this.sections = [];
-        for(var i = 0; i < this.oldSections.length; i++) {
-          var newSection = _.clone(this.oldSections[i]);
-          this.sections.push(newSection);
-        }
         //ensure each section is uniquely ordered
+        this.setSections(data.sections);
         this.sortAndRender();
       },
       moveSectionUp: function(msg) {
@@ -101,13 +107,19 @@ define(function(require) {
         });
         this.sortAndRender();
       },
-      saveSections: function() {
+      saveMenuSectionEdits: function() {
         //publish a message off to the loader to
         //enact these changes against magic
         this.publish('saveSectionChangesBegin', {
           oldSections: this.oldSections,
           newSections: this.sections
         });
+      },
+      //if the edits are canceled, reset the state
+      //to the original
+      cancelMenuSectionEdits: function() {
+        this.setSections(this.oldSections);
+        this.render({sections: this.sections});
       },
       deleteSection: function(msg) {
         this.sections = _.filter(this.sections, function(section) {
