@@ -21,8 +21,8 @@
     <div class="span6">
       <form class="form-search">
         <div class="input-append">
-          <input type="text" class="span12 search-query" placeholder="Search by Item Name or Section"/>
-          <button type="submit" class="btn msg"><i class="icon-search"></i> Search</button>
+          <input type="text" class="span12 search-query" id="productSearchText" placeholder="Search by Item Name or Section" value="{{searchString}}"/>
+          <button type="submit" class="btn msg" data-msg-name="searchProducts"><i class="icon-search"></i> Search</button>
         </div>
       </form>
       <button class="btn btn-primary msg" data-msg-name="newProduct"><i class="icon-plus"></i> Add New Item</button>

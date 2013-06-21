@@ -116,7 +116,11 @@ define(function(require) {
   var UNCATEGORIZED = 'uncategorized';
   var productFilter = {
     _categoryFilter: 'all',
-    search: '',
+    _search: '',
+    setSearchString: function(text) {
+      this._search = text.toLowerCase();
+      this.searchString = text;
+    },
     //set the category filter
     //based on the raw value from the select
     setCategoryFilter: function(rawVal) {
@@ -124,15 +128,34 @@ define(function(require) {
       var num = parseInt(rawVal);
       this._categoryFilter = num ? num : rawVal;
     },
+    _shouldFilter: function() {
+      if(this._categoryFilter != '' && this._categoryFilter != 'all') return true;
+    },
     //returns filtered list of products
     filterProducts: function(products) {
-      if(this._categoryFilter == '' || this._categoryFilter == 'all') return products;
       var self = this;
+      var shouldFilter = this._shouldFilter();
+      var shouldSearch = this._search.length > 0;
+      if(!shouldFilter && !shouldSearch) return products;
       return _.filter(products, function(product) {
-        if(product.categories && product.categories.length) {
-          return product.categories[0].id == self._categoryFilter;
+        var category = product.categories[0];
+        if(shouldSearch) {
+          var toSearch = product.name + product.description;
+          if(category) {
+            toSearch += category.name;
+          }
+          toSearch = toSearch.toLowerCase();
+          if(toSearch.indexOf(self._search) < 0) {
+            return false;
+          }
         }
-        return self._categoryFilter == UNCATEGORIZED;
+        if(shouldFilter) {
+          if(category) {
+            return category.id == self._categoryFilter;
+          }
+          return self._categoryFilter == UNCATEGORIZED;
+        }
+        return true;
       });
     },
     //returns view object
@@ -205,12 +228,10 @@ define(function(require) {
     getSortIcon: function(sortDirection) {
       return sortDirection == 'DESC' ? 'icon-chevron-down' : 'icon-chevron-up';
     },
-    filterProducts: function(products) {
-      return products;
-    },
     render: function(menu) {
       menu = menu || this.menu || {sections:[], products: []};
       var data = {
+        searchString: this.productFilter.searchString,
         sortField: this.sortField,
         sortDirection: this.sortDirection,
         sortIcon: this.getSortIcon(this.sortDirection),
@@ -324,6 +345,11 @@ define(function(require) {
       cancelMenuSectionEdits: function() {
         this.getEditCategoriesModal().hide();
         this.$el.find('#menuView').show();
+      },
+      searchProducts: function() {
+        var searchString = $('#productSearchText').val();
+        this.productFilter.setSearchString(searchString);
+        this.render();
       }
     }
   }));
