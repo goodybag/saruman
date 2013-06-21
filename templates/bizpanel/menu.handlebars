@@ -6,13 +6,10 @@
         <div class="control-group">
           <label class="control-label">Categories:</label>
           <div class="controls controls-row">
-            <select>
-              <option>All</option>
-              {{#menu.sections}}
-              <option>{{name}}</option>
-              {{/menu.sections}}
-              <option>Archived</option>
-              <option>Uncategorized</option>
+            <select id="categorySelect">
+              {{#sections}}
+              <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+              {{/sections}}
             </select>
           </div>
         </div>
@@ -57,7 +54,7 @@
           </tr>
         </thead>
         <tbody>
-          {{#menu.products}}
+          {{#products}}
           <tr>
             <td>{{name}}</td>
             <td>{{description}}</td>
@@ -73,7 +70,7 @@
             </td>
             <td><button class="btn btn-small msg" data-msg-name="editProduct" data-id="{{id}}">Edit Item</button></td>
           </tr>
-          {{/menu.products}}
+          {{/products}}
         </tbody>
       </table>
     </div>

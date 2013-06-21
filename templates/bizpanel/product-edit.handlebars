@@ -8,13 +8,18 @@
   <div class="control-group">
     <label class="control-label" for="product-price-input">Price</label>
     <div class="controls">
-      <input type="text" id="product-price-input" value="{{price}}" placeholder="9.99">
+      <input type="text" id="product-price-input" value="{{money price}}" placeholder="9.99">
     </div>
   </div>
   <div class="control-group">
     <label class="control-label" for="product-category-input">Category</label>
     <div class="controls">
-      <input type="text" id="product-category-input" value="{{category}}" placeholder="">
+      <select id="product-category-input">
+        <option value="">Uncategorized</option>
+        {{#allCategories}}
+        <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+        {{/allCategories}}
+      </select>
     </div>
   </div>
   <div class="control-group">
@@ -28,9 +33,9 @@
     <div class="controls">
       <img id="product-image" src="{{defaultBusinessLogo photoUrl}}" class="msg" data-msg-name="pickProductPhoto" width="200">
       <span class="help-block">Click to change</span>
-      {{#id}}
+      {{#idd}}
       <button class="btn msg">Choose from Library</button>
-      {{/id}}
+      {{/idd}}
     </div>
   </div>
   <div class="control-group">
@@ -39,8 +44,7 @@
       <input type="text" style="width:200px" id="product-tags-input" />
     </div>
   </div>
-  {{#id}}
-  {{else}}
+  {{#idd}}
   <div class="control-group">
     <div class="controls">
       <label class="checkbox">
@@ -55,5 +59,6 @@
       </label>
     </div>
   </div>
-  {{/id}}
+  {{/idd}}
+  <input type="hidden" value="{{id}}" id="product-id-input" />
 </form>

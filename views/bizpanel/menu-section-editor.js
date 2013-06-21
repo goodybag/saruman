@@ -4,12 +4,9 @@ define(function(require) {
   var template = require('hbt!../../../templates/bizpanel/menu-section-editor');
   return MsgView.extend({
     template: template,
-    events: {
-      "blur input": "updateProduct",
-      "blur textarea": "updateProduct"
-    },
     render: function(data) {
       this.$el.html(this.template(data));
+      this.delegateEvents();
     },
     sortAndRender: function() {
       this.sections = _.sortBy(this.sections, function(section) {
@@ -26,15 +23,6 @@ define(function(require) {
         }
       }
       this.render({sections: this.sections})
-    },
-    updateProduct: function(e) {
-      var $el = $(e.target);
-      var $row = $el.closest('.menu-section');
-      var sectionId = $row.data('id');
-      var section = this.getSection(sectionId);
-      section.name = $row.find('.section-name').val();
-      section.description = $row.find('.section-description').val();
-      console.log(section.name, section.description);
     },
     swapSections: function(section, other) { 
       var otherOrder = other.order;
@@ -56,6 +44,18 @@ define(function(require) {
         if(section.id == id) return section;
       }
       throw new Error('Can not find section with id ' + id);
+    },
+    //copy all name/description fields onto section objects
+    applyFieldValuesToSections: function() {
+      var self = this;
+      this.$el.find('.menu-section').each(function(i, el) {
+        var $row = $(el)
+        var sectionId = $row.data('id');
+        var section = self.getSection(sectionId);
+        section.name = $row.find('.section-name').val();
+        section.description = $row.find('.section-description').val();
+        console.log('update', section.name, section.description);
+      });
     },
     //sets old sections & new sections as a clone 
     //so the edits can be saved or canceled in a batch
@@ -108,6 +108,7 @@ define(function(require) {
         this.sortAndRender();
       },
       saveMenuSectionEdits: function() {
+        this.applyFieldValuesToSections();
         //publish a message off to the loader to
         //enact these changes against magic
         this.publish('saveSectionChangesBegin', {

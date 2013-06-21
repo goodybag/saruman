@@ -16,6 +16,20 @@ define(function(require) {
     initialize: function() {
       this.tags = [];
     },
+    events: {
+      "blur #product-price-input": "testPrice"
+    },
+    testPrice: function(e) {
+      var $el = $(e.target);
+      var value = this.parsePrice($el.val());
+      $el.val(parseFloat(value / 100, 10).toFixed(2))
+    },
+    //convert input value to number value in cents
+    parsePrice: function(priceString) {
+      var num = parseFloat(priceString);
+      //NaN is less than 0
+      return num <= 0 ? 0 : num * 100;
+    },
     //set list of all tags belonging to this business
     setTags: function(tags) {
       this.tags = tags.map(function(tag) {
@@ -23,8 +37,19 @@ define(function(require) {
       });
     },
     render: function(product) {
-      this.product = product;
-      this.$el.html(this.template(this.product || {}));
+      var productCategory = null;
+      if(product.categories) {
+        productCategory = (product.categories[0]||0).id;
+      }
+      product.allCategories = _.map(this.sections, function(section) {
+        return {
+          name: section.name,
+          id: section.id,
+          selected: section.id == productCategory
+        }
+      });
+      console.log(product)
+      this.$el.html(this.template(product || {}));
       //dispose of old rendered select2
       if(this.$tagSelect) {
         this.$tagSelect.select2('destroy');
@@ -32,12 +57,11 @@ define(function(require) {
       this.$tagSelect = this.$el.find('#product-tags-input').select2({
         tags: this.tags
       });
-      if((this.product||0).tags) {
-        var tagNames = this.product.tags.map(function(tag) {
-          return tag.name;
-        });
+      if((product||0).tags) {
+        var tagNames = _.pluck(product.tags, 'tag');
         this.$tagSelect.val(tagNames).trigger('change');
       }
+      this.delegateEvents()
     },
     //returns values from edit form as a 
     //product object ready to be sent to the API
@@ -50,13 +74,24 @@ define(function(require) {
       };
       var result = {};
       result.name = val('name');
-      result.price = val('price');
-      result.category = val('category');
+      result.price = this.parsePrice(val('price'));
+      result.categoryId = parseInt(val('category'));
       result.description = val('description');
-      result.photoUrl = this.$el.find('#product-img').attr('src');
-      result.displayOnTablet = get('tablet-display').is(':checked');
-      result.showInSpotlight = get('spotlight-display').is(':checked');
+      result.photoUrl = this.$el.find('#product-image').attr('src');
+      if(result.photoUrl.indexOf('placekitten.com') > 0) {
+        delete result.photoUrl;
+      }
+      //result.displayOnTablet = get('tablet-display').is(':checked');
+      //result.showInSpotlight = get('spotlight-display').is(':checked');
       result.tags = this.$tagSelect.val().split(',');
+      //remove empty string as a tag
+      result.tags = _.filter(result.tags, function(tag) {
+        return tag.length > 0;
+      });
+      var id = parseInt(val('id'));
+      if(id >= 0) {
+        result.id = id;
+      }
       return result;
     },
     subscribe: {
@@ -72,11 +107,79 @@ define(function(require) {
         });
       },
       loadMenuEnd: function(menu) {
+        this.sections = menu.sections;
         this.render(menu.products[0])
       }
     }
   });
 
+  var UNCATEGORIZED = 'uncategorized';
+  var productFilter = {
+    _categoryFilter: 'all',
+    search: '',
+    //set the category filter
+    //based on the raw value from the select
+    setCategoryFilter: function(rawVal) {
+      //can be either a categoryId or special keywords
+      var num = parseInt(rawVal);
+      this._categoryFilter = num ? num : rawVal;
+    },
+    //returns filtered list of products
+    filterProducts: function(products) {
+      if(this._categoryFilter == '' || this._categoryFilter == 'all') return products;
+      var self = this;
+      return _.filter(products, function(product) {
+        if(product.categories && product.categories.length) {
+          return product.categories[0].id == self._categoryFilter;
+        }
+        return self._categoryFilter == UNCATEGORIZED;
+      });
+    },
+    //returns view object
+    //to bind to category select dropdown
+    //based on menu section
+    getCategorySelectView: function(sections) {
+      var self = this;
+      var result = [];
+      var all = {
+        value: all,
+        name: 'All',
+        selected: false
+      };
+      var matched = false;
+      result.push(all);
+      _.each(sections, function(section) {
+        var option = {
+          value: section.id,
+          name: section.name,
+          selected: false
+        };
+        if(section.id == self._categoryFilter) {
+          option.selected = matched = true;
+        }
+        result.push(option);
+      });
+      var uncategorized = {
+        value: UNCATEGORIZED,
+        name: 'Uncategorized'
+      };
+      result.push(uncategorized);
+      //if no filter, match 'all'
+      if(!matched) {
+        if(this._categoryFilter == UNCATEGORIZED) {
+          uncategorized.selected = true;
+        } else {
+          //a total non-match can happen if
+          //the category filter is applied and then
+          //a user deletes a category filter
+          all.selected = true;
+          //clear category filter
+          this._categoryFilter = 'all';
+        }
+      }
+      return result;
+    }
+  }
 
   var menu = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/menu'),
@@ -85,20 +188,34 @@ define(function(require) {
     text: 'Menu Items',
     sortField: 'price',
     sortDirection: 'DESC',
+    events: {
+      "change select#categorySelect": "selectedCategoryChanged"
+    },
     initialize: function() {
       this.productEditView = new ProductEditView();
       this.sortField = 'price';
       this.sortDirection = 'DESC';
+      this.productFilter = productFilter;
+    },
+    selectedCategoryChanged: function(e) {
+      var $el = $(e.target);
+      this.productFilter.setCategoryFilter($el.val());
+      this.render();
     },
     getSortIcon: function(sortDirection) {
       return sortDirection == 'DESC' ? 'icon-chevron-down' : 'icon-chevron-up';
     },
+    filterProducts: function(products) {
+      return products;
+    },
     render: function(menu) {
+      menu = menu || this.menu || {sections:[], products: []};
       var data = {
         sortField: this.sortField,
         sortDirection: this.sortDirection,
         sortIcon: this.getSortIcon(this.sortDirection),
-        menu: menu || this.menu || {},
+        sections: this.productFilter.getCategorySelectView(menu.sections),
+        products: this.productFilter.filterProducts(menu.products),
         //view model properties
         sortPrice: this.sortField == 'price',
         sortLikes: this.sortField == 'likes'
@@ -169,7 +286,7 @@ define(function(require) {
         this.render(menu);
       },
       newProduct: function() {
-        this.productEditView.render({});
+        this.productEditView.render({price: 100});
         this.showProductEditView('Add New Menu Item');
       },
       editProduct: function(msg) {
@@ -201,8 +318,8 @@ define(function(require) {
       editCategories: function() {
         this.$el.find('#menuView').hide();
         this.getEditCategoriesModal()
-          .show()
-          .find('#editCategoriesContent').html(editor.$el);
+        .show()
+        .find('#editCategoriesContent').html(editor.$el);
       },
       cancelMenuSectionEdits: function() {
         this.getEditCategoriesModal().hide();
