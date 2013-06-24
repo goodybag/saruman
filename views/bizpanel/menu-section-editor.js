@@ -100,7 +100,10 @@ define(function(require) {
       },
       addSection: function() {
         var name = "New Section " + this.sections.length;
-        var order = this.sections[this.sections.length-1].order + 1;
+        var order = 0;
+        if(this.sections) {
+          order = this.sections[this.sections.length-1].order + 1;
+        }
         this.sections.push({
           id: '<UNSAVED>' + this.oldSections.length,
           order: order,
