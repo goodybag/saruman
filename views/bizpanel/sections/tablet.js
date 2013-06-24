@@ -136,6 +136,12 @@ define(function(require) {
       this.editor.render(menu);
       this.$el.find('#tablet-edit-container').html(this.editor.$el);
     },
+    toggleSaving: function(id, type, showOrHide) {
+      var className = '.tablet-product-row-' + id;
+      var $row = this.$el.find(className).find('span.' + type).toggle(showOrHide);
+      var $check = this.$el.find(className).find('input[type=checkbox].' + type).toggle(!showOrHide);
+      return $check;
+    },
     subscribe: {
       loadMenuEnd: function(menu) {
         this.menu = menu;
@@ -148,6 +154,20 @@ define(function(require) {
       cancelCategoryOrderEdits: function() {
         this.$el.find('#tablet-edit-container').hide();
         this.$el.find('#tablet-view-container').show();
+      },
+      toggleProductGalleryBegin: function(msg) {
+        this.toggleSaving(msg.id, 'inGallery', true);
+      },
+      toggleProductGalleryEnd: function(msg) {
+        this.toggleSaving(msg.product.id, 'inGallery', false)
+          .prop('checked', msg.product.inGallery ? 'checked' : '');
+      },
+      toggleProductSpotlightBegin: function(msg) {
+        this.toggleSaving(msg.id, 'inSpotlight', true);
+      },
+      toggleProductSpotlightEnd: function(msg) {
+        this.toggleSaving(msg.product.id, 'inSpotlight', false)
+          .prop('checked', msg.product.inSpotlight ? 'checked' : '');
       }
     }
   }));
