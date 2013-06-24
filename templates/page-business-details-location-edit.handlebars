@@ -17,6 +17,7 @@
       <input class="span2 field-street2" type="text" id="location-street2-input" value="{{street2}}" placeholder="Street 2">
     </div>
   </div>
+  {{#ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="location-name-input">City/Zip</label>
     <div class="controls controls-row">
@@ -24,6 +25,26 @@
       <input type="text" id="location-zip-input" value="{{zip}}" class="span1 field-zip" placeholder="zip">
     </div>
   </div>
+  {{else}}
+  <div class="control-group">
+    <label class="control-label" for="location-city-input">City</label>
+    <div class="controls controls-row">
+      <input class="span4 field-city" type="text" id="location-city-input" value="{{city}}" placeholder="Austin">
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="location-state-input">State</label>
+    <div class="controls controls-row">
+      <input class="span2 field-state" type="text" id="location-state-input" value="{{state}}" placeholder="TX" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="location-zip-input">Zip</label>
+    <div class="controls controls-row">
+      <input class="span2 field-zip" type="text" id="location-zip-input" value="{{zip}}" placeholder="78751">
+    </div>
+  </div>
+  {{/ifAdmin}}
   <div class="control-group">
     <label class="control-label" for="location-street1-input">Phone Number</label>
     <div class="controls controls-row">

@@ -79,8 +79,11 @@ define(function(require) {
         };
         bus.publish('saveLocation', msg);
       },
-      saveLocationEnd: function() {
-        //$('#editLocationModal').modal('hide');
+      loadManagerEnd: function(data) {
+        this.data.user = data.user;
+        this.data.business = data.business;
+        this.data.location = data.location;
+        this.render(data);
       }
     }
   }));

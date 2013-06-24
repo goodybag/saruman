@@ -1,0 +1,41 @@
+<div class="row-fluid">
+  <div class="span3">
+    Category
+  </div>
+  <div class="span4">
+    Description
+  </div>
+  <div class="span5">
+    controls
+  </div>
+</div>
+{{#sections}}
+<div class="menu-section row-fluid" data-id="{{id}}">
+  <form>
+    <div class="span3">
+      <input type="text" class="section-name" class="edit" style="width:100%" value="{{name}}" />
+    </div>
+    <div class="span4">
+      <textarea class="section-description" style="width:100%" rows="2">{{description}}</textarea>
+    </div>
+    <div class="span5">
+      <div class="btn-group">
+        <button class="btn btn-small msg" data-toggle="tooltip" data-msg-name="moveSectionUp" data-id="{{id}}" title="Move Up">
+          <i class="icon-arrow-up"></i>
+        </button>
+        <button class="btn btn-small msg" data-msg-name="moveSectionDown" data-id="{{id}}">
+          <i class="icon-arrow-down" title="Move Down"></i>
+        </button>
+        <button class="btn btn-small msg" data-msg-name="deleteSection" data-id="{{id}}">
+          <i class="icon-trash" title="Delete"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{{/sections}}
+<div class="row-fluid">
+  <div class="span5 offset7">
+    <button class="btn btn-primary msg" data-msg-name="addSection"><i class="icon-plus"></i> Add</button>
+  </div>
+</div>
