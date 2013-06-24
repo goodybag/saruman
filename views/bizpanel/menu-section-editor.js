@@ -12,7 +12,9 @@ define(function(require) {
       this.sections = _.sortBy(this.sections, function(section) {
         return section.order
       });
-      this.sections[0].order = 0;
+      if(this.sections[0]) {
+        this.sections[0].order = 0;
+      }
       for(var i = 0; i < this.sections.length; i++) {
         var newSection = this.sections[i];
         //ensure sections are ordered sanely
