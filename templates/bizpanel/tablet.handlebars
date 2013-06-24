@@ -1,8 +1,54 @@
-Template
-<table>
-{{#products}}
-<tr>
-  <td>{{name}}</td>
-</tr>
-{{/products}}
-</table>
+<div id="tablet-view-container">
+  <div class="row-fluid">
+    <div class="span3">
+      {{!-- dummy form so boostrap will style}}
+      <form class="form">
+        <select id="categorySelect" style="width:100%">
+          {{#categories}}
+          <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+          {{/categories}}
+        </select>
+      </form>
+    </div>
+    <div class="span9">
+      <button class="btn msg" data-msg-name="editTabletOrder">Edit Display order on Tablet</button>
+    </div>
+  </div>
+  {{! product table container}}
+  <div class="row-fluid">
+    <div class="span12">
+      <table>
+        <thead>
+          <tr>
+            <td style="width:200px">Item Name</td>
+            <td style="width:200px">Photo</td>
+            <td>{{! edit button }}</td>
+            <td>Display on Tablet?</td>
+            <td>Spotlight on Tablet?</td>
+          </tr>
+        </thead>
+        <tbody>
+          {{#products}}
+          <tr>
+            <td>{{name}}</td>
+            <td>
+              <img src="{{photoUrl}}" />
+            </td>
+            <td>
+              <button class="btn msg">Edit Picture</button>
+            </td>
+            <td>
+              <input type="checkbox" />
+            </td>
+            <td>
+              <input type="checkbox" />
+            </td>
+          </tr>
+          {{/products}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="tablet-edit-container" class="hide">
+</div>

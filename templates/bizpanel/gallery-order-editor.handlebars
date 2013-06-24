@@ -1,0 +1,31 @@
+<div class="row-fluid">
+  <div class="span12">
+    <select>
+      {{#categories}}
+      <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+      {{/categories}}
+    </select>
+  </div>
+</div>
+<div class="row-fluid">
+  <div class="span12">
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            {{#products}}
+            {{name}}
+            {{/products}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{{! add fake form here so the controls will line up}}
+<form class="form-horizontal">
+  <div class="form-actions">
+    <button class="btn btn-primary msg" data-msg-name="saveCategoryOrderEdits">Save Changes</button>
+    <button class="btn msg" data-msg-name="cancelCategoryOrderEdits">Cancel</button>
+  </div>
+</form>
