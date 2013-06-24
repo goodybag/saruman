@@ -7,21 +7,22 @@
     </select>
   </div>
 </div>
-<div class="row-fluid">
-  <div class="span12">
-    <table>
-      <tbody>
-        <tr>
-          <td>
-            {{#products}}
-            {{name}}
-            {{/products}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+{{#products}}
+<div class="row-fluid product-row" data-id="{{id}}">
+  <div class="span2">
+    {{name}}
+  </div>
+  <div class="span2">
+    {{order}}
+  </div>
+  <div class="span8">
+    <div class="button-group">
+      <div class="btn btn-small msg" data-msg-name="moveProductUp" data-id="{{id}}"><i class="icon-arrow-up"></i></div>
+      <div class="btn btn-small msg" data-msg-name="moveProductDown" data-id="{{id}}"><i class="icon-arrow-down"></i></div>
+    </div>
   </div>
 </div>
+{{/products}}
 {{! add fake form here so the controls will line up}}
 <form class="form-horizontal">
   <div class="form-actions">

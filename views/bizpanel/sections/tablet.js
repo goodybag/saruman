@@ -18,9 +18,6 @@ define(function(require) {
           include: ['tags', 'categories'],
           limit: 1000
         };
-        utils.api.get(url, params, function(err, products) {
-          console.log(products)
-        });
       }
     }
   };
@@ -35,22 +32,69 @@ define(function(require) {
       this.productFilter.setCategoryFilter('spotlight');
       this.template = require('hbt!../../../templates/bizpanel/gallery-order-editor');
     },
-    render: function(menu) {
-      if(!menu) return;
-      this.menu = menu;
+    render: function() {
+      //ensure menu is loaded
+      if(!this.menu) return;
+      var filteredProducts = this.productFilter.filterProducts(this.products);
+      var sortProperty = this.isSpotlight ? 'spotlightOrder' : 'galleryOrder';
+      //sort products by particular order
+      this.filteredProducts = _.sortBy(filteredProducts, sortProperty);
+      //normalize orders to an increasing number, remove gaps in ordering
+      _.each(this.filteredProducts, function(product, i) {
+        product[sortProperty] = i;
+      });
+      var isSpotlight = this.isSpotlight;
+      //build a 'view object'
+      var productViews = _.map(this.filteredProducts, function(product, i) {
+        var viewObj = {
+          name: product.name,
+          id: product.id,
+          photoUrl: product.photoUrl,
+          order: isSpotlight ? product.spotlightOrder : product.galleryOrder
+        };
+        if(typeof viewObj.order == 'undefined') {
+          viewObj.order = i;
+        }
+        return viewObj;
+      });
       var viewData = {
-        products: this.productFilter.filterProducts(menu.products),
-        categories: this.productFilter.getCategorySelectView(menu.sections)
+        products: productViews,
+        categories: this.productFilter.getCategorySelectView(this.menu.sections)
       };
       this.$el.html(this.template(viewData));
     },
     subscribe: {
+      loadMenuEnd: function(menu) {
+        this.menu = menu;
+        //create a new array of product pointers
+        //so we can internally sort & manipulate order
+        //without jacking up other sections' display
+        this.products = _.map(menu.products, function(p) { return p});
+      },
       saveCategoryOrderEdits: function() {
         alert('not implemented')
       },
       changeCategoryOrderCategory: function(msg) {
+        var filter = msg.value;
+        this.isSpotlight = msg.value === 'spotlight';
         this.productFilter.setCategoryFilter(msg.value);
-        this.render(this.menu);
+        this.render();
+      },
+      moveProductUp: function(msg) {
+        var id = parseInt(msg.id);
+        //find product in our filtered list
+        var products = this.filteredProducts;
+        var property = this.isSpotlight ? 'spotlightOrder' : 'galleryOrder';
+        for(var i = 1; i < products.length; i++) {
+          var product = products[i];
+          if(product.id != id) continue;
+          var previousProduct = products[i-1];
+          console.log('switching', product.name, 'with', previousProduct.name);
+          var order = product[property];
+          product[property] = previousProduct[property];
+          previousProduct[property] = order;
+        }
+        this.render();
       }
     }
   });
@@ -84,7 +128,8 @@ define(function(require) {
         categories: []
       };
       if(menu) {
-        viewData.products = this.productFilter.filterProducts(menu.products);
+        var filteredProducts = this.productFilter.filterProducts(menu.products);
+        viewData.products = _.sortBy(filteredProducts, 'name');
         viewData.categories = this.productFilter.getCategorySelectView(menu.sections);
       }
       this.$el.html(this.template(viewData));
