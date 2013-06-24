@@ -123,7 +123,7 @@ define(function(require) {
       },
       loadManagerEnd: function(data) {
         this.data = data;
-        console.log(this.data);
+        console.log('contactUs', this.data);
         this.render();
       }
     }
