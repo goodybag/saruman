@@ -112,6 +112,18 @@ define(function(require) {
       }
       return false;
     });
+    //capture select on msg components
+    layout.on('change', 'select.msg', function() {
+      var $el = $(this);
+      var msgName = $el.data('msgName');
+      if(msgName) {
+        console.log('publishing', msgName);
+        var data = $el.data();
+        data.value = $el.val();
+        bus.publish(msgName, data);
+      }
+      return false;
+    });
     $(document.body).html(layout);
     $('#bizpanel-nav').html(templates.nav({nav: getNavViewData()}));
     $('#bizpanel').hide();

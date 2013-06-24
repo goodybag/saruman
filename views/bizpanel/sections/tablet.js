@@ -5,7 +5,26 @@ define(function(require) {
   var Section = require('../section');
   var api = require('../../../lib/api');
   var utils = require('../../../lib/utils');
+  var subscribe = require('../../../lib/bizpanel/subscribe');
   var ProductFilter = require('../../../lib/bizpanel/product-filter');
+
+  var tabletGalleryLoader = {
+    subscribe: {
+      debugLoadLocationProducts: function(msg) {
+        var url = 'v1/locations/' + msg.locationId + '/products';
+        var params = {
+          spotlight: true,
+          all: true,
+          include: ['tags', 'categories'],
+          limit: 1000
+        };
+        utils.api.get(url, params, function(err, products) {
+          console.log(products)
+        });
+      }
+    }
+  };
+  subscribe(tabletGalleryLoader);
 
   var GalleryOrderEditor = MsgView.extend({
     initialize: function() {
@@ -13,10 +32,12 @@ define(function(require) {
         hideUncategorized: true,
         hideSpotlight: false
       });
+      this.productFilter.setCategoryFilter('spotlight');
       this.template = require('hbt!../../../templates/bizpanel/gallery-order-editor');
     },
     render: function(menu) {
       if(!menu) return;
+      this.menu = menu;
       var viewData = {
         products: this.productFilter.filterProducts(menu.products),
         categories: this.productFilter.getCategorySelectView(menu.sections)
@@ -26,6 +47,10 @@ define(function(require) {
     subscribe: {
       saveCategoryOrderEdits: function() {
         alert('not implemented')
+      },
+      changeCategoryOrderCategory: function(msg) {
+        this.productFilter.setCategoryFilter(msg.value);
+        this.render(this.menu);
       }
     }
   });

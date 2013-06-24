@@ -114,7 +114,9 @@ define(function(require) {
   });
 
   var ProductFilter = require('../../../lib/bizpanel/product-filter');
-  var productFilter = new ProductFilter();
+  var productFilter = new ProductFilter({
+    hideSpotlight: true
+  });
   var menu = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/menu'),
     icon: 'food',
