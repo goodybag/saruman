@@ -110,7 +110,7 @@ define(function(require) {
           return update;
         });
         if(changedProducts.length > 0) {
-          this.publish('beginSaveProductOrderChanges', {products: changedProducts});
+          this.publish('beginSaveProductsGalleryOrder', {products: changedProducts});
         } else {
           this.publish('cancelCategoryOrderEdits');
         }
