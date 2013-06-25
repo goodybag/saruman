@@ -30,15 +30,16 @@ define(function(require) {
         hideSpotlight: false
       });
       this.productFilter.setCategoryFilter('spotlight');
+      this.isSpotlight = true;
       this.template = require('hbt!../../../templates/bizpanel/gallery-order-editor');
     },
     render: function() {
       //ensure menu is loaded
       if(!this.menu) return;
-      var filteredProducts = this.productFilter.filterProducts(this.products);
+      this.filteredProducts = this.productFilter.filterProducts(this.products);
       var sortProperty = this.isSpotlight ? 'spotlightOrder' : 'galleryOrder';
       //sort products by particular order
-      this.filteredProducts = _.sortBy(filteredProducts, sortProperty);
+      this.filteredProducts = _.sortBy(this.filteredProducts, sortProperty);
       //normalize orders to an increasing number, remove gaps in ordering
       _.each(this.filteredProducts, function(product, i) {
         product[sortProperty] = i;
@@ -61,21 +62,62 @@ define(function(require) {
         products: productViews,
         categories: this.productFilter.getCategorySelectView(this.menu.sections)
       };
+      console.log(_.pluck(this.filteredProducts, 'inSpotlight'))
       this.$el.html(this.template(viewData));
     },
     subscribe: {
       loadMenuEnd: function(menu) {
         this.menu = menu;
-        //create a new array of product pointers
+        //create a new array of products as a copy of
+        //the products on the menu
         //so we can internally sort & manipulate order
-        //without jacking up other sections' display
-        this.products = _.map(menu.products, function(p) { return p});
+        //and perform a diff & save at the end
+        this.products = [];
+        for(var i = 0; i < this.menu.products.length; i++) {
+          var existing = this.menu.products[i];
+          var clone = _.clone(existing);
+          //we're only editing displayed products
+          if(!clone.inSpotlight && !clone.inGallery) {
+            continue;
+          }
+          this.products.push(clone);
+          if(clone.galleryOrder === null) {
+            clone.galleryOrder = 0;
+          }
+          if(clone.spotlightOrder === null) {
+            clone.spotlightOrder = 0;
+          }
+        }
       },
       saveCategoryOrderEdits: function() {
-        alert('not implemented')
+        var changed = function(oldProduct, newProduct) {
+          return (oldProduct.galleryOrder != newProduct.galleryOrder) || (oldProduct.spotlightOrder != newProduct.spotlightOrder);
+        }
+        var toUpdate = [];
+        //perform a diff on the original products
+        //stored in this.menu.products versus what products we have
+        var originalProducts = this.menu.products;
+        var changedProducts = _.filter(this.products, function(newProduct) {
+          var existingProduct = _.findWhere(originalProducts, { id: newProduct.id });
+          var update = changed(existingProduct, newProduct);
+          if(update && false) {
+            console.log(
+              newProduct.name,
+              'spotlight',
+              existingProduct.spotlightOrder, '=>', newProduct.spotlightOrder,
+              ' gallery',existingProduct.galleryOrder, '=>',newProduct.galleryOrder );
+          }
+          return update;
+        });
+        if(changedProducts.length > 0) {
+          this.publish('beginSaveProductOrderChanges', {products: changedProducts});
+        } else {
+          this.publish('cancelCategoryOrderEdits');
+        }
       },
       changeCategoryOrderCategory: function(msg) {
         var filter = msg.value;
+        console.log('changing category filter')
         this.isSpotlight = msg.value === 'spotlight';
         this.productFilter.setCategoryFilter(msg.value);
         this.render();
@@ -160,14 +202,14 @@ define(function(require) {
       },
       toggleProductGalleryEnd: function(msg) {
         this.toggleSaving(msg.product.id, 'inGallery', false)
-          .prop('checked', msg.product.inGallery ? 'checked' : '');
+        .prop('checked', msg.product.inGallery ? 'checked' : '');
       },
       toggleProductSpotlightBegin: function(msg) {
         this.toggleSaving(msg.id, 'inSpotlight', true);
       },
       toggleProductSpotlightEnd: function(msg) {
         this.toggleSaving(msg.product.id, 'inSpotlight', false)
-          .prop('checked', msg.product.inSpotlight ? 'checked' : '');
+        .prop('checked', msg.product.inSpotlight ? 'checked' : '');
       }
     }
   }));
