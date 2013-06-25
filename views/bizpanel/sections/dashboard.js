@@ -14,7 +14,6 @@ define(function(require) {
       //'click .form-actions > .cancel': 'onFormCancel'
     },
     initialize: function() {
-      console.log('init dashboard')
       this.editor = new Editor();
       this.businessEditor = new BusinessEditor();
       var self = this;

@@ -1,4 +1,5 @@
 define(function(require) {
+  var async = require('async');
   var login = require('../page-login');
   var bus = require('../../lib/pubsub');
   var utils = require('../../lib/utils');
@@ -101,7 +102,7 @@ define(function(require) {
 
   var BizPanelAppView = function() {
     //attach the layout to the body
-    var layout = $(templates.layout());
+    var layout = this.layout = $(templates.layout());
     //disable click on msg components
     layout.on('click', '.msg', function() {
       var el = $(this);
@@ -127,7 +128,7 @@ define(function(require) {
     $(document.body).html(layout);
     $('#bizpanel-nav').html(templates.nav({nav: getNavViewData()}));
     $('#bizpanel').hide();
-    var contentPanel = $('#bizpanel-content');
+    var contentPanel = this.contentPanel = $('#bizpanel-content');
     for(var key in sections) {
       contentPanel.append(sections[key].$el);
     }
@@ -161,33 +162,48 @@ define(function(require) {
       $('#bizpanel').show();
       this.loginView.hide();
       renderContent(page);
-    } 
+    }
   };
 
   //load all the initial data for the application
   BizPanelAppView.prototype._onUserAuth = function(user) {
+    troller.spinner.spin();
+    //hide layout until load is completed
+    this.layout.children().first().next().hide();
     var self = this;
     bus.publish('loadManagerBegin');
     api.managers.get(user.id, function(err, manager) {
-      api.businesses.get(manager.businessId, function(err, business) {
-        api.businesses.loyalty.get(manager.businessId, function(err, loyalty) {
-          business.loyalty = loyalty;
-          api.businesses.locations.list(manager.businessId, function(err, locations) {
-            business.locations = locations;
-            location.active = true;
-            var data = {
-              user: user.attributes,
-              business: business,
-              location: location
-            };
-            data.multipleLocations = (locations.length > 1);
-            self.data = data;
-            console.log('loaded', self.data);
-            bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
-          })
-        })
-      })
-    })
+      var actions = {
+        business: function(cb) {
+          api.businesses.get(manager.businessId, cb);
+        },
+        loyalty: function(cb) {
+          api.businesses.loyalty.get(manager.businessId, cb);
+        },
+        locations: function(cb) {
+          api.businesses.locations.list(manager.businessId, cb);
+        }
+      };
+
+      return async.parallel(actions, function(err, result) {
+        troller.spinner.stop();
+        self.layout.children().first().next().show();
+        if(err) return alert('error loading business information');
+        var business = result.business[0];
+        business.loyalty = result.loyalty[0];
+        var locations = business.locations = result.locations[0];
+        var data = {
+          user: user.attributes,
+          business: business,
+          location: null
+        };
+        data.multipleLocations = (locations.length > 1);
+        self.data = data;
+        console.log('loaded', self.data);
+        bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
+      });
+
+    });
   };
 
   BizPanelAppView.prototype._onChangeLocation = function(name, msg) {
