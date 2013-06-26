@@ -3,10 +3,27 @@ define(function(require) {
   var bus = require('../../../lib/pubsub');
   var MsgView = require('../msg-view');
   var Section = require('../section');
-  var api = require('../../../lib/api');
   var utils = require('../../../lib/utils');
   var subscribe = require('../../../lib/bizpanel/subscribe');
   var ProductFilter = require('../../../lib/bizpanel/product-filter');
+
+
+  //picture viewer
+  subscribe({
+    getModal: function() {
+      return $('#picture-modal');
+    },
+    subscribe: {
+      showPhoto: function(msg) {
+        var $modal = this.getModal();
+        var url = msg.url + '/convert?w=530&h=530';
+        //clear the old img to prevent load flicker
+        $modal.modal('show').find('img').remove();
+        $modal.find('h3').text(msg.name);
+        $modal.find('.modal-body').append('<img src="' + url + '" />');
+      }
+    }
+  });
 
   var tabletGalleryLoader = {
     subscribe: {
@@ -27,7 +44,8 @@ define(function(require) {
     initialize: function() {
       this.productFilter = new ProductFilter({
         hideUncategorized: true,
-        hideSpotlight: false
+        hideSpotlight: false,
+        hideUnavailable: true
       });
       this.productFilter.setCategoryFilter('spotlight');
       this.isSpotlight = true;
@@ -78,6 +96,11 @@ define(function(require) {
           var clone = _.clone(existing);
           //we're only editing displayed products
           if(!clone.inSpotlight && !clone.inGallery) {
+            continue;
+          }
+          //do not show products which are not
+          //available at this location
+          if(!clone.isAvailable) {
             continue;
           }
           this.products.push(clone);
@@ -149,17 +172,18 @@ define(function(require) {
     events: {
       "change select#categorySelect": "selectedCategoryChanged"
     },
-    selectedCategoryChanged: function(e) {
-      var $el = $(e.target);
-      this.productFilter.setCategoryFilter($el.val());
-      this.render();
-    },
     initialize: function() {
       this.editor = new GalleryOrderEditor();
       this.productFilter = new ProductFilter({
         hideUncategorized: true,
-        hideSpotlight: true
+        hideSpotlight: true,
+        hideUnavailable: true
       });
+    },
+    selectedCategoryChanged: function(e) {
+      var $el = $(e.target);
+      this.productFilter.setCategoryFilter($el.val());
+      this.render();
     },
     render: function(menu) {
       console.log('section-tablet','render');

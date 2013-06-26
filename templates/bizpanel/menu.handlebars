@@ -60,7 +60,9 @@
             <td>{{description}}</td>
             <td>{{money price}}</td>
             <td>{{#categories}}{{name}}{{/categories}}</td>
-            <td><img width="300px" src="{{photoUrl}}" alt="missing photo of {{name}}" /></td>
+            <td>{{#if photoUrl}}
+              <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{photoUrl}}/convert?w=50&h=50" alt="missing photo of {{name}}" />
+              {{/if}}</td>
             <td>{{likes}}</td>
             <td>
               {{!--nested tables for layout. please forgive me.}}

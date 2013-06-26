@@ -2,7 +2,6 @@ define(function(require) {
   var utils = require('../../../lib/utils');
   var bus = require('../../../lib/pubsub');
   var Section = require('../section');
-  var api = require('../../../lib/api');
   var loader = require('../../../lib/bizpanel/menu-loader');
   var MenuSectionEditor = require('../menu-section-editor');
   var editor = new MenuSectionEditor();
@@ -63,7 +62,7 @@ define(function(require) {
       }
       this.delegateEvents()
     },
-    //returns values from edit form as a 
+    //returns values from edit form as a
     //product object ready to be sent to the API
     getValues: function() {
       var get = function(name) {

@@ -443,3 +443,12 @@ form.contact input[type=text], input[type=email], form.contact textarea {
   cursor: pointer;
   color: #555;
 }
+
+.display-toggle {
+  text-align: center;
+}
+
+.display-toggle label {
+  width: 100%;
+  cursor: pointer;
+}

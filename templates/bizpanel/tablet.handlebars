@@ -23,8 +23,8 @@
             <td style="width:200px">Item Name</td>
             <td style="width:200px">Photo</td>
             <td>{{! edit button }}</td>
-            <td>Display on Tablet?</td>
-            <td>Spotlight on Tablet?</td>
+            <td class="display-toggle">Display on Tablet?</td>
+            <td class="display-toggle">Spotlight on Tablet?</td>
           </tr>
         </thead>
         <tbody>
@@ -35,18 +35,24 @@
           <tr class="tablet-product-row-{{id}}">
             <td>{{name}}</td>
             <td>
-              <img src="{{photoUrl}}" />
+              {{#if photoUrl}}
+              <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{photoUrl}}/convert?w=100&h=100" alt="missing photo of {{name}}" />
+              {{/if}}
             </td>
             <td>
               <button class="btn msg">Edit Picture</button>
             </td>
-            <td>
-              <input type="checkbox" class="inGallery msg" data-msg-name="toggleProductGalleryBegin" data-id="{{id}}" {{#inGallery}}checked{{/inGallery}} />
+            <td class="display-toggle">
+              <label>
+                <input type="checkbox" class="inGallery msg" data-msg-name="toggleProductGalleryBegin" data-id="{{id}}" {{#inGallery}}checked{{/inGallery}} />
+              </label>
               <span class="inGallery hide">Saving...</span>
             </td>
-            <td>
-              <input type="checkbox" class="inSpotlight msg" data-msg-name="toggleProductSpotlightBegin" data-id="{{id}}" {{#inSpotlight}}checked{{/inSpotlight}} />
-              <span class="inSpotlight hide">Saving...</span>
+            <td class="display-toggle">
+              <label>
+                <input type="checkbox" class="inSpotlight msg" data-msg-name="toggleProductSpotlightBegin" data-id="{{id}}" {{#inSpotlight}}checked{{/inSpotlight}} />
+                <span class="inSpotlight hide">Saving...</span>
+              </label>
             </td>
           </tr>
           {{/products}}
