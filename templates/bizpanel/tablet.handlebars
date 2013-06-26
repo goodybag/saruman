@@ -1,16 +1,23 @@
 <div id="tablet-view-container">
+  <h3>Manage Tablet for Location {{location.street1}}</h3>
+  <hr />
   <div class="row-fluid">
-    <div class="span3">
+    <div class="span4">
       {{!-- dummy form so boostrap will style}}
-      <form class="form">
-        <select id="categorySelect" style="width:100%">
-          {{#categories}}
-          <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-          {{/categories}}
-        </select>
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label">Categories:</label>
+        <div class="controls controls-row">
+          <select id="categorySelect" style="width:100%">
+            {{#categories}}
+            <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+            {{/categories}}
+          </select>
+        </div>
+        </div>
       </form>
     </div>
-    <div class="span9">
+    <div class="span8">
       <button class="btn msg" data-msg-name="editTabletOrder">Edit Display order on Tablet</button>
     </div>
   </div>

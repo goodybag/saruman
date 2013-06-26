@@ -1,141 +1,146 @@
-<div id="dashboard-view" class="row-fluid">
-  <div class="span6">
-    {{#business}}
-    <h5>Business Information <a href="#" class="msg" data-msg-name="editBusiness">edit</a></h5>
-    <div class="row-fluid">
-      <div class="span3">
-        <img src="{{logoUrl}}" class="img"/>
-      </div>
-      <div class="span9">
-        <h3>{{name}}</h3>
-        <h4>{{url}}</h4>
-      </div>
-    </div>
-    {{/business}}
-    <hr />
-    {{#location}}
-    <h5>Location Information <a class="msg" data-msg-name="editLocation" href="#">edit</a></h5>
-    <div class="row-fluid">
-      <div class="span3">
-        Address
-      </div>
-      <div class="span9">
-        {{street1}} {{street2}}
-      </div>
-    </div>
-    <div class="row-fluid">
-      <div class="span9 offset3">
-        {{city}} {{state}} {{zip}}
-      </div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">
-        Phone Number
-      </div>
-      <div class="span9">
-        {{empty phone}}
-      </div>
-    </div>
-    <h5>Hours of Operation <a class="msg" data-msg-name="editLocation" href="#">edit</a></h5>
-    <div class="row-fluid">
-      <div class="span3">Monday</div>
-      <div class="span9">{{showHours startMonday endMonday}}</div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">Tuesday</div>
-      <div class="span9">{{showHours startTuesday endTuesday}}</div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">Wednesday</div>
-      <div class="span9">{{showHours startWednesday endWednesday}}</div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">Thursday</div>
-      <div class="span9">{{showHours startThursday endThursday}}</div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">Friday</div>
-      <div class="span9">{{showHours startFriday endFriday}}</div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">Saturday</div>
-      <div class="span9">{{showHours startSaturday endSaturday}}</div>
-    </div>
-    <div class="row-fluid">
-      <div class="span3">Sunday</div>
-      <div class="span9">{{showHours startSunday endSunday}}</div>
-    </div>
-    {{/location}}
-  </div>
-  <div class="span6">
-    {{#if multipleLocations}}
-    <h4>All {{business.name}} Locations</h4>
-    {{/if}}
-    <div class="row-fluid">
-      <div class="measure thumbnail span4">
-        <h5 class="name">Total Users</h5>
-        <h3 class="value">{{business.measures.totalUsers}}
+<div id="dashboard-view">
+  <h3>Your Goodbag Bizpanel Dashboard</h3>
+  <hr />
+  <div class="row-fluid">
+    <div class="span6">
+      {{#business}}
+      <h5>Business Information <a href="#" class="msg" data-msg-name="editBusiness">edit</a></h5>
+      <div class="row-fluid">
+        <div class="span3">
+          <img src="{{logoUrl}}" class="img"/>
         </div>
-        <div class="measure thumbnail span4">
-          <h5 class="name">Total Product Likes</h5>
-          <h3 class="value">{{business.measures.totalLikes}}</h3>
-        </div>
-        <div class="measure thumbnail span4">
-          <h5 class="name">Total Punches</h5>
-          <h3 class="value">{{business.measures.totalPunches}}</h3>
+        <div class="span9">
+          <h3>{{name}}</h3>
+          <h4>{{url}}</h4>
         </div>
       </div>
+      {{/business}}
+      <hr />
+      {{#location}}
+      <h5>Location Information <a class="msg" data-msg-name="editLocation" href="#">edit</a></h5>
+      <div class="row-fluid">
+        <div class="span3">
+          Address
+        </div>
+        <div class="span9">
+          {{street1}} {{street2}}
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span9 offset3">
+          {{city}} {{state}} {{zip}}
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">
+          Phone Number
+        </div>
+        <div class="span9">
+          {{empty phone}}
+        </div>
+      </div>
+      <h5>Hours of Operation</h5>
+      <div class="row-fluid">
+        <div class="span3">Monday</div>
+        <div class="span9">{{showHours startMonday endMonday}}</div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">Tuesday</div>
+        <div class="span9">{{showHours startTuesday endTuesday}}</div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">Wednesday</div>
+        <div class="span9">{{showHours startWednesday endWednesday}}</div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">Thursday</div>
+        <div class="span9">{{showHours startThursday endThursday}}</div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">Friday</div>
+        <div class="span9">{{showHours startFriday endFriday}}</div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">Saturday</div>
+        <div class="span9">{{showHours startSaturday endSaturday}}</div>
+      </div>
+      <div class="row-fluid">
+        <div class="span3">Sunday</div>
+        <div class="span9">{{showHours startSunday endSunday}}</div>
+      </div>
+      {{/location}}
+    </div>
+    <div class="span6">
       {{#if multipleLocations}}
-      <h4>{{location.street1}} Location</h4>
+      <h4>All {{business.name}} Locations</h4>
+      {{/if}}
       <div class="row-fluid">
         <div class="measure thumbnail span4">
           <h5 class="name">Total Users</h5>
-          <h3 class="value">{{location.measures.totalUsers}}</h3>
+          <h3 class="value">{{business.measures.totalUsers}}
+          </div>
+          <div class="measure thumbnail span4">
+            <h5 class="name">Total Product Likes</h5>
+            <h3 class="value">{{business.measures.totalLikes}}</h3>
+          </div>
+          <div class="measure thumbnail span4">
+            <h5 class="name">Total Punches</h5>
+            <h3 class="value">{{business.measures.totalPunches}}</h3>
+          </div>
         </div>
-        <div class="measure thumbnail span4">
-          <h5 class="name">Total Product Likes</h5>
-          <h3 class="value">{{location.measures.totalLikes}}</h3>
+        {{#if multipleLocations}}
+        <h4>{{location.street1}} Location</h4>
+        <div class="row-fluid">
+          <div class="measure thumbnail span4">
+            <h5 class="name">Total Users</h5>
+            <h3 class="value">{{location.measures.totalUsers}}</h3>
+          </div>
+          <div class="measure thumbnail span4">
+            <h5 class="name">Total Product Likes</h5>
+            <h3 class="value">{{location.measures.totalLikes}}</h3>
+          </div>
+          <div class="measure thumbnail span4">
+            <h5 class="name">Total Punches</h5>
+            <h3 class="value">{{location.measures.totalPunches}}</h3>
+          </div>
         </div>
-        <div class="measure thumbnail span4">
-          <h5 class="name">Total Punches</h5>
-          <h3 class="value">{{location.measures.totalPunches}}</h3>
+        <!-- Modal -->
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Coming soon...</h3>
+          </div>
+          <div class="modal-body">
+            <p>Advanced Analytics Are Coming Soon!</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          </div>
         </div>
-      </div>
-      <!-- Modal -->
-      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h3 id="myModalLabel">Coming soon...</h3>
+        <div style="text-align: right; padding-top:20px">
+          <em>Click on the graph to see more advanced analytics </em>
+          <a href="#myModal" data-toggle="modal">
+            <img src="http://thebarmansf.files.wordpress.com/2012/03/images-bar-graph.jpg?w=869" data-msg-name="showAnalytics" style="width:70px" />
+          </a>
         </div>
-        <div class="modal-body">
-          <p>Advanced Analytics Are Coming Soon!</p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-        </div>
-      </div>
-      <div style="text-align: right; padding-top:20px">
-        <em>Click on the graph to see more advanced analytics </em>
-        <a href="#myModal" data-toggle="modal">
-          <img src="http://thebarmansf.files.wordpress.com/2012/03/images-bar-graph.jpg?w=869" data-msg-name="showAnalytics" style="width:70px" />
-        </a>
-      </div>
 
-      {{/if}}
+        {{/if}}
 
-      {{#business.loyalty}}
-      <h5>Loyalty</h5>
-      <p>Reward: {{reward}}</p>
-      <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
-      <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
-      <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
-      {{/business.loyalty}}
+        {{#business.loyalty}}
+        <h5>Loyalty</h5>
+        <p>Reward: {{reward}}</p>
+        <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
+        <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
+        <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
+        {{/business.loyalty}}
+      </div>
     </div>
   </div>
 </div>
 </div>
 <div id="location-edit" class="location-edit hide">
-  <h3>Edit Location</h3>
+  <h3>Edit Location Information</h3>
+  <hr />
   <div id="location-edit-container">
   </div>
   <legend>Operating Hours</legend>
@@ -154,7 +159,8 @@
   </form>
 </div>
 <div id="business-edit" class="hide">
-  <h3>Edit Business</h3>
+  <h3>Edit Business Information</h3>
+  <hr />
   <div id="business-edit-container">
   </div>
 </div>

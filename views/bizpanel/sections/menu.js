@@ -143,6 +143,7 @@ define(function(require) {
     render: function(menu) {
       menu = menu || this.menu || {sections:[], products: []};
       var data = {
+        business: this.business,
         searchString: this.productFilter.searchString,
         sortField: this.sortField,
         sortDirection: this.sortDirection,
