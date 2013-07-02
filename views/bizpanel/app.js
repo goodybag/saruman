@@ -7,6 +7,7 @@ define(function(require) {
   var api = require('../../lib/api');
   var troller = require('../../lib/troller');
   var Header = require('./header');
+  var subscribe = require('../../lib/bizpanel/subscribe');
 
   var controller = (function() {
     var ctrl = {
@@ -64,15 +65,7 @@ define(function(require) {
         },
       }
     };
-
-    var self = ctrl;
-    _.each(self.subscribe, function(value, key) {
-      var event = function(name, message) {
-        self.subscribe[key].call(self, message);
-      };
-      console.log('subscribing to', key)
-      bus.subscribe(key, event);
-    });
+    return subscribe(ctrl)
   })();
 
   var templates = {
@@ -94,6 +87,7 @@ define(function(require) {
     for(var key in sections) {
       var section = sections[key];
       section.active = (key == name);
+      section.name = key;
       data.push(section);
     }
     return data;
@@ -101,6 +95,15 @@ define(function(require) {
 
 
   var BizPanelAppView = function() {
+    subscribe(this);
+    user.isLoggedIn(function(err, loggedIn) {
+      if(err) return alert('error getting log in information');
+      if(loggedIn) {
+      } else {
+        bus.publish('showLogin');
+      }
+    });
+
     //attach the layout to the body
     var layout = this.layout = $(templates.layout());
     //disable click on msg components
@@ -136,7 +139,6 @@ define(function(require) {
     this.header = new Header();
     $('#bizpanel-header').html(this.header.$el)
     user.on('auth', this._onUserAuth.bind(this, user));
-    bus.subscribe('changeLocation', this._onChangeLocation.bind(this));
   };
 
   var renderContent = function(name, viewData) {
@@ -151,22 +153,14 @@ define(function(require) {
     }
   };
 
+  //implement app.js interface
   BizPanelAppView.prototype.changePage = function(page, options) {
-    console.log('BizPanelAppView.changePage', page, options);
-    if(page == 'login') {
-      $('#bizpanel').hide();
-      this.loginView.render();
-      this.loginView.show();
-      $(document.body).append(this.loginView.$el);
-    } else {
-      $('#bizpanel').show();
-      this.loginView.hide();
-      renderContent(page);
-    }
+    return;
   };
 
   //load all the initial data for the application
   BizPanelAppView.prototype._onUserAuth = function(user) {
+    console.log('onuserauth')
     troller.spinner.spin();
     //hide layout until load is completed
     this.layout.children().first().next().hide();
@@ -199,6 +193,7 @@ define(function(require) {
         };
         data.multipleLocations = (locations.length > 1);
         self.data = data;
+        bus.publish('showSection', {section: 'dashboard'});
         console.log('loaded', self.data);
         bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
       });
@@ -206,16 +201,46 @@ define(function(require) {
     });
   };
 
-  BizPanelAppView.prototype._onChangeLocation = function(name, msg) {
-    for(var i = 0; i < this.data.business.locations.length; i++) {
-      var location = this.data.business.locations[i];
-      location.active = false;
-      if(location.id === msg.locationId) {
-        location.active = true;
-        this.data.location = location;
+  BizPanelAppView.prototype.subscribe = {
+    showSection: function(msg) {
+      user.isLoggedIn(function(err, loggedIn) {
+        if(!loggedIn) {
+          console.log('try to show', msg.section, 'but not logged in');
+          return this.publish('showLogin');
+        }
+        console.log('would show section', msg.section);
+        $('#bizpanel').show();
+        this.loginView.hide();
+        renderContent(msg.section);
+      }.bind(this));
+    },
+    logout: function() {
+      user.logout(function(err, res) {
+        this.publish('showLogin')
+      }.bind(this));
+    },
+    showLogin: function() {
+      user.isLoggedIn(function(err, loggedIn) {
+        if(loggedIn) {
+          return this.publish('showSection', {section: 'dashboard'});
+        }
+        $('#bizpanel').hide();
+        this.loginView.render();
+        this.loginView.show();
+        $(document.body).append(this.loginView.$el);
+      }.bind(this));
+    },
+    changeLocation: function(msg) {
+      for(var i = 0; i < this.data.business.locations.length; i++) {
+        var location = this.data.business.locations[i];
+        location.active = false;
+        if(location.id === msg.locationId) {
+          location.active = true;
+          this.data.location = location;
+        }
       }
+      bus.publish('loadManagerEnd', this.data);
     }
-    bus.publish('loadManagerEnd', this.data);
   };
 
   return BizPanelAppView;

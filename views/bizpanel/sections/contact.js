@@ -5,7 +5,7 @@ define(function(require) {
   var api = require('../../../lib/api');
   var contact = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/contact'),
-    url: '#panel/contact',
+    url: '#contact',
     icon: 'envelope',
     text: 'Contact Us',
     getContactForm: function() {

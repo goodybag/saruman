@@ -8,7 +8,7 @@ define(function(require) {
     template: require('hbt!../../../templates/bizpanel/dashboard'),
     editTpl:require('hbt!../../../templates/page-business-details-location-edit'),
     icon: 'home',
-    url: '#panel/dashboard',
+    url: '#dashboard',
     text: 'Dashboard',
     events: {
       //'click .form-actions > .cancel': 'onFormCancel'

@@ -119,7 +119,7 @@ define(function(require) {
   var menu = new (Section.extend({
     template: require('hbt!../../../templates/bizpanel/menu'),
     icon: 'food',
-    url: '#panel/menu',
+    url: '#menu',
     text: 'Menu Items',
     sortField: 'price',
     sortDirection: 'DESC',

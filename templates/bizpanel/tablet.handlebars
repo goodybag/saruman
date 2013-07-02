@@ -22,7 +22,6 @@
           <tr>
             <td style="width:200px">Item Name</td>
             <td style="width:200px">Photo</td>
-            <td>{{! edit button }}</td>
             <td class="display-toggle">Display on Tablet?</td>
             <td class="display-toggle">Spotlight on Tablet?</td>
           </tr>
@@ -38,9 +37,6 @@
               {{#if photoUrl}}
               <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{photoUrl}}/convert?w=100&h=100" alt="missing photo of {{name}}" />
               {{/if}}
-            </td>
-            <td>
-              <button class="btn msg">Edit Picture</button>
             </td>
             <td class="display-toggle">
               <label>

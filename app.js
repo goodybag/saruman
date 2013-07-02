@@ -12,6 +12,7 @@ define(function(require){
 
   if(utils.context.isBizPanel()) {
     AppView = require('views/bizpanel/app');
+    AppRouter = require('lib/bizpanel/router');
   }
 
 
