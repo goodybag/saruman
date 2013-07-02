@@ -96,6 +96,7 @@ define(function(require) {
 
   var BizPanelAppView = function() {
     subscribe(this);
+    this.section = 'dashboard';
     user.isLoggedIn(function(err, loggedIn) {
       if(err) return alert('error getting log in information');
       if(loggedIn) {
@@ -193,7 +194,7 @@ define(function(require) {
         };
         data.multipleLocations = (locations.length > 1);
         self.data = data;
-        bus.publish('showSection', {section: 'dashboard'});
+        bus.publish('showSection', {section: self.section});
         console.log('loaded', self.data);
         bus.publish('changeLocation', {locationId: manager.locationId || locations[0].id});
       });
@@ -203,6 +204,7 @@ define(function(require) {
 
   BizPanelAppView.prototype.subscribe = {
     showSection: function(msg) {
+      this.section = msg.section;
       user.isLoggedIn(function(err, loggedIn) {
         if(!loggedIn) {
           console.log('try to show', msg.section, 'but not logged in');
@@ -222,7 +224,7 @@ define(function(require) {
     showLogin: function() {
       user.isLoggedIn(function(err, loggedIn) {
         if(loggedIn) {
-          return this.publish('showSection', {section: 'dashboard'});
+          return this.publish('showSection', {section: this.section});
         }
         $('#bizpanel').hide();
         this.loginView.render();
