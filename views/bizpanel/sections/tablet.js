@@ -163,6 +163,22 @@ define(function(require) {
           previousProduct[property] = order;
         }
         this.render();
+      },
+      moveProductDown: function(msg) {
+        var id = parseInt(msg.id);
+        //find product in our filtered list
+        var products = this.filteredProducts;
+        var property = this.isSpotlight ? 'spotlightOrder' : 'galleryOrder';
+        for(var i = 0; i < products.length-1; i++) {
+          var product = products[i];
+          if(product.id != id) continue;
+          var previousProduct = products[i+1];
+          console.log('switching', product.name, 'with', previousProduct.name);
+          var order = product[property];
+          product[property] = previousProduct[property];
+          previousProduct[property] = order;
+        }
+        this.render();
       }
     }
   });
