@@ -191,7 +191,8 @@ define(function(require) {
       menu = menu || this.menu;
       var viewData = {
         products: [],
-        categories: []
+        categories: [],
+        location: this.location
       };
       if(menu) {
         var filteredProducts = this.productFilter.filterProducts(menu.products);
@@ -211,7 +212,11 @@ define(function(require) {
     subscribe: {
       loadMenuEnd: function(menu) {
         this.menu = menu;
+        console.log('tablet', this.menu.location);
         this.render(menu);
+      },
+      loadManagerEnd: function(data) {
+        this.location = data.location;
       },
       editTabletOrder: function() {
         this.$el.find('#tablet-view-container').hide();
