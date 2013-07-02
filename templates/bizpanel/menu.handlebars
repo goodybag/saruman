@@ -33,8 +33,7 @@
       <table class="menu-products table">
         <thead>
           <tr>
-            <td>Item Name</td>
-            <td>Description</td>
+            <td>Item</td>
             <td width="50px" class="msg" data-msg-name="sortProducts" data-sort-field="price" data-sort-direction="{{sortDirection}}">
               Price 
               {{#sortPrice}}
@@ -42,7 +41,6 @@
               {{/sortPrice}}
             </td>
             <td>Category</td>
-            <td>Photo</td>
             <td width="80px" class="msg" data-msg-name="sortProducts" data-sort-field="likes" data-sort-direction="{{sortDirection}}">
               # of Likes 
               {{#sortLikes}}
@@ -56,13 +54,23 @@
         <tbody>
           {{#products}}
           <tr>
-            <td>{{name}}</td>
-            <td>{{description}}</td>
+            <td>
+              <table class="product-view-container">
+                <tr>
+                  <td class="product-photo" rowspan="2">
+                  {{#if photoUrl}}
+                  <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{photoUrl}}/convert?w=50&h=50" alt="missing photo of {{name}}" />
+                  {{/if}}
+                  </td>
+                  <td class="product-name">{{name}}</td>
+                </tr>
+                  <tr class="product-description">
+                  <td>{{description}}</td>
+                </tr>
+              </table>
+            </td>
             <td>{{money price}}</td>
             <td>{{#categories}}{{name}}{{/categories}}</td>
-            <td>{{#if photoUrl}}
-              <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{photoUrl}}/convert?w=50&h=50" alt="missing photo of {{name}}" />
-              {{/if}}</td>
             <td>{{likes}}</td>
             <td>
               {{!--nested tables for layout. please forgive me.}}

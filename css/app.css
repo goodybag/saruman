@@ -452,3 +452,20 @@ form.contact input[type=text], input[type=email], form.contact textarea {
   width: 100%;
   cursor: pointer;
 }
+
+.product-view-container td {
+  border: 0px;
+  padding: 0px;
+}
+
+.product-view-container .product-photo {
+  width: 70px;
+}
+
+.product-view-container .product-name {
+  font-weight: bold;
+}
+
+.product-view-container .product-description {
+  color: #777;
+}
