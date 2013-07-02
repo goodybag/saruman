@@ -16,11 +16,14 @@ define(function(require) {
     subscribe: {
       showPhoto: function(msg) {
         var $modal = this.getModal();
-        var url = msg.url + '/convert?w=530&h=530';
+        var url = msg.url;
         //clear the old img to prevent load flicker
         $modal.modal('show').find('img').remove();
         $modal.find('h3').text(msg.name);
-        $modal.find('.modal-body').append('<img src="' + url + '" />');
+        var size = 530;
+        var missing = "https://www.filepicker.io/api/file/Akx3DdFIQySrNhfkfzZI";
+        var result =  (url || missing) + '/convert?w=' + size + '&h=' + size;
+        $modal.find('.modal-body').append('<img src="' + result + '" />');
       }
     }
   });

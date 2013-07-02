@@ -34,5 +34,8 @@
   },
   "repository": "",
   "author": "John Fawcett",
-  "license": "BSD"
+  "license": "BSD",
+  "dependencies": {
+    "http-proxy": "~0.10.3"
+  }
 }

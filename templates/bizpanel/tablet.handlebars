@@ -24,9 +24,7 @@
   {{#products}}
   <div class="product-view row-fluid tablet-product-row-{{id}}">
     <div class="span2">
-      {{#if photoUrl}}
-      <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{photoUrl}}/convert?w=100&h=100" alt="missing photo of {{name}}" />
-      {{/if}}
+      <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{productImage photoUrl 100}}" alt="missing photo of {{name}}" />
     </div>
     <div class="span6">
       <div class="product-name">{{name}}</div>

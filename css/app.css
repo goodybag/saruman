@@ -423,6 +423,10 @@ form.contact input[type=text], input[type=email], form.contact textarea {
   width: 60%;
 }
 
+img.msg {
+  cursor: pointer;
+}
+
 .measure.thumbnail {
   text-align: center;
   padding-left: 0px;

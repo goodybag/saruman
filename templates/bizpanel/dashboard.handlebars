@@ -77,65 +77,65 @@
       <div class="row-fluid">
         <div class="measure thumbnail span4">
           <h5 class="name">Total Users</h5>
-          <h3 class="value">{{business.measures.totalUsers}}
-          </div>
-          <div class="measure thumbnail span4">
-            <h5 class="name">Total Product Likes</h5>
-            <h3 class="value">{{business.measures.totalLikes}}</h3>
-          </div>
-          <div class="measure thumbnail span4">
-            <h5 class="name">Total Punches</h5>
-            <h3 class="value">{{business.measures.totalPunches}}</h3>
-          </div>
+          <h3 class="value">{{business.measures.totalUsers}}</h3>
         </div>
-        {{#if multipleLocations}}
-        <h4>{{location.street1}} Location</h4>
-        <div class="row-fluid">
-          <div class="measure thumbnail span4">
-            <h5 class="name">Total Users</h5>
-            <h3 class="value">{{location.measures.totalUsers}}</h3>
-          </div>
-          <div class="measure thumbnail span4">
-            <h5 class="name">Total Product Likes</h5>
-            <h3 class="value">{{location.measures.totalLikes}}</h3>
-          </div>
-          <div class="measure thumbnail span4">
-            <h5 class="name">Total Punches</h5>
-            <h3 class="value">{{location.measures.totalPunches}}</h3>
-          </div>
+        <div class="measure thumbnail span4">
+          <h5 class="name">Total Product Likes</h5>
+          <h3 class="value">{{business.measures.totalLikes}}</h3>
         </div>
-        <!-- Modal -->
-        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Coming soon...</h3>
-          </div>
-          <div class="modal-body">
-            <p>Advanced Analytics Are Coming Soon!</p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-          </div>
+        <div class="measure thumbnail span4">
+          <h5 class="name">Total Punches</h5>
+          <h3 class="value">{{business.measures.totalPunches}}</h3>
         </div>
-        <div style="text-align: right; padding-top:20px">
-          <em>Click on the graph to see more advanced analytics </em>
-          <a href="#myModal" data-toggle="modal">
-            <img src="http://thebarmansf.files.wordpress.com/2012/03/images-bar-graph.jpg?w=869" data-msg-name="showAnalytics" style="width:70px" />
-          </a>
-        </div>
-
-        {{/if}}
-
-        {{#business.loyalty}}
-        <h5>Loyalty</h5>
-        <p>Reward: {{reward}}</p>
-        <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
-        <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
-        <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
-        {{/business.loyalty}}
       </div>
+      {{#if multipleLocations}}
+      <h4>{{location.street1}} Location</h4>
+      <div class="row-fluid">
+        <div class="measure thumbnail span4">
+          <h5 class="name">Total Users</h5>
+          <h3 class="value">{{location.measures.totalUsers}}</h3>
+        </div>
+        <div class="measure thumbnail span4">
+          <h5 class="name">Total Product Likes</h5>
+          <h3 class="value">{{location.measures.totalLikes}}</h3>
+        </div>
+        <div class="measure thumbnail span4">
+          <h5 class="name">Total Punches</h5>
+          <h3 class="value">{{location.measures.totalPunches}}</h3>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Coming soon...</h3>
+        </div>
+        <div class="modal-body">
+          <p>Advanced Analytics Are Coming Soon!</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+      </div>
+      <div style="text-align: right; padding-top:20px">
+        <em>Click on the graph to see more advanced analytics </em>
+        <a href="#myModal" data-toggle="modal">
+          <img src="http://thebarmansf.files.wordpress.com/2012/03/images-bar-graph.jpg?w=869" data-msg-name="showAnalytics" style="width:70px" />
+        </a>
+      </div>
+
+      {{/if}}
+
+      {{#business.loyalty}}
+      <h5>Loyalty</h5>
+      <p>Reward: {{reward}}</p>
+      <p>Punches required to Earn Reward: {{regularPunchesRequired}}</p>
+      <p>Punches required to become an Elite customer: {{punchesRequiredToBecomeElite}}</p>
+      <p>Elite Punches required to Earn Reward: {{elitePunchesRequired}}</p>
+      {{/business.loyalty}}
     </div>
   </div>
+</div>
 </div>
 </div>
 <div id="location-edit" class="location-edit hide">
