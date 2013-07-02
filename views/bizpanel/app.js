@@ -98,6 +98,7 @@ define(function(require) {
     subscribe(this);
     this.section = 'dashboard';
     user.isLoggedIn(function(err, loggedIn) {
+      console.log(JSON.stringify(err));
       if(err) return alert('error getting log in information');
       if(loggedIn) {
       } else {

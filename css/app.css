@@ -444,10 +444,6 @@ form.contact input[type=text], input[type=email], form.contact textarea {
   color: #555;
 }
 
-.display-toggle {
-  text-align: center;
-}
-
 .display-toggle label {
   width: 100%;
   cursor: pointer;
@@ -458,14 +454,19 @@ form.contact input[type=text], input[type=email], form.contact textarea {
   padding: 0px;
 }
 
-.product-view-container .product-photo {
+div.product-view {
+  padding: 10px 0 10px 0;
+  border-top: 1px solid #EEE;
+}
+
+.product-view .product-photo {
   width: 70px;
 }
 
-.product-view-container .product-name {
+.product-name {
   font-weight: bold;
 }
 
-.product-view-container .product-description {
+.product-description {
   color: #777;
 }

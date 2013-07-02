@@ -1,6 +1,6 @@
 define(function(require){
   var config = {
-    default: {
+    base: {
       cuisineTypes: [
         'American'
       , 'Asian'
@@ -111,7 +111,7 @@ define(function(require){
     }
 
   , dev: {
-      apiUrl: 'http://localhost:3000/',
+      apiUrl: 'http://bizpanel.local:3000/',
       contactEmail: 'brian@goodybag.com'
     }
 
@@ -121,9 +121,9 @@ define(function(require){
     }
   };
 
-  for (var key in config.default){
-    if (!(key in config.dev)) config.dev[key]   = config.default[key];
-    if (!(key in config.prod)) config.prod[key] = config.default[key];
+  for (var key in config.base){
+    if (!(key in config.dev)) config.dev[key]   = config.base[key];
+    if (!(key in config.prod)) config.prod[key] = config.base[key];
   }
 
   // Build step will change this to prod
