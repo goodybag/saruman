@@ -76,10 +76,8 @@ define(function(require) {
       result.price = this.parsePrice(val('price'));
       result.categoryId = parseInt(val('category'));
       result.description = val('description');
-      result.photoUrl = this.$el.find('#product-image').attr('src');
-      if(result.photoUrl.indexOf('placekitten.com') > 0) {
-        delete result.photoUrl;
-      }
+      var sizedPhotoUrl = this.$el.find('#product-image').attr('src');
+      result.photoUrl = utils.getRawPhotoUrl(sizedPhotoUrl);
       //result.displayOnTablet = get('tablet-display').is(':checked');
       //result.showInSpotlight = get('spotlight-display').is(':checked');
       result.tags = this.$tagSelect.val().split(',');
