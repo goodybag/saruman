@@ -10,9 +10,6 @@ define(function(require) {
     icon: 'home',
     url: '#dashboard',
     text: 'Dashboard',
-    events: {
-      //'click .form-actions > .cancel': 'onFormCancel'
-    },
     initialize: function() {
       this.editor = new Editor();
       this.businessEditor = new BusinessEditor();
