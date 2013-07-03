@@ -15,6 +15,11 @@ define(function(require){
     AppRouter = require('lib/bizpanel/router');
   }
 
+  if(window.isIE) {
+    window.console = {
+      log: function() {}
+    }
+  }
 
     // Limited interface to application to work with through repl
   var app = {

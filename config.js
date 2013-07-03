@@ -116,7 +116,7 @@ define(function(require){
     }
 
   , prod: {
-      apiUrl: 'http://magic.goodybag.com/',
+      apiUrl: 'http://magic.staging.goodybag.com/',
       contactEmail: 'jacobparker@goodybag.com'
     }
   };
