@@ -372,10 +372,41 @@ td textarea:focus {
   }
 }
 
+#bizpanel-nav {
+  position: fixed;
+  left: 0px;
+  top: 40px;
+  border-right: 1px solid #CCC;
+  height: 100%;
+}
+
+#bizpanel-content {
+  margin-left: 150px;
+}
+
+#menu-view-fixed-header {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+}
+
+.omfg {
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  padding-left: 170px;
+  top: 300px;
+  height:100%;
+  width:100%;
+  overflow:auto;
+  box-sizing: border-box;
+}
+
 #bizpanel-nav li a {
   height: 30px;
   padding-top:20px;
   vertical-align: middle;
+  border: 0px;
 }
 
 #bizpanel-nav li.active a { 

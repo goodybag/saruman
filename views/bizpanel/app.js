@@ -112,6 +112,7 @@ define(function(require) {
 
   BizPanelAppView.prototype.subscribe = {
     showSection: function(msg) {
+      if(!msg.section) return;
       this.section = msg.section;
       user.isLoggedIn(function(err, loggedIn) {
         if(!loggedIn) {
