@@ -104,14 +104,15 @@ define(function(require) {
 
   //load all the initial data for the application
   BizPanelAppView.prototype._onUserAuth = function(user) {
-    console.log('onuserauth')
     troller.spinner.spin();
     //hide layout until load is completed
     bus.publish('loadManagerBegin', user);
+    bus.publish('showSection', {section: 'dashboard'});
   };
 
   BizPanelAppView.prototype.subscribe = {
     showSection: function(msg) {
+      console.log('show section', msg);
       if(!msg.section) return;
       this.section = msg.section;
       user.isLoggedIn(function(err, loggedIn) {
