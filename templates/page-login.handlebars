@@ -27,12 +27,43 @@
         <div class="control-group">
           <div class="controls">
             <button type="submit" class="btn">Sign In</button>
+            {{#if isBizPanel}}
+            <button class="btn msg btn-link" data-msg-name="forgotPassword">Forgot Password</button>
+            {{else}}
             <button class="btn fb-login-btn">
               <i class="icon-facebook-sign"> </i> Facebook Login
             </button>
+            {{/if}}
           </div>
         </div>
       </form>
     </div>
+  </div>
+</div>
+<div id="forgotPasswordModal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Forgot Password</h3>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" style="width:50px" for="resetEmail">Email</label>
+        <div class="controls" style="margin-left:60px">
+          <input class="input-block-level" type="text" id="resetEmail">
+          <span class="help-block hide">
+            <div class="alert">
+              Testing
+            </div>
+          </span>
+          <span class="help-block">
+            Enter your email address and you will be sent an email with instructions on how to change your password.
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary msg" data-msg-name="sendForgotPasswordEmailBegin">Send Password Reset Email</a>
   </div>
 </div>

@@ -41,7 +41,7 @@ define(function(require) {
     //attach the layout to the body
     var layout = this.layout = $(templates.layout());
     //disable click on msg components
-    layout.on('click', '.msg', function() {
+    $(document.body).on('click', '.msg', function() {
       var el = $(this);
       var msgName = el.data('msgName');
       if(msgName) {
@@ -51,7 +51,7 @@ define(function(require) {
       return false;
     });
     //capture select on msg components
-    layout.on('change', 'select.msg', function() {
+    $(document.body).on('change', 'select.msg', function() {
       var $el = $(this);
       var msgName = $el.data('msgName');
       if(msgName) {
@@ -147,6 +147,18 @@ define(function(require) {
         $(document.body).append(this.loginView.$el);
       }.bind(this));
     },
+    forgotPassword: function() {
+      $("#forgotPasswordModal").modal();
+    },
+    sendForgotPasswordEmailBegin: function(msg) {
+      var email = $("#resetEmail").val();
+      if(!email) return;
+      troller.spinner.spin();
+      utils.api.post('v1/users/password-reset', {email: email}, function(err, res) {
+        troller.spinner.stop();
+        $("#forgotPasswordModal").modal('hide');
+      });
+    }
   };
 
   return BizPanelAppView;

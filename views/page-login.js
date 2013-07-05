@@ -20,6 +20,15 @@ define(function(require){
       this.template = template;
     }
 
+  , render: function(){
+      var viewData = {
+        isBizPanel: utils.context.isBizPanel()
+      };
+      this.$el.html(this.template(viewData));
+      return this;
+    }
+
+
   , onFacebookLoginClick: function(e){
       e.preventDefault();
 
