@@ -107,8 +107,8 @@ define(function(require) {
         this.sections.push({
           id: '<UNSAVED>' + this.oldSections.length,
           order: order,
-          name: name,
-          description: 'Description for "' + name + '"'
+          name: '',
+          description: ''
         });
         this.sortAndRender();
       },
