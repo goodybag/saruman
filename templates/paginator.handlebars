@@ -1,6 +1,9 @@
 <ul>
   <li{{#if cantGoBack}} class="disabled"{{/if}}>
-    <a href="{{previous}}" class="previous icon-double-angle-left"></a>
+    <a href="{{first}}" class="previous icon-double-angle-left"></a>
+  </li>
+  <li{{#if cantGoBack}} class="disabled"{{/if}}>
+    <a href="{{previous}}" class="previous icon-angle-left"></a>
   </li>
   {{#each pages}}
     <li{{#if this.active}} class="active"{{/if}}>
@@ -8,6 +11,9 @@
     </li>
   {{/each}}
   <li{{#if cantGoForward}} class="disabled"{{/if}}>
-    <a href="{{next}}"class="next icon-double-angle-right"></a>
+    <a href="{{next}}"class="next icon-angle-right"></a>
+  </li>
+  <li{{#if cantGoForward}} class="disabled"{{/if}}>
+    <a href="{{last}}"class="next icon-double-angle-right"></a>
   </li>
 </ul>
