@@ -407,6 +407,7 @@ td textarea:focus {
   padding-top:20px;
   vertical-align: middle;
   border: 0px;
+  padding: 15px 10px 10px 10px;
 }
 
 #bizpanel-nav li.active a {
