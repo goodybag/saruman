@@ -34,12 +34,21 @@ define(function(require) {
     return data;
   };
 
+  //error shower
+  subscribe({
+    subscribe: {
+      showError: function(msg) {
+        troller.spinner.stop();
+        $("#errorModal").modal().find('.error-message-container').html(msg.message);
+      },
+      refreshPage: function() {
+        window.location.reload();
+      }
+    }
+  });
 
-  var BizPanelAppView = function() {
-    subscribe(this);
-    this.section = 'dashboard';
-    //attach the layout to the body
-    var layout = this.layout = $(templates.layout());
+  //bind dom events to message bus actions
+  var bindEvents = function() {
     //disable click on msg components
     $(document.body).on('click', '.msg', function() {
       var el = $(this);
@@ -62,6 +71,19 @@ define(function(require) {
       }
       return false;
     });
+    $(window).on('error', function(e) {
+      console.log(arguments);
+      bus.publish('showError', {message: e.originalEvent.message})
+    });
+  };
+
+
+  var BizPanelAppView = function() {
+    subscribe(this);
+    bindEvents();
+    this.section = 'dashboard';
+    //attach the layout to the body
+    var layout = this.layout = $(templates.layout());
     $(document.body).html(layout);
     $('#bizpanel-nav').html(templates.nav({nav: getNavViewData()}));
     $('#bizpanel').hide();

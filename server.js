@@ -15,6 +15,10 @@ app.configure('staging', 'production', function() {
   app.set('proxy.port', 80);
 });
 
+app.configure('development', function() {
+  app.use(express.static(__dirname + '/test'));
+});
+
 var proxy = new httpProxy.HttpProxy({
   target: {
     host: app.set('proxy.host'),

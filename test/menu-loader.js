@@ -21,6 +21,119 @@ define(function(require) {
   }
 
   describe('menu loader', function() {
+    describe('#getLocationDiffs', function() {
+      before(function() {
+        this.locations = [{
+          id: 1
+        }, {
+          id: 2
+        }, {
+          id: 3
+        }];
+        this.existingProducts = [{
+          id: 1,
+          locations: [{
+            id: 1,
+            isAvailable: true
+          }, {
+            id: 2,
+            isAvailable: true
+          }, {
+            id: 3,
+            isAvailable: true
+          }]
+        }, {
+          id: 2,
+          locations: [{
+            id: 1,
+            isAvailable: false
+          }, {
+            id: 2,
+            isAvailable: false
+          }, {
+            id: 3,
+            isAvailable: false
+          }]
+        }, {
+          id: 3,
+          locations: [{
+            id: 1,
+            isAvailable: true
+          }, {
+            id: 2,
+            isAvailable: false
+          }, {
+            id: 3,
+            isAvailable: true
+          }]
+        }]
+        this.diff = function(product) {
+          return loader.getLocationDiffs(this.locations, this.existingProducts, product);
+        }
+      });
+
+
+      describe('with new product', function() {
+        it('returns no changes if product is added to all locations', function() {
+          var product = {
+            id: 5000,
+            locationIds: [1, 2, 3]
+          };
+          var changes = this.diff(product);
+          assert.equal(changes.length, 0);
+        });
+
+        it('returns deletions if product is not in one of the locations', function() {
+          var product = {
+            id: 100,
+            locationIds: [1, 3]
+          };
+          var changes = this.diff(product);
+          assert.equal(changes.length, 1);
+          var change = changes.pop();
+          assert.equal(change.action, 'delete');
+          assert.equal(change.locationId, 2);
+          assert.equal(change.productId, 100);
+        });
+      });
+
+      describe('with an existing product', function() {
+        it('returns no changes if the product is the same', function() {
+          var product = {
+            id: 1,
+            locationIds: [1, 2, 3]
+          };
+          var changes = this.diff(product);
+          assert.equal(changes.length, 0);
+        });
+
+        it('returns additions and subtractions for total change', function() {
+          var product = {
+            id: 3,
+            locationIds: [2]
+          };
+          var changes = this.diff(product);
+          assert.equal(changes.length, 3);
+          assert.equal(_.findWhere(changes, {locationId: 3}).action, 'delete');
+          assert.equal(_.findWhere(changes, {locationId: 1}).action, 'delete');
+          assert.equal(_.findWhere(changes, {locationId: 2}).action, 'add');
+        });
+
+        it('returns correct add-only changes', function() {
+          var product = {
+            id: 2,
+            locationIds: [2]
+          };
+          var changes = this.diff(product);
+          assert.equal(changes.length, 1);
+          var change = changes[0];
+          assert.equal(change.action, 'add');
+          assert.equal(change.locationId, 2);
+          assert.equal(change.productId, 2);
+        });
+      });
+    });
+
     describe('#getSectionDiffs', function() {
       describe('all new creations', function() {
         before(function() {
@@ -58,7 +171,7 @@ define(function(require) {
           assert(firstDiff.order == 1, 'should have ordrer');
         });
       });
-      
+
       describe('create & update & ignore', function() {
         before(function() {
 
@@ -130,64 +243,6 @@ define(function(require) {
           assert.equal(this.diffs.length, 1);
           assert.equal(this.diffs[0].action, 'delete')
           assert.equal(this.diffs[0].record.id, 2);
-        });
-      });
-    });
-
-    describe('as admin', function() {
-      before(function(done) {
-        api.session.auth('admin@goodybag.com', 'password', function(err, user) {
-          console.log((user||0).email, 'logged in')
-          done(err);
-        });
-      });
-
-      describe('loading Amys from test {bId: 39, locId: 51}', function() {
-        before(function(done) {
-          var self = this;
-          bus.publish('loadMenuBegin', {
-            //use amys
-            businessId: 39,
-            locationId: 51
-          });
-          once('loadMenuEnd', function(val) {
-            self.menu = val;
-            done();
-          });
-        });
-
-        it('has 42 items in products collection', function() {
-          assert.equal(this.menu.products.length, 42)
-        });
-
-        describe('menu sections', function() {
-          it('has 6 sections', function() {
-            assert(this.menu.sections.length == 6, 'should have 6 sections but had', this.menu.sections.length);
-            console.log(this.menu.sections);
-          });
-
-          it('is a sorted collection', function() {
-            var max = 0;
-            for(var i = 0; i < this.menu.sections.length; i++) {
-              var section = this.menu.sections[i];
-              assert(section.order >= max, 'expected sections to be sorted');
-              max = section.order;
-            }
-          });
-        });
-
-        describe('first item', function() {
-          before(function() {
-            this.item = this.menu.products[0];
-          });
-
-          it('has categories', function() {
-            assert(this.item.categories.length == 0, 'should have 0 categories but has', this.item.categories.length);
-          });
-
-          it('has tags', function() {
-            assert(this.item.tags.length == 6, 'should have 6 tags but has', this.item.tags.length)
-          });
         });
       });
     });

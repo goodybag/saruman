@@ -1,8 +1,24 @@
 <form class="form-horizontal">
   <div class="control-group">
+    <label class="control-label" for="photo-picker">Photo</label>
+    <div class="controls">
+      <img id="product-image" src="{{productImage photoUrl 300}}" class="msg" data-msg-name="pickProductPhoto" width="200">
+      <span class="help-block">Click to change</span>
+      {{#idd}}
+      <button class="btn msg">Choose from Library</button>
+      {{/idd}}
+    </div>
+  </div>
+  <div class="control-group">
     <label class="control-label" for="product-name-input">Item Name</label>
     <div class="controls">
       <input type="text" id="product-name-input" value="{{name}}" placeholder="The Texas Burger" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="product-description-input">Description</label>
+    <div class="controls">
+      <textarea rows="4" id="product-description-input" placeholder="This mouthwatering burger is made of 100% grass fed Texas beef and served on a homemade bun!">{{description}}</textarea>
     </div>
   </div>
   <div class="control-group">
@@ -23,42 +39,19 @@
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="product-description-input">Description</label>
-    <div class="controls">
-      <textarea rows="4" id="product-description-input" placeholder="This mouthwatering burger is made of 100% grass fed Texas beef and served on a homemade bun!">{{description}}</textarea>
-    </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="photo-picker">Photo</label>
-    <div class="controls">
-      <img id="product-image" src="{{productImage photoUrl 300}}" class="msg" data-msg-name="pickProductPhoto" width="200">
-      <span class="help-block">Click to change</span>
-      {{#idd}}
-      <button class="btn msg">Choose from Library</button>
-      {{/idd}}
-    </div>
-  </div>
-  <div class="control-group">
     <label class="control-label" for="product-tags-input">Tags</label>
     <div class="controls">
       <input type="text" style="width:200px" id="product-tags-input" />
     </div>
   </div>
-  {{#idd}}
   <div class="control-group">
+    <label class="control-label">Available Locations</label>
     <div class="controls">
+      {{#locations}}
       <label class="checkbox">
-        <input type="checkbox" id="product-tablet-display-input" value="{{displayOnTablet}}"> Display on Tablet
-      </label>
+        <input data-location-id="{{id}}" class="location-enabled" type="checkbox" {{#isAvailable}}checked=checked{{/isAvailable}}>{{street1}}</label>
+      {{/locations}}
     </div>
   </div>
-  <div class="control-group">
-    <div class="controls">
-      <label class="checkbox">
-        <input type="checkbox" id="product-spotlight-display-input" value="{{showInSpotlight}}"> Show in Spotlight
-      </label>
-    </div>
-  </div>
-  {{/idd}}
   <input type="hidden" value="{{id}}" id="product-id-input" />
 </form>

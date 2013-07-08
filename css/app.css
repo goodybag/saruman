@@ -490,6 +490,16 @@ img.msg {
   padding: 0px;
 }
 
+.product-view-container em {
+  display: none;
+}
+
+.product-view-container.not-available em {
+  display: block;
+  color: #555;
+  font-weight: bold;
+}
+
 div.product-view {
   padding: 10px 0 10px 0;
   border-top: 1px solid #EEE;
@@ -501,6 +511,10 @@ div.product-view {
 
 .product-name {
   font-weight: bold;
+}
+
+.not-available .product-name {
+  color: #777;
 }
 
 .product-description {

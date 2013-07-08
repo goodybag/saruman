@@ -57,15 +57,20 @@
           {{#products}}
           <tr>
             <td>
-              <table class="product-view-container">
+              <table class="product-view-container {{#unless isAvailable}}not-available{{/unless}}">
                 <tr class="product-view">
-                  <td class="product-photo" rowspan="2">
-                  <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{productImage photoUrl 50}}" alt="missing photo of {{name}}" />
+                  <td class="product-photo" rowspan="3">
+                    <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{productImage photoUrl 50}}" alt="missing photo of {{name}}" />
                   </td>
-                  <td class="product-name">{{name}}</td>
+                  <td class="product-name">
+                    <em>Not available at this location</em>
+                    {{name}}
+                  </td>
                 </tr>
-                  <tr class="product-description">
-                  <td>{{description}}</td>
+                <tr class="product-description">
+                  <td>
+                    {{description}}
+                  </td>
                 </tr>
               </table>
             </td>
@@ -73,7 +78,6 @@
             <td>{{#categories}}{{name}}{{/categories}}</td>
             <td>{{likes}}</td>
             <td>
-              {{!--nested tables for layout. please forgive me.}}
               {{#tags}}
               <div class="product-tag">{{tag}}</div>
               {{/tags}}

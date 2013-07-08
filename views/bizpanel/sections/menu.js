@@ -89,6 +89,11 @@ define(function(require) {
       if(id >= 0) {
         result.id = id;
       }
+      var checkedChecboxes = this.$el.find('form').find('input.location-enabled:checkbox:checked');
+      var locationIds = _.map(checkedChecboxes, function(el) {
+        return $(el).data('locationId');
+      })
+      result.locationIds = locationIds;
       return result;
     },
     subscribe: {
@@ -100,7 +105,7 @@ define(function(require) {
           self.$el.find('#product-image').attr('src', file.url);
         };
         filepicker.pick(options, callback, function(error){ 
-          /*alert(error);*/ 
+          /*alert(error);*/
         });
       },
       loadMenuEnd: function(menu) {
@@ -218,7 +223,18 @@ define(function(require) {
         this.render(menu);
       },
       newProduct: function() {
-        this.productEditView.render({price: 100});
+        //create list of all existing products
+        var locations = _.map(this.business.locations, function(location) {
+          return {
+            id: location.id,
+            street1: location.street1,
+            isAvailable: true
+          }
+        })
+        this.productEditView.render({
+          price: 100,
+          locations: locations
+        });
         this.showProductEditView('Add New Menu Item');
       },
       editProduct: function(msg) {
@@ -241,6 +257,11 @@ define(function(require) {
       },
       saveProductEdits: function() {
         var product = this.productEditView.getValues();
+        console.log(product)
+        console.log(product)
+        console.log(product)
+        console.log(product)
+        console.log(product)
         this.publish('saveProductBegin', product);
       },
       saveProductEnd: function(product) {
