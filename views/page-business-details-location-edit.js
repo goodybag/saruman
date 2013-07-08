@@ -233,7 +233,6 @@ define(function(require){
           troller.spinner.stop();
 
           if (error) {
-            console.log("poop");
             return troller.app.error(error, this_.$el, this_.alert);
           }
           utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
@@ -245,7 +244,6 @@ define(function(require){
         troller.spinner.stop();
 
         if (error) {
-          console.log("poo poo");
           return troller.app.error(error, this_.$el.find('#location-details-form'), this_.alert);
         }
         this_.doSuccessThing(
@@ -280,7 +278,6 @@ define(function(require){
 
   , alert: function(msg, error) {
       // Show a bootstrap alert message
-      console.log("alert");
       var $alertContainer = this.$el.find('.alert-container')
         , template        = alertTemplate({ msg: msg, error: error });
 
