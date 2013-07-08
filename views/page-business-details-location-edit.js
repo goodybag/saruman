@@ -6,7 +6,7 @@ define(function(require){
   , troller   = require('../lib/troller')
 
   , template  = require('hbt!../templates/page-business-details-location-edit')
-
+  , alertTemplate = require('hbt!./../templates/page-alert')
   , days = [
       'Monday'
     , 'Tuesday'
@@ -50,6 +50,8 @@ define(function(require){
         this.create = true;
         this.location = {};
       }
+
+      utils.bindAll(this, 'alert');
 
       return this;
     }
@@ -230,8 +232,10 @@ define(function(require){
         return api.locations.create(data, function(error){
           troller.spinner.stop();
 
-          if (error) return troller.app.error(error);
-
+          if (error) {
+            console.log("poop");
+            return troller.app.error(error, this_.$el, this_.alert);
+          }
           utils.history.navigate('businesses/' + this_.business.id + '/locations/page/1');
           troller.business.changePage('locations', { pageNum: 1 });
         });
@@ -240,8 +244,10 @@ define(function(require){
       api.locations.update(this.location.id, data, function(error){
         troller.spinner.stop();
 
-        if (error) return troller.app.error(error, this_.$el.find('#location-details-form'));
-
+        if (error) {
+          console.log("poo poo");
+          return troller.app.error(error, this_.$el.find('#location-details-form'), this_.alert);
+        }
         this_.doSuccessThing(
           this_.$el.find('.btn-primary')
         );
@@ -270,6 +276,15 @@ define(function(require){
       if (number == null) return;
       var a = number.slice(0, 3), b = number.slice(3, 6), c = number.slice(6, 10);
       this.$phoneDisp.val('(' + a + ') ' + b + '-' + c);
-  }
+    }
+
+  , alert: function(msg, error) {
+      // Show a bootstrap alert message
+      console.log("alert");
+      var $alertContainer = this.$el.find('.alert-container')
+        , template        = alertTemplate({ msg: msg, error: error });
+
+      $alertContainer.html(template);
+    }
   });
 });

@@ -6,7 +6,7 @@ define(function(require){
   , troller           = require('../lib/troller')
 
   , template          = require('hbt!./../templates/page-business-details-loyalty')
-  , alertTemplate     = require('hbt!./../templates/page-business-details-alert')
+  , alertTemplate     = require('hbt!./../templates/page-alert')
   , resultTemplate    = require('hbt!./../templates/loyalty-result')
 
   , defaultModel = {
@@ -17,8 +17,6 @@ define(function(require){
     , punchesRequiredToBecomeElite: null
     }
   ;
-
-  require('bootstrap-alert');
 
   return Page.extend({
     className: 'page page-business-details'
@@ -135,8 +133,8 @@ define(function(require){
 
   , alert: function(msg, error) {    
       // Show a bootstrap alert message
-      var $alertContainer = this.$el.find(".alert-container")
-        , template = alertTemplate({ msg: msg, error: error});
+      var $alertContainer = this.$el.find('.alert-container')
+        , template        = alertTemplate({ msg: msg, error: error});
       
       $alertContainer.html(template);
     }
