@@ -52,6 +52,7 @@ define(function(require) {
     //disable click on msg components
     $(document.body).on('click', '.msg', function() {
       var el = $(this);
+      if(this.tagName.toUpperCase() === 'SELECT') return false;
       var msgName = el.data('msgName');
       if(msgName) {
         console.log('publishing', msgName);
