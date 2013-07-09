@@ -1,6 +1,6 @@
-<div class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner" style="padding-left:20px;">
-    <a class="brand" href="#/dashboard" class="msg">{{business.name}}</a>
+<div class="topnav">
+  <div class="topnav-inner row-fluid">
+    <a class="brand" href="#dashboard" class="msg">{{business.name}}</a>
     {{#if multipleLocations}}
     <span class="location dropdown">
       <button class="btn  dropdown-toggle" data-toggle="dropdown" href="#">Location: {{location.street1}} <span class="caret"></span></button>
@@ -15,11 +15,7 @@
     {{else}}
     {{/if}}
     <ul class="nav pull-right">
-      <li><a href="#/logout">Logout</a></li>
+      <li><a href="#logout">Logout</a></li>
     </ul>
-  </div>
-</div>
-<div class="row-fluid">
-  <div class="span-12">
   </div>
 </div>

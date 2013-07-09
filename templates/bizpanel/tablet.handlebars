@@ -1,53 +1,57 @@
 <div id="tablet-view-container">
-  <h3>Manage Tablet for Location {{location.street1}}</h3>
-  <hr />
-  <div class="row-fluid">
-    <div class="span5">
-      {{!-- dummy form so boostrap will style}}
-      <form class="form-horizontal">
-        <div class="control-group">
-          <label class="control-label">Categories:</label>
-          <div class="controls controls-row">
-            <select id="categorySelect" style="width:100%">
-              {{#categories}}
-              <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-              {{/categories}}
-            </select>
+  <div class="tablet-view-fixed-header">
+    <h3>Manage Tablet for Location {{location.street1}}</h3>
+    <hr />
+    <div class="row-fluid">
+      <div class="span5">
+        {{!-- dummy form so boostrap will style}}
+        <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label">Categories:</label>
+            <div class="controls controls-row">
+              <select id="categorySelect" style="width:100%">
+                {{#categories}}
+                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                {{/categories}}
+              </select>
+            </div>
           </div>
+        </form>
+      </div>
+      <div class="span7">
+        <button class="btn msg" data-msg-name="editTabletOrder">Edit Display Order on Tablet</button>
+      </div>
+    </div>
+  </div>
+  <div class="tablet-products-table-container">
+    {{#products}}
+    <div class="product-view row-fluid tablet-product-row-{{id}}">
+      <div class="span2">
+        <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{productImage photoUrl 100}}" alt="missing photo of {{name}}" />
+      </div>
+      <div class="span6">
+        <div class="product-name">{{name}}</div>
+        <div class="product-description">{{description}}</div>
+      </div>
+      <div class="span4">
+        <div class="display-toggle">
+          <label>
+            <input type="checkbox" class="inGallery msg" data-msg-name="toggleProductGalleryBegin" data-id="{{id}}" {{#inGallery}}checked{{/inGallery}} />
+            Show In Gallery
+          </label>
+          <span class="inGallery hide">Saving...</span>
         </div>
-      </form>
-    </div>
-    <div class="span7">
-      <button class="btn msg" data-msg-name="editTabletOrder">Edit Display Order on Tablet</button>
-    </div>
-  </div>
-  {{#products}}
-  <div class="product-view row-fluid tablet-product-row-{{id}}">
-    <div class="span2">
-      <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{productImage photoUrl 100}}" alt="missing photo of {{name}}" />
-    </div>
-    <div class="span6">
-      <div class="product-name">{{name}}</div>
-      <div class="product-description">{{description}}</div>
-    </div>
-    <div class="span4">
-      <div class="display-toggle">
-        <label>
-          <input type="checkbox" class="inGallery msg" data-msg-name="toggleProductGalleryBegin" data-id="{{id}}" {{#inGallery}}checked{{/inGallery}} />
-          Show In Gallery
-        </label>
-        <span class="inGallery hide">Saving...</span>
-      </div>
-      <div class="display-toggle">
-        <label>
-          <input type="checkbox" class="inSpotlight msg" data-msg-name="toggleProductSpotlightBegin" data-id="{{id}}" {{#inSpotlight}}checked{{/inSpotlight}} />
-          Show In Spotlight
-        </label>
-        <span class="inSpotlight hide">Saving...</span>
+        <div class="display-toggle">
+          <label>
+            <input type="checkbox" class="inSpotlight msg" data-msg-name="toggleProductSpotlightBegin" data-id="{{id}}" {{#inSpotlight}}checked{{/inSpotlight}} />
+            Show In Spotlight
+          </label>
+          <span class="inSpotlight hide">Saving...</span>
+        </div>
       </div>
     </div>
+    {{/products}}
   </div>
-  {{/products}}
 </div>
 <div id="tablet-edit-container" class="hide">
 </div>
