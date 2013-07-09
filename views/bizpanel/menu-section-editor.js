@@ -24,9 +24,9 @@ define(function(require) {
           }
         }
       }
-      this.render({sections: this.sections})
+      this.render({sections: this.sections});
     },
-    swapSections: function(section, other) { 
+    swapSections: function(section, other) {
       var otherOrder = other.order;
       if(otherOrder == section.order) {
         otherOrder++;
@@ -126,6 +126,7 @@ define(function(require) {
       cancelMenuSectionEdits: function() {
         this.setSections(this.oldSections);
         this.render({sections: this.sections});
+        console.log('menu section editor cancel, rendering ', this.sections)
       },
       deleteSection: function(msg) {
         this.sections = _.filter(this.sections, function(section) {

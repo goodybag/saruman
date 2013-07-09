@@ -241,7 +241,6 @@ define(function(require) {
         for(var i = 0; i < this.menu.products.length; i++) {
           var product = this.menu.products[i];
           if(product.id == msg.id) {
-            console.log(product);
             this.productEditView.render(product);
             this.showProductEditView();
           }
@@ -250,26 +249,21 @@ define(function(require) {
       sortProducts: function(msg) {
         msg.sortDirection = msg.sortDirection == 'ASC' ? 'DESC' : 'ASC';
         this.sort(msg.sortField, msg.sortDirection);
-        this.render();
+        this.render(this.menu);
       },
       cancelProductEdits: function() {
         this.hideProductEditView();
       },
       saveProductEdits: function() {
         var product = this.productEditView.getValues();
-        console.log(product)
-        console.log(product)
-        console.log(product)
-        console.log(product)
-        console.log(product)
         this.publish('saveProductBegin', product);
       },
       saveProductEnd: function(product) {
         this.hideProductEditView();
       },
-      //basically a click handler at this point
       editCategories: function() {
         this.$el.find('#menuView').hide();
+        editor.sortAndRender();
         this.getEditCategoriesModal()
         .show()
         .find('#editCategoriesContent').html(editor.$el);
