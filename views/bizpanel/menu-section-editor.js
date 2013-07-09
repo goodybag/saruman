@@ -79,6 +79,7 @@ define(function(require) {
         this.sortAndRender();
       },
       moveSectionUp: function(msg) {
+        this.applyFieldValuesToSections();
         for(var i = 1; i < this.sections.length; i++) {
           var section = this.sections[i];
           if(section.id == msg.id) {
@@ -89,6 +90,7 @@ define(function(require) {
         this.sortAndRender();
       },
       moveSectionDown: function(msg) {
+        this.applyFieldValuesToSections();
         for(var i = 0; i < this.sections.length-1; i++) {
           var section = this.sections[i];
           if(section.id == msg.id) {
@@ -99,13 +101,14 @@ define(function(require) {
         this.sortAndRender();
       },
       addSection: function() {
+        this.applyFieldValuesToSections();
         var name = "New Section " + this.sections.length;
         var order = 0;
         if(this.sections && this.sections.length) {
           order = this.sections[this.sections.length-1].order + 1;
         }
         this.sections.push({
-          id: '<UNSAVED>' + this.oldSections.length,
+          id: '<UNSAVED>' + this.sections.length,
           order: order,
           name: '',
           description: ''
@@ -129,6 +132,7 @@ define(function(require) {
         console.log('menu section editor cancel, rendering ', this.sections)
       },
       deleteSection: function(msg) {
+        this.applyFieldValuesToSections();
         this.sections = _.filter(this.sections, function(section) {
           console.log(section.id, msg.id);
           return section.id != msg.id
