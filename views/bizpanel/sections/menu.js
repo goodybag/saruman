@@ -47,7 +47,6 @@ define(function(require) {
           selected: section.id == productCategory
         }
       });
-      console.log(product)
       this.$el.html(this.template(product || {}));
       //dispose of old rendered select2
       if(this.$tagSelect) {
