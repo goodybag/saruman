@@ -1,6 +1,6 @@
 {
   "name": "saurumon",
-  "version": "0.1.1",
+  "version": "1.1.4",
   "description": "Goodybag management system for india",
   "main": "app.js",
   "scripts": {
@@ -16,21 +16,23 @@
       "bootstrap-dropdown": "0.2.x",
       "bootstrap-modal": "2.3.x",
       "hbt": "0.0.x",
-      "spin-js": "1.2.5-jam.1",
-      "moment": "1.7.x"
+      "moment": "1.7.x",
+      "handlebars": "1.0.0-beta.6.jam.1",
+      "spin-js": "1.2.5-jam.1"
     }
   },
   "devDependencies": {
     "express": "latest",
     "jamjs": "latest",
     "requirejs": "latest",
-    "grunt": "0.3.x",
-    "grunt-s3": "0.0.9",
-    "grunt-contrib-mincss": "0.3.x",
+    "grunt": "0.4.x",
+    "grunt-s3": "0.2.x",
+    "grunt-contrib-cssmin": "0.6.x",
     "jsdom": "0.3.x",
     "wrench": "~1.4.4",
     "grunt-jam": "0.3.x",
-    "mocha": "~1.11.0"
+    "mocha": "~1.11.0",
+    "request": "~2.21.0"
   },
   "repository": "",
   "author": "John Fawcett",

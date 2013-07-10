@@ -1,35 +1,28 @@
 <div class="navbar-inner">
   <div class="container">
-    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
     <a class="brand" href="#">Saruman 1.0</a>
-    <div class="nav-collapse collapse">
-      <ul class="nav">
-        {{#if loggedIn}}
-          <li class="">
-            <a href="#/businesses/page/1">Businesses</a>
-          </li>
-          {{#ifAdmin}}
+    <ul class="nav">
+      {{#if loggedIn}}
+        <li class="">
+          <a href="#/businesses/page/1">Businesses</a>
+        </li>
+        {{#ifAdmin}}
           <li class="">
             <a href="#/accounts/users/page/1">Accounts</a>
           </li>
-          {{else}}
+        {{else}}
           <li class="">
             <a href="#/accounts/tapin-stations/page/1">Tablets and Users</a>
           </li>
-          {{/ifAdmin}}
-          <li class="">
-            <a href="#/logout">Logout</a>
-          </li>
-        {{else}}
+        {{/ifAdmin}}
+        <li class="">
+          <a href="#/logout">Logout</a>
+        </li>
+      {{else}}
         <li class="">
           <a href="#/login">Login</a>
         </li>
-        {{/if}}
-      </ul>
-    </div>
+      {{/if}}
+    </ul>
   </div>
 </div>
