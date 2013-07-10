@@ -429,11 +429,13 @@ a.brand:hover {
   margin-left: 150px;
 }
 
-.menu-view-fixed-header, .tablet-view-fixed-header {
+.fixed-header {
   position: fixed;
-  top: 50px;
+  top: 40px;
+  padding-top: 10px;
   width: 100%;
   background-color: white;
+  border-bottom: 1px solid #EEE;
 }
 
 .menu-products-table-container {
@@ -442,18 +444,6 @@ a.brand:hover {
 
 .tablet-products-table-container {
   margin-top: 150px;
-}
-
-.omfg {
-  position:fixed;
-  bottom:0px;
-  left:0px;
-  padding-left: 170px;
-  top: 300px;
-  height:100%;
-  width:100%;
-  overflow:auto;
-  box-sizing: border-box;
 }
 
 #bizpanel-nav li a {
@@ -561,8 +551,17 @@ img.msg {
 
 div.product-view {
   padding: 10px 0 10px 0;
-  border-top: 1px solid #EEE;
+  border-bottom: 1px solid #EEE;
 }
+
+div.tablet-products-table-container .product-view:nth-child(even) {
+  background-color: #F9F9F9;
+}
+
+table.menu-products tr.product-row:nth-child(even) {
+  background-color: #F9F9F9;
+}
+
 
 .product-view .product-photo {
   width: 70px;

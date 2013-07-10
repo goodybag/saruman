@@ -1,5 +1,5 @@
 <div id="menuView">
-  <div class="menu-view-fixed-header">
+  <div class="fixed-header">
     <h3>Manage the {{business.name}} Menu</h3>
     <hr />
     <div class="row-fluid">
@@ -57,7 +57,7 @@
         </thead>
         <tbody>
           {{#products}}
-          <tr>
+          <tr class="product-row">
             <td>
               <table class="product-view-container {{#unless isAvailable}}not-available{{/unless}}">
                 <tr class="product-view">

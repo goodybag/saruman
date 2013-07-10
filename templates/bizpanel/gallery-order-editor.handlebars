@@ -1,30 +1,42 @@
-<h3>Edit Tablet Display Order</h3>
-<hr />
-<div class="row-fluid">
-  <div class="span12">
-    <select class="msg" data-msg-name="changeCategoryOrderCategory">
-      {{#categories}}
-      <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
-      {{/categories}}
-    </select>
-  </div>
-</div>
-{{#products}}
-<div class="row-fluid product-row" data-id="{{id}}">
-  <div class="span2">
-    {{name}}
-  </div>
-  <div class="span2">
-    {{order}}
-  </div>
-  <div class="span8">
-    <div class="button-group">
-      <div class="btn btn-small msg" data-msg-name="moveProductUp" data-id="{{id}}"><i class="icon-arrow-up"></i></div>
-      <div class="btn btn-small msg" data-msg-name="moveProductDown" data-id="{{id}}"><i class="icon-arrow-down"></i></div>
+<div class="fixed-header">
+  <h3>Edit Tablet Display Order for Location {{location.street1}}</h3>
+  <hr />
+  <div class="row-fluid">
+    <div class="span5">
+        <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls controls-row">
+              <select class="msg" data-msg-name="changeCategoryOrderCategory" style="width:100%">
+                {{#categories}}
+                <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                {{/categories}}
+              </select>
+            </div>
+          </div>
+        </form>
     </div>
   </div>
 </div>
-{{/products}}
+<div class="tablet-products-table-container">
+  {{#products}}
+  <div class="row-fluid product-view" data-id="{{id}}">
+    <div class="span2">
+      <img class="msg" data-msg-name="showPhoto" data-url="{{photoUrl}}" data-name="{{name}}" src="{{productImage photoUrl 70}}" alt="missing photo of {{name}}" />
+    </div>
+    <div class="span4">
+      <div class="product-name">{{order}} - {{name}}</div>
+      <div class="product-description">{{description}}</div>
+    </div>
+    <div class="span6">
+      <div class="button-group">
+        <div class="btn btn-small msg" data-msg-name="moveProductUp" data-id="{{id}}"><i class="icon-arrow-up"></i></div>
+        <div class="btn btn-small msg" data-msg-name="moveProductDown" data-id="{{id}}"><i class="icon-arrow-down"></i></div>
+      </div>
+    </div>
+  </div>
+  {{/products}}
+</div>
 {{! add fake form here so the controls will line up}}
 <form class="form-horizontal">
   <div class="form-actions">

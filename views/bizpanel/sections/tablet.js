@@ -72,6 +72,7 @@ define(function(require) {
           name: product.name,
           id: product.id,
           photoUrl: product.photoUrl,
+          description: product.description,
           order: isSpotlight ? product.spotlightOrder : product.galleryOrder
         };
         if(typeof viewObj.order == 'undefined') {
@@ -80,6 +81,7 @@ define(function(require) {
         return viewObj;
       });
       var viewData = {
+        location: this.session.location,
         products: productViews,
         categories: this.productFilter.getCategorySelectView(this.menu.sections)
       };
@@ -87,6 +89,9 @@ define(function(require) {
       this.$el.html(this.template(viewData));
     },
     subscribe: {
+      loadManagerEnd: function(session) {
+        this.session = session;
+      },
       loadMenuEnd: function(menu) {
         this.menu = menu;
         //create a new array of products as a copy of

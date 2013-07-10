@@ -36,13 +36,22 @@ define(function(require) {
 
   //error shower
   subscribe({
+    errorCount: 0,
     subscribe: {
       showError: function(msg) {
         troller.spinner.stop();
-        $("#errorModal").modal().find('.error-message-container').html(msg.message);
+        $modal = $("#errorModal");
+        $msgContainer = $modal.modal().find('.error-message-container');
+        $msgContainer.html(msg.message);
+        if(++this.errorCount > 1) {
+          $modal.find('.maybe-refresh').show();
+        }
       },
       refreshPage: function() {
-        window.location.reload();
+        //clear session & reload the page
+        user.logout(function() {
+          window.location.reload();
+        });
       }
     }
   });
@@ -127,13 +136,14 @@ define(function(require) {
 
   //load all the initial data for the application
   BizPanelAppView.prototype._onUserAuth = function(user) {
-    troller.spinner.spin();
-    //hide layout until load is completed
-    bus.publish('loadManagerBegin', user);
-    bus.publish('showSection', {section: 'dashboard'});
+    bus.publish('userAuthenticated', {user: user});
   };
 
   BizPanelAppView.prototype.subscribe = {
+    userAuthenticated: function(msg) {
+      bus.publish('loadManagerBegin', msg.user);
+      bus.publish('showSection', {section: this.section || 'dashboard'});
+    },
     showSection: function(msg) {
       console.log('show section', msg);
       if(!msg.section) return;
@@ -150,6 +160,7 @@ define(function(require) {
       }.bind(this));
     },
     loadManagerBegin: function() {
+      troller.spinner.spin();
     },
     loadManagerEnd: function(msg) {
       troller.spinner.stop();
@@ -182,6 +193,12 @@ define(function(require) {
         troller.spinner.stop();
         $("#forgotPasswordModal").modal('hide');
       });
+    },
+    nonManagerLogin: function(msg) {
+      user.logout(function(err, res) {
+        this.publish('showLogin');
+        this.publish('showError', { message: 'You are not set up to manage a business.' });
+      }.bind(this));
     }
   };
 
