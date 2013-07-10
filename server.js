@@ -1,13 +1,15 @@
 var express = require('express');
+var log = require('logged')(__filename);
 var app = require('express')();
 var httpProxy = require('http-proxy');
 
 app.use(express.static(__dirname));
 
 
-app.configure(function() {
+app.configure('development', function() {
   app.set('proxy.host', 'localhost');
   app.set('proxy.port', 3000);
+  app.use(express.static(__dirname + '/test'));
 });
 
 app.configure('staging', 'production', function() {
@@ -15,8 +17,11 @@ app.configure('staging', 'production', function() {
   app.set('proxy.port', 80);
 });
 
-app.configure('development', function() {
-  app.use(express.static(__dirname + '/test'));
+app.configure('production', function() {
+  app.configure('staging', 'production', function() {
+    app.set('proxy.host', 'magic.goodybag.com');
+    app.set('proxy.port', 80);
+  });
 });
 
 var proxy = new httpProxy.HttpProxy({
@@ -28,7 +33,11 @@ var proxy = new httpProxy.HttpProxy({
 });
 
 app.use(function(req, res, next) {
-  console.log('proxing request', req.path, 'to', app.set('proxy.host'), app.set('proxy.port'));
+  log.debug('proxy request', {
+    path: req.path,
+    host: app.set('proxy.host'),
+    port: app.set('proxy.port')
+  })
   proxy.proxyRequest(req, res);
 });
 

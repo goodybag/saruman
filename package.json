@@ -22,7 +22,6 @@
     }
   },
   "devDependencies": {
-    "express": "latest",
     "jamjs": "latest",
     "requirejs": "latest",
     "grunt": "0.4.x",
@@ -38,6 +37,8 @@
   "author": "John Fawcett",
   "license": "BSD",
   "dependencies": {
-    "http-proxy": "~0.10.3"
+    "express": "latest",
+    "http-proxy": "~0.10.3",
+    "logged": "~0.2.1"
   }
 }
