@@ -395,6 +395,10 @@ td textarea:focus {
   color: white;
 }
 
+.topnav .dropdown-menu a {
+  color: black;
+}
+
 .topnav li a:hover {
   background-color: transparent;
   color: white;
