@@ -16,7 +16,8 @@ define(function(require){
       ]
 
     , defaults: {
-        id: 'New'
+        id: 'New',
+        password: null
       }
 
     , initialize: function(attributes){
@@ -61,6 +62,11 @@ define(function(require){
 
         var attr = utils.clone(this.attributes), this_ = this;
         delete attr.id;
+
+        //do not save password if it has not changed
+        if(!attr.password) {
+          delete attr.password;
+        }
 
         if (this.attributes.id && this.attributes.id !== 'New'){
           if (attr.groups){
