@@ -495,12 +495,33 @@ table.hours .day-name {
   vertical-align: middle;
 }
 
+.contact-us .btn-block {
+  margin-top: 40px;
+}
+
+.contact-us .media {
+  margin-bottom: 40px;
+}
+
+.contact-us .thumbnail {
+  padding: 0px;
+  border-color: #DDD;
+}
+
+.contact-form-header {
+  padding: 10px;
+  padding-left: 20px;
+  color: #AAA;
+  border-bottom: 1px solid #DDD;
+}
+
 form.contact {
-  padding-top: 50px;
+  padding-top: 20px;
+  padding-left: 20px;
 }
 
 form.contact input[type=text], input[type=email], form.contact textarea {
-  width: 60%;
+  width: 90%;
 }
 
 img.msg {

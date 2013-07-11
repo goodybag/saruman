@@ -1,81 +1,88 @@
-<h3>Contact Us</h3>
-<hr />
-<div class="row-fluid">
-  <div class="span6">
-    <center class="well">
-      <h3><a href="mailto:support@goodybag.com">support@goodybag.com</a></h3>
-      <h3>512-667-4224</h3>
-    </center>
-    <div class="row-fluid">
-      <div class="span6">
-        <button class="btn btn-block msg" data-msg-name="requestManager">Request your Acct Manager</button>
-        <span id="request-manager-status" data-progress-text="Sending request" data-end-text="Request sent!" class="message hide"></span>
-      </div>
-      <div class="span6">
-        <button class="btn btn-block msg" data-msg-name="requestKeytags">Request Keytags</button>
-        <span id="request-keytags-status" data-progress-text="Sending request" data-end-text="Request sent!" class="message hide">Sending keytag request</span>
+<div class="contact-us">
+  <h3>Contact Us</h3>
+  <hr />
+  <div class="row-fluid">
+    <div class="span5">
+      <div class="media">
+        <a class="pull-left" href="#">
+          <img class="media-object" src="https://s3.amazonaws.com/uploads.hipchat.com/42627/312607/r4helpl5h69enxt/GBlogocircle_72x72.png">
+        </a>
+        <div class="media-body" style="margin-left:80px;">
+          <h4 class="media-heading" style="padding-top:8px;">Phone: 512.667.4224</h4>
+          <h4 class="media-heading">Email: <a href="mailto:support@goodybag.com">support@goodybag.com</a></h4>
+        </div>
       </div>
     </div>
+    <div class="span3">
+      <button class="btn btn-block msg" data-msg-name="requestManager">Request your Acct Manager</button>
+      <span id="request-manager-status" data-progress-text="Sending request" data-end-text="Request sent!" class="message hide"></span>
+    </div>
+    <div class="span2">
+      <button class="btn btn-block msg" data-msg-name="requestKeytags">Request Keytags</button>
+      <span id="request-keytags-status" data-progress-text="Sending request" data-end-text="Request sent!" class="message hide">Sending keytag request</span>
+    </div>
   </div>
-  <div class="span6">
-    <img src="http://austinot.com/wp-content/uploads/2013/01/Goodybag-Team-Austin-TX-1024x682.jpg" class="img-rounded" style="height: 200px;"/>
-  </div>
-</div>
-<div class="row-fluid">
-  <div class="span12">
-    <form id="contact" class="form contact">
+  <div class="row-fluid">
+    <div class="span10 thumbnail">
       <div class="row-fluid">
-        <div class="span2">
-          <label for="contact-name">Name</label>
-        </div>
-        <div class="span10">
-          <input type="text" name="name" id="contact-name" placeholder="Your Name"/>
+        <div class="span12 contact-form-header" style="background-color:#EEE">
+          Send a Message to your Account Manager
         </div>
       </div>
-      <div class="row-fluid">
-        <div class="span2">
-          <label for="contact-email">Email Address</label>
-        </div>
-        <div class="span10">
-          <input type="email" name="from" id="contact-email" value="{{user.email}}" />
-        </div>
-      </div>
-      <div class="row-fluid">
-        <div class="span2">
-          <label for="contact-subject">Subject</label>
-        </div>
-        <div class="span10">
-          <input type="text" id="contact-subject" name="subject" placeholder="I need some help" />
-        </div>
-      </div>
-      <div class="row-fluid">
-        <div class="span2">
-          <label for="contact-message">Message</label>
-        </div>
-        <div class="span10">
-          <textarea id="contact-message" name="message" rows="7" placeholder="My tablet is not attracting as many customers as I would like, and I was wondering if you could give me some advice on things I could do to improve that."></textarea>
-        </div>
-      </div>
-      <div class="row-fluid">
-        <div class="span10 offset2">
-          <label class="checkbox">
-            <input type="checkbox" id="contact-copy" name="copySender" />Send me a copy
-          </label>
-        </div>
-      </div>
-      <div class="row-fluid hidden">
-        <div class="span10 offset2">
-          <div class="alert">
-            <strong>Uh oh!</strong> We cannot send a message unless you provide us with all the information above.  Please make sure you have included your name, email address, a subject, and a message.  Thanks!
+      <form id="contact" class="form contact">
+        <div class="row-fluid">
+          <div class="span2">
+            <label for="contact-name">Name</label>
+          </div>
+          <div class="span10">
+            <input type="text" name="name" id="contact-name" placeholder="Your Name"/>
           </div>
         </div>
-      </div>
-      <div class="row-fluid">
-        <div class="span10 offset2">
-          <button class="btn msg" data-msg-name="sendContactMessage">Send</button>
-          <span class="message hide" data-progress-text="Sending" data-end-text="Thanks! Your message has been sent.">Sending...</span>
+        <div class="row-fluid">
+          <div class="span2">
+            <label for="contact-email">Email Address</label>
+          </div>
+          <div class="span10">
+            <input type="email" name="from" id="contact-email" value="{{user.email}}" />
+          </div>
         </div>
-      </div>
-    </form>
+        <div class="row-fluid">
+          <div class="span2">
+            <label for="contact-subject">Subject</label>
+          </div>
+          <div class="span10">
+            <input type="text" id="contact-subject" name="subject" placeholder="A little feedback" />
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span2">
+            <label for="contact-message">Message</label>
+          </div>
+          <div class="span10">
+            <textarea id="contact-message" name="message" rows="7" placeholder="I just wanted to drop you a quick note to say we've been seeing good customer engagement through Goodybag."></textarea>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span10 offset2">
+            <label class="checkbox">
+              <input type="checkbox" id="contact-copy" name="copySender" />Send me a copy
+            </label>
+          </div>
+        </div>
+        <div class="row-fluid hidden">
+          <div class="span10 offset2">
+            <div class="alert">
+              <strong>Uh oh!</strong> We cannot send a message unless you provide us with all the information above.  Please make sure you have included your name, email address, a subject, and a message.  Thanks!
+            </div>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span10 offset2">
+            <button class="btn msg" data-msg-name="sendContactMessage">Send</button>
+            <span class="message hide" data-progress-text="Sending" data-end-text="Thanks! Your message has been sent.">Sending...</span>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
