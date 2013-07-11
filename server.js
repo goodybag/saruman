@@ -41,4 +41,7 @@ app.use(function(req, res, next) {
   proxy.proxyRequest(req, res);
 });
 
-require('http').createServer(app).listen(8000);
+var port = process.env.PORT || 8000;
+require('http').createServer(app).listen(port, function() {
+  log.info('listening', {port: port});
+});
