@@ -1,5 +1,5 @@
 define(function(require) {
-  var utils = require('../../../lib/utils');
+  var utils = require('../../lib/utils');
   var template = require('hbt!./template')
   var moment = require('moment');
   var EditHoursView =  utils.View.extend({

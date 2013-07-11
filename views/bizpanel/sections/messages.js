@@ -6,14 +6,7 @@ define(function(require) {
     template: require('hbt!../../../templates/bizpanel/messages'),
     url: '#messages',
     icon: 'user',
-    text: 'Messaging',
-    subscribe: {
-      loadMenuEnd: function(menu) {
-        _.each(menu.products, function(product) {
-
-        });
-      }
-    }
+    text: 'Messaging'
   }));
 
   return messages;

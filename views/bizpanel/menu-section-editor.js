@@ -1,7 +1,8 @@
 define(function(require) {
-  var utils = require('../../../lib/utils');
+  var utils = require('../../lib/utils');
+  var _ = utils._ || window._;
   var MsgView = require('./msg-view');
-  var template = require('hbt!../../../templates/bizpanel/menu-section-editor');
+  var template = require('hbt!../../templates/bizpanel/menu-section-editor');
   return MsgView.extend({
     template: template,
     render: function(data) {

@@ -2,6 +2,7 @@
 define(function(require) {
   var bus = require('../../lib/pubsub');
   var utils = require('../../lib/utils');
+  var _ = utils._ || window._;
   var subscribe = require('../../lib/bizpanel/subscribe');
 
   var MsgView = utils.View.extend({

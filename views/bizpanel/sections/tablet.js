@@ -1,5 +1,5 @@
 define(function(require) {
-  var _ = require('underscore');
+  var _ = require('underscore') || window._;
   var bus = require('../../../lib/pubsub');
   var MsgView = require('../msg-view');
   var Section = require('../section');
