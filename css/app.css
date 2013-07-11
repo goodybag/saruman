@@ -523,14 +523,48 @@ img.msg {
   padding-bottom: 5px;
 }
 
+/* this is insane stuff to get the menu table
+ * to have a fixed header and properly scroll
+ */
+table.menu-products {
+  width: auto;
+  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 15px;
+}
+
 .menu-products thead .msg {
   cursor: pointer;
   color: #0088cc;
 }
 
+.menu-products thead tr {
+  border-top: 1px solid #DDD;
+  border-bottom: 1px solid #DDD;
+  position: fixed;
+  margin-right: 21px;
+  background-color: #EFEFEF;
+}
+
+.menu-products thead {
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.menu-products .scrolling-body {
+  float: left;
+  margin-top: 36px;
+}
+
 .menu-products thead i {
   cursor: pointer;
   color: #555;
+}
+
+.menu-products td {
+  border-bottom: 1px solid #EEE;
 }
 
 .display-toggle label {
