@@ -614,7 +614,7 @@ table.menu-products {
 
 .product-view-container.not-available em {
   display: block;
-  color: #555;
+  color: #AAA;
   font-weight: bold;
 }
 
