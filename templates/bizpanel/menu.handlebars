@@ -1,8 +1,17 @@
 <div id="menuView">
-  <div class="fixed-header">
+  <div class="fixed-header" style="border-bottom: none;">
     <h3>Manage the {{business.name}} Menu</h3>
     <hr />
     <div class="row-fluid">
+      <div class="span4">
+        <form class="form-search" style="padding-bottom: 20px;">
+          <div class="input-append">
+            <input type="text" class="span12 search-query" id="productSearchText" placeholder="Search by Item Name or Section" value="{{searchString}}"/>
+            <button type="submit" class="btn msg" data-msg-name="searchProducts"><i class="icon-search"></i> Search</button>
+          </div>
+        </form>
+        <button class="btn btn-primary msg" data-msg-name="newProduct"><i class="icon-plus"></i> Add New Item</button>
+      </div>
       <div class="span6">
         {{!-- dummy form so boostrap will style}}
         <form class="form-horizontal">
@@ -14,21 +23,12 @@
                 <option value="{{value}}" {{#selected}}selected{{/selected}}>{{name}}</option>
                 {{/sections}}
               </select>
+            <button class="btn btn-small msg" data-msg-name="editCategories">Edit Categories</button>
             </div>
           </div>
           <div class="form-actions" style="border:none; background-color:inherit; padding-top:0">
-            <button class="btn btn-small msg" data-msg-name="editCategories">Edit Categories</button>
           </div>
         </form>
-      </div>
-      <div class="span6">
-        <form class="form-search">
-          <div class="input-append">
-            <input type="text" class="span12 search-query" id="productSearchText" placeholder="Search by Item Name or Section" value="{{searchString}}"/>
-            <button type="submit" class="btn msg" data-msg-name="searchProducts"><i class="icon-search"></i> Search</button>
-          </div>
-        </form>
-        <button class="btn btn-primary msg" data-msg-name="newProduct"><i class="icon-plus"></i> Add New Item</button>
       </div>
     </div>
     <div class="row-fluid">
