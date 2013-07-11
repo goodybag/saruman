@@ -6,8 +6,6 @@ define(function(require) {
   var MenuSectionEditor = require('../menu-section-editor');
   var editor = new MenuSectionEditor();
 
-
-
   var MsgView = require('../msg-view');
   var ProductEditTemplate = require('hbt!../../../templates/bizpanel/product-edit');
   var ProductEditView = MsgView.extend({
