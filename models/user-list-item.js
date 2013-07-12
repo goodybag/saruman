@@ -49,8 +49,8 @@ define(function(require){
             //if the user's group collection was modified with the
             //'manager' group, automatically promote or demote as needed when
             //the model is saved
-            var wasManager = _.findWhere(this.attributes.groups, {name: 'manager'});
-            var isManager = _.findWhere(value, {name: 'manager'});
+            var wasManager = utils.findWhere(this.attributes.groups, {name: 'manager'});
+            var isManager = utils.findWhere(value, {name: 'manager'});
             this._promoteToManager = false;
             if(!wasManager && isManager) {
               this._promoteToManager = true;
