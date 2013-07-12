@@ -109,9 +109,7 @@ define(function(require){
       
         this_.$el.find('.error').removeClass('error');
 
-        if (error) {
-          return troller.app.error(error, this_.$el, this_.alert);
-        } 
+        if (error) return troller.app.error(error, this_.$el, this_.alert);
 
         this_.doSuccessThing(this_.$el.find('.btn-primary'));
       });

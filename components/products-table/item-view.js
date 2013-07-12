@@ -110,14 +110,11 @@ define(function(require){
         this.enterReadMode();
         this.updateModelWithFormData();
         this.saveModel(function(error){
-          if (error) {
-            return troller.app.error(error, this_.$el, this_.alert);
-          }
+          if (error) return troller.app.error(error, this_.$el, this_.alert);
           this_.render();
         });
       }
     }
-
 
   , alert: function(msg, error) {
       var $alertContainer = this.$el.closest('.page').find('.alert-container')
