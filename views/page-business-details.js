@@ -31,7 +31,6 @@ define(function(require){
   
   require('bootstrap-alert');
 
-
   return Page.extend({
     className: 'page page-business-details'
 

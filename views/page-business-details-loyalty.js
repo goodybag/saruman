@@ -92,7 +92,7 @@ define(function(require){
     }
 
   , onSubmit: function(e){
-      e.preventDefault();      
+      e.preventDefault();
 
       troller.spinner.spin();
 
@@ -115,7 +115,6 @@ define(function(require){
 
         this_.doSuccessThing(this_.$el.find('.btn-primary'));
       });
-      
     }
 
   , onLogoClick: function(e){

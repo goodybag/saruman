@@ -18,7 +18,7 @@ define(function(require){
       options.template = options.template || template;
 
       this.categories = options.categories;
-      this.allTags    = options.allTags;
+      this.allTags = options.allTags;
       utils.bindAll(this, 'alert');
 
       return TableItem.prototype.initialize.call(this, options);
@@ -120,7 +120,6 @@ define(function(require){
 
 
   , alert: function(msg, error) {
-      // Show a bootstrap alert message
       var $alertContainer = this.$el.closest('.page').find('.alert-container')
         , template        = alertTemplate({ msg: msg, error: error });
 

@@ -74,7 +74,6 @@ define(function(require){
         );
       }
 
-
       this.$el.html(
         this.template({
           model:    this.model ? this.model.toJSON() : null
