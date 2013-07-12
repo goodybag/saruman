@@ -44,8 +44,7 @@
       <input type="text" style="width:200px" id="product-tags-input" />
     </div>
   </div>
-  {{#if-more-than 1 locations}}
-  <div class="control-group">
+  <div class="control-group {{#if-more-than 1 locations}} {{else}}hide{{/if-more-than}}">
     <label class="control-label">Available Locations</label>
     <div class="controls">
       {{#locations}}
@@ -54,6 +53,5 @@
       {{/locations}}
     </div>
   </div>
-  {{/if-more-than}}
   <input type="hidden" value="{{id}}" id="product-id-input" />
 </form>
