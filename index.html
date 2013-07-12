@@ -9,6 +9,13 @@
 
     <script type="text/javascript" src="jam/require.js"></script>
     <script type="text/javascript">
+      requirejs.config({
+        shim: {
+          'select2': {
+            deps: ['jquery']
+          }
+        }
+      });
       require(['app'], function(app){
         app.init();
       });
