@@ -1,13 +1,14 @@
 define(function(require){
   var
-    utils       = require('../../lib/utils')
-  , config      = require('../../config')
-  , api         = require('../../lib/api')
-  , troller     = require('../../lib/troller')
-  , TableItem   = require('../table/component').Item
-  , PhotoEditor = require('../photo-editor/component').Main
+    utils         = require('../../lib/utils')
+  , config        = require('../../config')
+  , api           = require('../../lib/api')
+  , troller       = require('../../lib/troller')
+  , TableItem     = require('../table/component').Item
+  , PhotoEditor   = require('../photo-editor/component').Main
 
-  , template    = require('hbt!./list-item-tmpl')
+  , template      = require('hbt!./list-item-tmpl')
+  , alertTemplate = require('hbt!./alert')
   ;
 
   return TableItem.extend({
@@ -18,6 +19,7 @@ define(function(require){
 
       this.categories = options.categories;
       this.allTags = options.allTags;
+      utils.bindAll(this, 'alert');
 
       return TableItem.prototype.initialize.call(this, options);
     }
@@ -97,6 +99,28 @@ define(function(require){
         });
         return vals;
       }
+    }
+
+  , onEditSaveClick: function(e){
+      e.preventDefault();
+
+      if (this.mode === 'read') this.enterEditMode();
+      else {
+        var this_ = this;
+        this.enterReadMode();
+        this.updateModelWithFormData();
+        this.saveModel(function(error){
+          if (error) return troller.app.error(error, this_.$el, this_.alert);
+          this_.render();
+        });
+      }
+    }
+
+  , alert: function(msg, error) {
+      var $alertContainer = this.$el.closest('.page').find('.alert-container')
+        , template        = alertTemplate({ msg: msg, error: error });
+
+      $alertContainer.html(template);
     }
   });
 });

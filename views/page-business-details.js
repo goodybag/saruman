@@ -28,6 +28,8 @@ define(function(require){
     , 'product-categories':     require('./page-product-categories')
     }
   ;
+  
+  require('bootstrap-alert');
 
   return Page.extend({
     className: 'page page-business-details'
