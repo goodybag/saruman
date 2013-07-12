@@ -259,6 +259,11 @@ input.error {
   color: #B94A48;
 }
 
+span.error {
+  color: #B94A48;
+  font-weight: bolder;
+}
+
 @-webkit-keyframes barrel-roll {
   from { -webkit-transform: rotate(0); }
   to   { -webkit-transform: rotate(360deg); }

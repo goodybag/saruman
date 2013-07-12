@@ -6,6 +6,7 @@ define(function(require){
   , troller           = require('../lib/troller')
 
   , template          = require('hbt!./../templates/page-business-details-loyalty')
+  , alertTemplate     = require('hbt!./../templates/page-alert')
   , resultTemplate    = require('hbt!./../templates/loyalty-result')
 
   , defaultModel = {
@@ -36,6 +37,9 @@ define(function(require){
       this.businessId = options.businessId;
       this.business   = options.business;
       this.loyalty    = options.loyalty;
+
+      // Bind view object to alert callback      
+      utils.bindAll(this, 'alert');
     }
 
   , onShow: function(options){
@@ -102,8 +106,10 @@ define(function(require){
 
       api.businesses.loyalty.update(this.business.id, loyalty, function(error){
         troller.spinner.stop();
+      
+        this_.$el.find('.error').removeClass('error');
 
-        if (error) return troller.app.error(error);
+        if (error) return troller.app.error(error, this_.$el, this_.alert);
 
         this_.doSuccessThing(this_.$el.find('.btn-primary'));
       });
@@ -120,6 +126,14 @@ define(function(require){
         },
         function(error){ /*alert(error);*/ }
       );
+    }
+
+  , alert: function(msg, error) {    
+      // Show a bootstrap alert message
+      var $alertContainer = this.$el.find('.alert-container')
+        , template        = alertTemplate({ msg: msg, error: error});
+      
+      $alertContainer.html(template);
     }
   });
 });
