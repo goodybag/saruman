@@ -19,7 +19,8 @@ define(function(require) {
     menu: require('./sections/menu'),
     tablet: require('./sections/tablet'),
     messages: require('./sections/messages'),
-    contact: require('./sections/contact')
+    contact: require('./sections/contact'),
+    settings: require('./sections/settings')
   };
 
   var getNavViewData = function(name) {
@@ -27,6 +28,7 @@ define(function(require) {
     var data = [];
     for(var key in sections) {
       var section = sections[key];
+      if(section.inNav === false) continue;
       section.active = (key == name);
       section.name = key;
       data.push(section);
@@ -181,6 +183,9 @@ define(function(require) {
         this.loginView.show();
         $(document.body).append(this.loginView.$el);
       }.bind(this));
+    },
+    showSettings: function() {
+
     },
     forgotPassword: function() {
       $("#forgotPasswordModal").modal();

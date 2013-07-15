@@ -8,7 +8,7 @@ var httpProxy = require('http-proxy');
 app.configure('development', function() {
   app.set('proxy.host', 'localhost');
   app.set('proxy.port', 3000);
-  app.set('listen.port', process.env.PORT || 3000);
+  app.set('listen.port', process.env.PORT || 8000);
   app.set('dir.static', __dirname);
   app.use(express.static(__dirname + '/test'));
 });

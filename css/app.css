@@ -410,6 +410,11 @@ td textarea:focus {
   color: white;
 }
 
+.topnav li {
+  display: block;
+  float: left;
+}
+
 .topnav .dropdown-menu a {
   color: black;
 }
@@ -518,7 +523,8 @@ table.hours .day-name {
   margin-bottom: 40px;
 }
 
-.contact-us .thumbnail {
+.contact-us .thumbnail,
+.settings .thumbnail {
   padding: 0px;
   border-color: #DDD;
 }
@@ -530,12 +536,19 @@ table.hours .day-name {
   border-bottom: 1px solid #DDD;
 }
 
-form.contact {
+
+
+form.contact,
+form.password {
   padding-top: 20px;
   padding-left: 20px;
 }
 
 form.contact input[type=text], input[type=email], form.contact textarea {
+  width: 90%;
+}
+
+form.password input {
   width: 90%;
 }
 

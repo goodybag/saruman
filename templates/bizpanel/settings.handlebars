@@ -1,0 +1,45 @@
+<div class="settings">
+  <h3>Settings</h3>
+  <hr />
+  <div class="row-fluid">
+    <div class="span10 thumbnail">
+      <div class="row-fluid">
+        <div class="span12 contact-form-header" style="background-color:#EEE">
+          Change Your Password
+        </div>
+      </div>
+      <form id="settings-password" class="form password">
+        <div class="row-fluid hide">
+          <div class="span3">
+            <label for="settings-old-password" value="asdf">Current Password</label>
+          </div>
+          <div class="span9">
+            <input type="password" name="oldPassword" id="settings-old-password"/>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span3">
+            <label for="settings-new-password">New Password</label>
+          </div>
+          <div class="span9">
+            <input type="password" name="newPassword" id="settings-new-password"/>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span3">
+            <label for="settings-confirm-password">New Password (again)</label>
+          </div>
+          <div class="span9">
+            <input type="password" id="settings-confirm-password" name="confirmPassword" placeholder="" />
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="span9 offset3">
+            <button class="btn msg disabled" data-msg-name="changePassword">Change</button>
+            <span class="message hide" data-progress-text="Sending" data-end-text="Thanks! Your message has been sent.">Sending...</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
