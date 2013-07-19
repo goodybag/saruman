@@ -42,6 +42,8 @@ define(function(require){
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
+      this.events['click .search-type'] = 'onSearchTypeClick';
+
       var this_ = this;
 
       troller.add('users.setPage', function(page){
@@ -60,6 +62,7 @@ define(function(require){
     }
 
   , fetchUsers: function(){
+
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
@@ -114,6 +117,11 @@ define(function(require){
         allGroups:    this.groups
       , groupsById:   this.groupsById
       }
+    }
+
+  , onSearchTypeClick: function(e) {
+      this.$el.find('.search-wrapper .dropdown-toggle strong').text(e.target.text);
+      e.preventDefault();
     }
   });
 });

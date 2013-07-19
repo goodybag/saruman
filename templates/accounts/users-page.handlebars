@@ -1,9 +1,20 @@
 <div class="row page-actions">
-  <div class="input-append search-wrapper">
-    <input class="span2 users-search" placeholder="Search by Email" type="text">
-    <button class="btn" type="button">
-      <i class="icon-search"></i>
-    </button>
+  <div class="input-prepend input-append search-wrapper">
+    <div class="btn-group">
+      <button class="btn dropdown-toggle" data-toggle="dropdown">
+        <strong>Email</strong>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href='#' class="search-type">Email</a></li>
+        <li><a href='#' class="search-type">First Name</a></li>
+        <li><a href='#' class="search-type">Last Name</a></li>
+      </ul>
+    </div>
+    <input class="span2 users-search" placeholder="Search" type="text">
+      <button class="btn" type="button">
+        <i class="icon-search"></i>
+      </button>
   </div>
 </div>
 <div class="row page-actions">
