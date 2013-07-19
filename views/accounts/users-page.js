@@ -42,7 +42,8 @@ define(function(require){
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
-      this.events['click .search-type'] = 'onSearchTypeClick';
+      this.events['click .search-type']   = 'onSearchTypeClick';
+      this.events['click .search-button'] = 'onUsersSearchKeyUp';
 
       var this_ = this;
 
@@ -62,7 +63,6 @@ define(function(require){
     }
 
   , fetchUsers: function(){
-
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
@@ -70,14 +70,21 @@ define(function(require){
           limit : paging.limit
         , offset: paging.offset
         }
-      , filter  = this.$search.val()
+      , type    = this.$el.find('.search-wrapper .dropdown-toggle strong').text()
+      , $usersSearch = this.$el.find('.users-search')
       ;
 
-      if (filter) options.filter = filter;
-
+      if ($usersSearch.val()) {
+        switch (type) {
+          case 'Email' : options.email = $usersSearch.val(); break;
+          case 'First Name' : options.firstName = $usersSearch.val(); break;
+          case 'Last Name' : options.lastName = $usersSearch.val(); break;
+          default: break;
+        }
+      }
       utils.parallel({
         users: function(done){
-          api.users.list(options, function(error, users, meta){
+          api.users.search(options, function(error, users, meta){
             if (error) return done(error);
 
             this_.paginator.setTotal(meta.total);
