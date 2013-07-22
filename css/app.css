@@ -215,10 +215,6 @@ table .read-mode-value {
   top: 0; right: 0;
 }
 
-.search-wrapper .btn-group {
-  display: inline;
-}
-
 table input.avatarUrl {
   display: none;
 }
