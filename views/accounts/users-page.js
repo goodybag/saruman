@@ -123,12 +123,18 @@ define(function(require){
       return {
         allGroups:    this.groups
       , groupsById:   this.groupsById
-      }
+      };
     }
 
   , onSearchTypeClick: function(e) {
-      this.$el.find('.search-wrapper .dropdown-toggle strong').text(e.target.text);
       e.preventDefault();
+
+      // Replace search type
+      this.$el.find('.search-wrapper .dropdown-toggle strong').text(e.target.text);
+      
+      // Fresh search
+      this.paginator.setPage(0);
+      this.fetchUsers();
     }
   });
 });
