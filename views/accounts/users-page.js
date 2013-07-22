@@ -70,18 +70,20 @@ define(function(require){
           limit : paging.limit
         , offset: paging.offset
         }
-      , type    = this.$el.find('.search-wrapper .dropdown-toggle strong').text()
-      , $usersSearch = this.$el.find('.users-search')
+      , searchType  = this.$el.find('.search-wrapper .dropdown-toggle strong').text()
+      , searchQuery = this.$el.find('.users-search').val()
       ;
 
-      if ($usersSearch.val()) {
-        switch (type) {
-          case 'Email' : options.email = $usersSearch.val(); break;
-          case 'First Name' : options.firstName = $usersSearch.val(); break;
-          case 'Last Name' : options.lastName = $usersSearch.val(); break;
+      // Set filter from search type drop down
+      if (searchQuery) {
+        switch (searchType) {
+          case 'Email' : options.email = searchQuery; break;
+          case 'First Name' : options.firstName = searchQuery; break;
+          case 'Last Name' : options.lastName = searchQuery; break;
           default: break;
         }
       }
+
       utils.parallel({
         users: function(done){
           api.users.search(options, function(error, users, meta){
@@ -127,12 +129,9 @@ define(function(require){
     }
 
   , onSearchTypeClick: function(e) {
+      // Handles changing the search type drop down
       e.preventDefault();
-
-      // Replace search type
       this.$el.find('.search-wrapper .dropdown-toggle strong').text(e.target.text);
-      
-      // Fresh search
       this.paginator.setPage(0);
       this.fetchUsers();
     }
