@@ -42,8 +42,7 @@ define(function(require){
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
-      this.events['change .search-select'] = 'onSearchSelectChange';
-      this.events['click .search-button']  = 'onUsersSearchKeyUp';
+      this.events['change .search-select'] = this.onUsersSearchSubmit;
 
       var this_ = this;
 
@@ -62,7 +61,7 @@ define(function(require){
       });
     }
 
-  , fetchUsers: function(){
+  , fetchUsers: utils.throttle(function(){
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
@@ -111,20 +110,13 @@ define(function(require){
       );
 
       return this;
-    }
+    }, 666)
 
   , getAdditionalViewOptions: function(){
       return {
         allGroups:    this.groups
       , groupsById:   this.groupsById
       };
-    }
-
-  , onSearchSelectChange: function(e) {
-      // Refreshes search with new search type
-      e.preventDefault();
-      this.paginator.setPage(0);
-      this.fetchUsers();
     }
   });
 });

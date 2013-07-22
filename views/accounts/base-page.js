@@ -18,7 +18,7 @@ define(function(require){
 
   , events: {
       'keyup .users-search':            'onUsersSearchKeyUp'
-    , 'click .users-search':            'onUsersSearchKeyUp'
+    , 'submit .search-wrapper':         'onUsersSearchSubmit'
     , 'click .btn-new-user':            'onNewUserBtnClick'
     }
 
@@ -215,6 +215,11 @@ define(function(require){
       });
     }
 
+  , onUsersSearchSubmit: function(e) {
+      this.paginator.setPage(0);
+      e.preventDefault();
+      this.fetchUsers();
+    }
   , onUsersSearchKeyUp: function(e){
       this.fetchUsers();
     }
