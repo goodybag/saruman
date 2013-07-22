@@ -4,6 +4,7 @@ define(function(require){
   , api               = require('../../lib/api')
   , utils             = require('../../lib/utils')
   , Paginator         = require('../../lib/paginator')
+  , Components        = require('../../components/index')
   , troller           = require('../../lib/troller')
 
   , template          = require('hbt!./../../templates/accounts/users-page')
@@ -40,9 +41,10 @@ define(function(require){
       this.children = {
         paginatorTop:     new Views.Paginator({ paginator: this.paginator })
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
+      , userSearch:       new Components.UserSearch.Main()
       };
 
-      this.events['change .search-select'] = this.onUsersSearchSubmit;
+      this.listen();
 
       var this_ = this;
 
@@ -61,7 +63,7 @@ define(function(require){
       });
     }
 
-  , fetchUsers: utils.throttle(function(){
+  , fetchUsers: utils.throttle(function(resetPage){
       var
         this_   = this
       , paging  = this.paginator.getCurrent()
@@ -69,11 +71,9 @@ define(function(require){
           limit : paging.limit
         , offset: paging.offset
         }
-      , searchType  = this.$el.find('.search-wrapper .search-select').val()
-      , searchQuery = this.$el.find('.users-search').val()
       ;
-
-      options[searchType] = searchQuery;
+      if (resetPage) this.paginator.setPage(0);
+      options[this.children.userSearch.$type.val()] = this.children.userSearch.$query.val();
 
       utils.parallel({
         users: function(done){
@@ -111,6 +111,24 @@ define(function(require){
 
       return this;
     }, 666)
+
+  , render: function() {
+      this.$el.html(this.template());
+      
+      this.$el.find('.user-search-container').append(this.children.userSearch.$el);
+      this.$usersList = this.$el.find('.users-list');
+      this.$search = this.$el.find('.users-search');
+
+      this.renderUsers();
+
+      this.trigger('rendered');
+
+      return this;
+    }
+
+  , listen: function() {
+      this.listenTo(this.children.userSearch, 'submit', this.fetchUsers);
+    }
 
   , getAdditionalViewOptions: function(){
       return {

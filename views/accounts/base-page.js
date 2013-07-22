@@ -17,9 +17,11 @@ define(function(require){
     className: 'page page-users'
 
   , events: {
+    /*
       'keyup .users-search':            'onUsersSearchKeyUp'
     , 'submit .search-wrapper':         'onUsersSearchSubmit'
     , 'click .btn-new-user':            'onNewUserBtnClick'
+    */
     }
 
   , initialize: function(options){
