@@ -42,8 +42,8 @@ define(function(require){
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
-      this.events['change .search-select']   = 'onSearchSelectChange';
-      this.events['click .search-button'] = 'onUsersSearchKeyUp';
+      this.events['change .search-select'] = 'onSearchSelectChange';
+      this.events['click .search-button']  = 'onUsersSearchKeyUp';
 
       var this_ = this;
 
