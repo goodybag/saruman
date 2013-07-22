@@ -42,7 +42,7 @@ define(function(require){
       , paginatorBottom:  new Views.Paginator({ paginator: this.paginator })
       };
 
-      this.events['click .search-type']   = 'onSearchTypeClick';
+      this.events['change .search-select']   = 'onSearchSelectChange';
       this.events['click .search-button'] = 'onUsersSearchKeyUp';
 
       var this_ = this;
@@ -70,19 +70,11 @@ define(function(require){
           limit : paging.limit
         , offset: paging.offset
         }
-      , searchType  = this.$el.find('.search-wrapper .dropdown-toggle strong').text()
+      , searchType  = this.$el.find('.search-wrapper .search-select').val()
       , searchQuery = this.$el.find('.users-search').val()
       ;
 
-      // Set filter from search type drop down
-      if (searchQuery) {
-        switch (searchType) {
-          case 'Email' : options.email = searchQuery; break;
-          case 'First Name' : options.firstName = searchQuery; break;
-          case 'Last Name' : options.lastName = searchQuery; break;
-          default: break;
-        }
-      }
+      options[searchType] = searchQuery;
 
       utils.parallel({
         users: function(done){
@@ -128,10 +120,9 @@ define(function(require){
       };
     }
 
-  , onSearchTypeClick: function(e) {
-      // Handles changing the search type drop down
+  , onSearchSelectChange: function(e) {
+      // Refreshes search with new search type
       e.preventDefault();
-      this.$el.find('.search-wrapper .dropdown-toggle strong').text(e.target.text);
       this.paginator.setPage(0);
       this.fetchUsers();
     }
